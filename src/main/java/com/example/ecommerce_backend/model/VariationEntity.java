@@ -19,10 +19,8 @@ public class VariationEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "attribute")
     private String attribute;
-    @Basic
     @Column(name = "value")
     private String value;
     @OneToMany(mappedBy = "variationByVariationId")

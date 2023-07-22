@@ -19,16 +19,8 @@ public class ProductVariationEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "product_id")
-    private Integer productId;
-    @Basic
-    @Column(name = "variation_id")
-    private Integer variationId;
-    @Basic
     @Column(name = "sku")
     private String sku;
-    @Basic
     @Column(name = "price")
     private String price;
     @OneToMany(mappedBy = "productVariationByProductVariation")

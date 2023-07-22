@@ -17,22 +17,14 @@ public class UserAddressEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "user_id")
-    private Integer userId;
-    @Basic
     @Column(name = "address_line1")
     private String addressLine1;
-    @Basic
     @Column(name = "address_line2")
     private String addressLine2;
-    @Basic
     @Column(name = "city")
     private String city;
-    @Basic
     @Column(name = "postal_code")
     private String postalCode;
-    @Basic
     @Column(name = "country")
     private String country;
     @ManyToOne

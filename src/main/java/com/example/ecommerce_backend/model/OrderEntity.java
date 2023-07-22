@@ -20,28 +20,16 @@ public class OrderEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "user_id")
-    private Integer userId;
-    @Basic
-    @Column(name = "discount_id")
-    private Integer discountId;
-    @Basic
     @Column(name = "sub_total")
     private String subTotal;
-    @Basic
     @Column(name = "grand_total")
     private String grandTotal;
-    @Basic
     @Column(name = "status")
     private String status;
-    @Basic
     @Column(name = "shipping")
     private String shipping;
-    @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
-    @Basic
     @Column(name = "updated_at")
     private Timestamp updatedAt;
     @ManyToOne

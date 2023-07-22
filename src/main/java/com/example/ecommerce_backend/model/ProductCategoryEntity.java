@@ -19,10 +19,8 @@ public class ProductCategoryEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "name")
     private String name;
-    @Basic
     @Column(name = "description")
     private String description;
     @OneToMany(mappedBy = "productCategoryByCategoryId")

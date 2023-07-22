@@ -17,19 +17,14 @@ public class AdminEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "username")
     private String username;
-    @Basic
     @Column(name = "password")
     private String password;
-    @Basic
     @Column(name = "first_name")
     private String firstName;
-    @Basic
     @Column(name = "last_name")
     private String lastName;
-    @Basic
     @Column(name = "admin_type")
     private String adminType;
 }

@@ -19,16 +19,12 @@ public class SupplierEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "name")
     private String name;
-    @Basic
     @Column(name = "telephone")
     private String telephone;
-    @Basic
     @Column(name = "address1")
     private String address1;
-    @Basic
     @Column(name = "address2")
     private String address2;
     @OneToMany(mappedBy = "supplierBySupplierId")

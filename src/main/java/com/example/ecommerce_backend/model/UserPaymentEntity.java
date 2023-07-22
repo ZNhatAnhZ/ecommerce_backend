@@ -17,16 +17,10 @@ public class UserPaymentEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "user_id")
-    private Integer userId;
-    @Basic
     @Column(name = "payment_type")
     private String paymentType;
-    @Basic
     @Column(name = "provider")
     private String provider;
-    @Basic
     @Column(name = "expire_date")
     private String expireDate;
     @ManyToOne

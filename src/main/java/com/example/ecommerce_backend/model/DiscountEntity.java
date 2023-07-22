@@ -19,16 +19,12 @@ public class DiscountEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "name")
     private String name;
-    @Basic
     @Column(name = "description")
     private String description;
-    @Basic
     @Column(name = "discount_percent")
     private String discountPercent;
-    @Basic
     @Column(name = "active")
     private String active;
     @OneToMany(mappedBy = "discountByDiscountId")

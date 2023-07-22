@@ -19,9 +19,6 @@ public class CartEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "user_id")
-    private Integer userId;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity userByUserId;

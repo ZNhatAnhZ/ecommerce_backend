@@ -19,28 +19,14 @@ public class OrderItemEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
-    @Column(name = "order_id")
-    private Integer orderId;
-    @Basic
-    @Column(name = "product_id")
-    private Integer productId;
-    @Basic
-    @Column(name = "product_variation_id")
-    private Integer productVariationId;
-    @Basic
     @Column(name = "sku")
     private String sku;
-    @Basic
     @Column(name = "quantity")
     private Integer quantity;
-    @Basic
     @Column(name = "price")
     private String price;
-    @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
-    @Basic
     @Column(name = "updated_at")
     private Timestamp updatedAt;
     @ManyToOne

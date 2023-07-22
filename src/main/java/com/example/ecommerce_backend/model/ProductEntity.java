@@ -19,21 +19,10 @@ public class ProductEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
     @Column(name = "name")
     private String name;
-    @Basic
     @Column(name = "description")
     private String description;
-    @Basic
-    @Column(name = "category_id")
-    private Integer categoryId;
-    @Basic
-    @Column(name = "supplier_id")
-    private Integer supplierId;
-    @Basic
-    @Column(name = "discount_id")
-    private Integer discountId;
     @OneToMany(mappedBy = "productByProductId")
     private Collection<CartItemEntity> cartItemsById;
     @OneToMany(mappedBy = "productByProductId")
