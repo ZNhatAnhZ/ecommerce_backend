@@ -7,6 +7,7 @@ import com.example.ecommerce_backend.mapper.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
+import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Transactional
 public class UserServiceImpl implements UserServiceInterface {
     private final UserEntityRepository userEntityRepository;
     private final UserEntityCreateDtoMapper userEntityCreateDtoMapper;

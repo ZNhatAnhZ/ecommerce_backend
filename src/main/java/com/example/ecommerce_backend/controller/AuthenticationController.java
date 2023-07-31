@@ -27,7 +27,6 @@ import java.util.Map;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final CustomUserDetailsService customUserDetailsService;
     private final UserEntityLoggedInDtoMapper userEntityLoggedInDtoMapper;
 
     @PostMapping
@@ -38,7 +37,7 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(userEntityCreateDto.getUsername(), userEntityCreateDto.getPassword()));
 
             if (authentication.isAuthenticated()) {
-                CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(authentication.getName());
+                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
                 UserEntityLoggedInDto userEntityLoggedInDto = userEntityLoggedInDtoMapper.UserEntityToUserEntityLoggedInDto(customUserDetails.getUserEntity());
                 userEntityLoggedInDto.setJwt(jwtUtil.generateJwtToken(customUserDetails));
                 return new ResponseEntity<>(userEntityLoggedInDto, HttpStatus.OK);

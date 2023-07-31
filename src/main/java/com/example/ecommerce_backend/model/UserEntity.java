@@ -22,7 +22,7 @@ public class UserEntity {
     @Column(name = "id")
     private int id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<PermissionEntity> permissionEntityList;
 

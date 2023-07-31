@@ -38,11 +38,13 @@ public class JwtUtil {
     }
 
     public boolean validateJwtToken(String authToken) {
-        try {
-            JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(authToken);
-            return true;
-        } catch (JWTVerificationException e) {
-            e.printStackTrace();
+        if (!isTokenExpired(authToken)) {
+            try {
+                JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(authToken);
+                return true;
+            } catch (JWTVerificationException e) {
+                e.printStackTrace();
+            }
         }
 
         return false;

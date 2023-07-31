@@ -1,6 +1,8 @@
 package com.example.ecommerce_backend.configuration;
 
+import com.example.ecommerce_backend.filter.JwtAuthorizationFilter;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -23,6 +26,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -30,6 +34,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Transactional
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
@@ -52,6 +57,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .anyRequest().authenticated()
                 );
+
+        http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+
         return http.build();
     }
 }
