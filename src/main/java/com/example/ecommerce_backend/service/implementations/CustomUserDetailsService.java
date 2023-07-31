@@ -17,7 +17,7 @@ import java.util.Optional;
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserEntityRepository userEntityRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserEntity> userEntity = userEntityRepository.findUserEntityByUsername(username);
         if (userEntity.isPresent()) {
             return new CustomUserDetails(userEntity.get());
