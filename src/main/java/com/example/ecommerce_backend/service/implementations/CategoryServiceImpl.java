@@ -4,8 +4,8 @@ import com.example.ecommerce_backend.dto.ProductCategoryEntity.CategoryEntityCre
 import com.example.ecommerce_backend.dto.ProductCategoryEntity.CategoryEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.CategoryEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.CategoryEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.mapper.CategoryEntity.CategoryEntityCreateDtoMapper;
+import com.example.ecommerce_backend.mapper.CategoryEntity.CategoryEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.ProductCategoryEntity;
 import com.example.ecommerce_backend.repository.ProductCategoryEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.CategoryServiceInterface;

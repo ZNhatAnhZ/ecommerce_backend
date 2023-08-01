@@ -1,4 +1,4 @@
-package com.example.ecommerce_backend.mapper;
+package com.example.ecommerce_backend.mapper.UserEntity;
 
 import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.model.UserEntity;

@@ -2,7 +2,7 @@ package com.example.ecommerce_backend.controller;
 
 import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
 import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
-import com.example.ecommerce_backend.mapper.UserEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.UserEntity.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.service.implementations.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
