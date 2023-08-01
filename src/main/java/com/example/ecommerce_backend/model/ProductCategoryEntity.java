@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "product_category", schema = "ecommerce", catalog = "")
@@ -23,7 +24,4 @@ public class ProductCategoryEntity {
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(mappedBy = "productCategoryByCategoryId")
-    private Collection<ProductEntity> productsById;
-
 }

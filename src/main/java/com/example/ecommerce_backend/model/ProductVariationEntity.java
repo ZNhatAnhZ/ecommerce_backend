@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "product_variation", schema = "ecommerce", catalog = "")
+@Table(name = "product_variation", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,18 +19,24 @@ public class ProductVariationEntity {
     @Id
     @Column(name = "id")
     private int id;
+
     @Column(name = "sku")
     private String sku;
+
     @Column(name = "price")
     private String price;
+
     @OneToMany(mappedBy = "productVariationByProductVariation")
     private Collection<CartItemEntity> cartItemsById;
-    @OneToMany(mappedBy = "productVariationByProductVariationId")
+
+    @OneToMany(mappedBy = "productVariationEntity")
     private Collection<OrderItemEntity> orderItemsById;
+
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity productByProductId;
+    private ProductEntity productEntity;
+
     @ManyToOne
     @JoinColumn(name = "variation_id", referencedColumnName = "id")
-    private VariationEntity variationByVariationId;
+    private VariationEntity variationEntity;
 }

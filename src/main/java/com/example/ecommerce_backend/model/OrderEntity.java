@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name = "order", schema = "ecommerce", catalog = "")
+@Table(name = "order", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,24 +20,33 @@ public class OrderEntity {
     @Id
     @Column(name = "id")
     private int id;
+
     @Column(name = "sub_total")
     private String subTotal;
+
     @Column(name = "grand_total")
     private String grandTotal;
+
     @Column(name = "status")
     private String status;
+
     @Column(name = "shipping")
     private String shipping;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
+
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity userByUserId;
+    private UserEntity userEntity;
+
     @ManyToOne
     @JoinColumn(name = "discount_id", referencedColumnName = "id")
-    private DiscountEntity discountByDiscountId;
-    @OneToMany(mappedBy = "orderByOrderId")
-    private Collection<OrderItemEntity> orderItemsById;
+    private DiscountEntity discountEntity;
+
+    @OneToMany(mappedBy = "orderEntity")
+    private List<OrderItemEntity> orderItemEntityList;
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "variation", schema = "ecommerce", catalog = "")
+@Table(name = "variation", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,6 +23,4 @@ public class VariationEntity {
     private String attribute;
     @Column(name = "value")
     private String value;
-    @OneToMany(mappedBy = "variationByVariationId")
-    private Collection<ProductVariationEntity> productVariationsById;
 }

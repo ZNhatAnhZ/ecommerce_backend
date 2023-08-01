@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Collection;
 
 @Entity
-@Table(name = "supplier", schema = "ecommerce", catalog = "")
+@Table(name = "supplier", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,14 +19,16 @@ public class SupplierEntity {
     @Id
     @Column(name = "id")
     private int id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "telephone")
     private String telephone;
+
     @Column(name = "address1")
     private String address1;
+
     @Column(name = "address2")
     private String address2;
-    @OneToMany(mappedBy = "supplierBySupplierId")
-    private Collection<ProductEntity> productsById;
 }
