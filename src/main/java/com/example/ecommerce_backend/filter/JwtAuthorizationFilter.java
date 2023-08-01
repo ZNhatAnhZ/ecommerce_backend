@@ -42,8 +42,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }else {
                 log.error("Invalid jwt token or wrong credential");
             }
-            filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
     }
 
     @Override

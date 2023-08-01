@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "product_category", schema = "ecommerce", catalog = "")
+@Table(name = "product_category", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -1,10 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntityLoggedInDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityLoggedInDto;
 import com.example.ecommerce_backend.mapper.UserEntityLoggedInDtoMapper;
 import com.example.ecommerce_backend.model.CustomUserDetails;
-import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
 import com.example.ecommerce_backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

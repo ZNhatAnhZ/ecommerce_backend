@@ -1,7 +1,7 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntityIndexDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.mapper.UserEntityCreateDtoMapper;
 import com.example.ecommerce_backend.mapper.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
@@ -11,13 +11,10 @@ import jakarta.transaction.Transactional;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

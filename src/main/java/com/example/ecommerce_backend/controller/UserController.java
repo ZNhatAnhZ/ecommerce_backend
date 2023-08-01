@@ -1,14 +1,13 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntityIndexDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.mapper.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.service.implementations.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

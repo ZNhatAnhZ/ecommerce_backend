@@ -1,6 +1,6 @@
 package com.example.ecommerce_backend.mapper;
 
-import com.example.ecommerce_backend.dto.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
 import com.example.ecommerce_backend.model.UserEntity;
 import org.mapstruct.Mapper;
 

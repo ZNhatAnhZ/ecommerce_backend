@@ -1,6 +1,6 @@
 package com.example.ecommerce_backend.mapper;
 
-import com.example.ecommerce_backend.dto.UserEntityIndexDto;
+import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.model.UserEntity;
 import org.mapstruct.Mapper;
 

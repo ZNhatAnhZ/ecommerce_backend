@@ -1,5 +1,6 @@
-package com.example.ecommerce_backend.dto;
+package com.example.ecommerce_backend.dto.ProductEntity;
 
+import com.example.ecommerce_backend.dto.ProductVariationEntity.ProductVariationCreateDto;
 import lombok.Builder;
 import lombok.Data;
 
