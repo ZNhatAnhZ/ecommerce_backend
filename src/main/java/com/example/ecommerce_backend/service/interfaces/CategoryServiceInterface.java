@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CategoryServiceInterface {
     List<ProductCategoryEntity> getAllCategories();
-    Optional<ProductCategoryEntity> getCategoryById(int id);
+    ProductCategoryEntity getCategoryById(int id);
     ProductCategoryEntity createCategory(CategoryEntityCreateDto categoryEntityCreateDto);
     ProductCategoryEntity updateCategory(CategoryEntityUpdateDto categoryEntityUpdateDto);
     void deleteCategory(int id);

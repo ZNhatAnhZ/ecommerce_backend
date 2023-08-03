@@ -1,10 +1,7 @@
 package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -46,5 +44,5 @@ public class ProductEntity {
     private DiscountEntity discountEntity;
 
     @OneToMany(mappedBy = "productEntity")
-    private List<ProductVariationEntity> productVariationEntityList;
+    private List<VariationEntity> variationEntityList;
 }

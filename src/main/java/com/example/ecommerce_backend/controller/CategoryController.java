@@ -27,8 +27,8 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductCategoryEntity> getCategoryById(@PathVariable int id) {
-        Optional<ProductCategoryEntity> category = categoryServiceInterface.getCategoryById(id);
-        return category.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        ProductCategoryEntity category = categoryServiceInterface.getCategoryById(id);
+        return ResponseEntity.ok(category);
     }
 
     @PostMapping

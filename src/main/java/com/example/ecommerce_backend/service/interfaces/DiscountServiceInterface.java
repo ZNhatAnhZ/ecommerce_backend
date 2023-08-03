@@ -8,11 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DiscountServiceInterface {
     List<DiscountEntity> getAllDiscounts();
-    Optional<DiscountEntity> getDiscountById(int id);
+    DiscountEntity getDiscountById(int id);
     DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto);
     DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto);
     void deleteDiscount(int id);

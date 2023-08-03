@@ -19,7 +19,7 @@ public class PermissionEntity {
     @Id
     @Column(name = "id")
     private int id;
-    @Basic
+
     @Column(name = "name")
     private String name;
 }

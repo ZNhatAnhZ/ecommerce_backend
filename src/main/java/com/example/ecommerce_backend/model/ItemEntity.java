@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name = "product_variation", schema = "ecommerce")
+@Table(name = "item", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductVariationEntity {
+public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -26,17 +27,20 @@ public class ProductVariationEntity {
     @Column(name = "price")
     private String price;
 
-    @OneToMany(mappedBy = "productVariationByProductVariation")
+    @Column(name = "stock")
+    private String stock;
+
+    @OneToMany(mappedBy = "itemEntity")
     private Collection<CartItemEntity> cartItemsById;
 
-    @OneToMany(mappedBy = "productVariationEntity")
+    @OneToMany(mappedBy = "itemEntity")
     private Collection<OrderItemEntity> orderItemsById;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private ProductEntity productEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "variation_id", referencedColumnName = "id")
-    private VariationEntity variationEntity;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "item_variation", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "variation_id"))
+    private List<VariationEntity> variationEntityList;
 }

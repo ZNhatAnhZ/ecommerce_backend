@@ -6,6 +6,7 @@ import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.SupplierEntity.SupplierEntityCreateDtoMapper;
 import com.example.ecommerce_backend.mapper.SupplierEntity.SupplierEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.model.ProductCategoryEntity;
 import com.example.ecommerce_backend.model.SupplierEntity;
 import com.example.ecommerce_backend.repository.SupplierEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.SupplierServiceInterface;
@@ -33,8 +34,13 @@ public class SupplierServiceImpl implements SupplierServiceInterface {
         return supplierEntityRepository.findAll();
     }
 
-    public Optional<SupplierEntity> getSupplierById(int id) {
-        return supplierEntityRepository.findById(id);
+    public SupplierEntity getSupplierById(int id) {
+        Optional<SupplierEntity> supplierEntity = supplierEntityRepository.findById(id);
+        if (supplierEntity.isPresent()) {
+            return supplierEntity.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find supplier with id " + id);
+        }
     }
 
     public SupplierEntity createSupplier(SupplierEntityCreateDto supplierEntityCreateDto) {

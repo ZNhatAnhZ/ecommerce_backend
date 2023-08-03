@@ -44,6 +44,6 @@ public class OrderItemEntity {
     private ProductEntity productEntity;
 
     @ManyToOne
-    @JoinColumn(name = "product_variation_id", referencedColumnName = "id")
-    private ProductVariationEntity productVariationEntity;
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    private ItemEntity itemEntity;
 }

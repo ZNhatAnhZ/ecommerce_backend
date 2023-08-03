@@ -1,6 +1,6 @@
 package com.example.ecommerce_backend.dto.ProductEntity;
 
-import com.example.ecommerce_backend.dto.ProductVariationEntity.ProductVariationCreateDto;
+import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityCreateDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +14,5 @@ public class ProductEntityCreateDto {
     private int categoryId;
     private int supplierId;
     private int discountId;
-    private List<ProductVariationCreateDto> productVariation;
+    private List<VariationEntityCreateDto> variationEntityCreateDtoList;
 }

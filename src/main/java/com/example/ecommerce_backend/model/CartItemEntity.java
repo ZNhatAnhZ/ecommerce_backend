@@ -28,6 +28,6 @@ public class CartItemEntity {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private ProductEntity productByProductId;
     @ManyToOne
-    @JoinColumn(name = "product_variation", referencedColumnName = "id")
-    private ProductVariationEntity productVariationByProductVariation;
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    private ItemEntity itemEntity;
 }

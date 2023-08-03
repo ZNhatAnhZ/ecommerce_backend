@@ -33,8 +33,13 @@ public class CategoryServiceImpl implements CategoryServiceInterface {
         return productCategoryEntityRepository.findAll();
     }
 
-    public Optional<ProductCategoryEntity> getCategoryById(int id) {
-        return productCategoryEntityRepository.findById(id);
+    public ProductCategoryEntity getCategoryById(int id) {
+        Optional<ProductCategoryEntity> productCategoryEntity = productCategoryEntityRepository.findById(id);
+        if (productCategoryEntity.isPresent()) {
+            return productCategoryEntity.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find category with id " + id);
+        }
     }
 
     public ProductCategoryEntity createCategory(CategoryEntityCreateDto categoryEntityCreateDto) {

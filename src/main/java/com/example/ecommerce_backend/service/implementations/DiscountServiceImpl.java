@@ -3,14 +3,13 @@ package com.example.ecommerce_backend.service.implementations;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityCreateDto;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityIndexDto;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityUpdateDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityCreateDtoMapper;
 import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityIndexDtoMapper;
 import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.DiscountEntity;
-import com.example.ecommerce_backend.model.ProductCategoryEntity;
+import com.example.ecommerce_backend.model.SupplierEntity;
 import com.example.ecommerce_backend.repository.DiscountEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
 import jakarta.transaction.Transactional;
@@ -44,8 +43,13 @@ public class DiscountServiceImpl implements DiscountServiceInterface {
         return discountEntityRepository.findAll(pageable).map(discountEntityIndexDtoMapper::discountEntityToDiscountEntityIndexDto);
     }
 
-    public Optional<DiscountEntity> getDiscountById(int id) {
-        return discountEntityRepository.findById(id);
+    public DiscountEntity getDiscountById(int id) {
+        Optional<DiscountEntity> discountEntity = discountEntityRepository.findById(id);
+        if (discountEntity.isPresent()) {
+            return discountEntity.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find discount with id " + id);
+        }
     }
 
     public DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto) {

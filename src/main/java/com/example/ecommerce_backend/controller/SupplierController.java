@@ -28,8 +28,8 @@ public class SupplierController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SupplierEntity> getSupplierById(@PathVariable int id) {
-        Optional<SupplierEntity> supplier = supplierServiceInterface.getSupplierById(id);
-        return supplier.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        SupplierEntity supplier = supplierServiceInterface.getSupplierById(id);
+        return ResponseEntity.ok(supplier);
     }
 
     @PostMapping

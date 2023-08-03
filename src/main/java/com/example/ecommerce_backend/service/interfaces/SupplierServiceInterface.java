@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface SupplierServiceInterface {
     List<SupplierEntity> getAllSuppliers();
-    Optional<SupplierEntity> getSupplierById(int id);
+    SupplierEntity getSupplierById(int id);
     SupplierEntity createSupplier(SupplierEntityCreateDto supplierEntityCreateDto);
     SupplierEntity updateSupplier(SupplierEntityUpdateDto supplierEntityUpdateDto);
     void deleteSupplier(int id);

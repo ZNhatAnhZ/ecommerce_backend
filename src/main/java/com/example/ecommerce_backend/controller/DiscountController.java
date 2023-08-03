@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.controller;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityCreateDto;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityIndexDto;
 import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityUpdateDto;
+import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.DiscountEntity;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DiscountController {
     private final DiscountServiceInterface discountServiceInterface;
+    private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
     @GetMapping
     public Page<DiscountEntityIndexDto> index(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -32,9 +34,10 @@ public class DiscountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DiscountEntity> getDiscountById(@PathVariable int id) {
-        Optional<DiscountEntity> discount = discountServiceInterface.getDiscountById(id);
-        return discount.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<DiscountEntityIndexDto> getDiscountById(@PathVariable int id) {
+        DiscountEntity discount = discountServiceInterface.getDiscountById(id);
+        DiscountEntityIndexDto discountEntityIndexDto = discountEntityIndexDtoMapper.discountEntityToDiscountEntityIndexDto(discount);
+        return ResponseEntity.ok(discountEntityIndexDto);
     }
 
     @PostMapping
