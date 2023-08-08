@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "item", schema = "ecommerce")
@@ -31,10 +32,10 @@ public class ItemEntity {
     private String stock;
 
     @OneToMany(mappedBy = "itemEntity")
-    private Collection<CartItemEntity> cartItemsById;
+    private List<CartItemEntity> cartItemsById;
 
     @OneToMany(mappedBy = "itemEntity")
-    private Collection<OrderItemEntity> orderItemsById;
+    private List<OrderItemEntity> orderItemsById;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -42,5 +43,5 @@ public class ItemEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "item_variation", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "variation_id"))
-    private List<VariationEntity> variationEntityList;
+    private Set<VariationEntity> variationEntityList;
 }

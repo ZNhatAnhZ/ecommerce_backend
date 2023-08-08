@@ -3,13 +3,12 @@ package com.example.ecommerce_backend.dto.VariationEntity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class VariationEntityCreateDto {
-    private String attribute;
+    private String name;
     private String value;
-    private String price;
-    private int stock;
-    private int productId;
-    private int parentVariationEntityId;
+    private List<VariationEntityCreateDto> variationEntityCreateDtoList;
 }
