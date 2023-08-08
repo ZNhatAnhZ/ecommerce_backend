@@ -3,9 +3,11 @@ package com.example.ecommerce_backend.service.implementations;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
+import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityDetailDtoMapper;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.mapper.VariationEntity.VariationEntityCreateDtoMapper;
 import com.example.ecommerce_backend.model.*;
 import com.example.ecommerce_backend.repository.ProductEntityRepository;
@@ -33,18 +35,21 @@ public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductEntityRepository productEntityRepository;
     private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;
     private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
+    private final ProductEntityUpdateDtoMapper productEntityUpdateDtoMapper;
     private final CategoryServiceInterface categoryServiceInterface;
     private final DiscountServiceInterface discountServiceInterface;
     private final SupplierServiceInterface supplierServiceInterface;
     private final VariationServiceInterface variationServiceInterface;
     private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;
 
+    @Override
     public Page<ProductEntityIndexDto> getAllProducts(Pageable pageable) {
         Page<ProductEntity> productEntityPage = productEntityRepository.findAll(pageable);
 
         return productEntityPage.map(productEntityIndexDtoMapper::ProductEntityToProductEntityIndexDto);
     }
 
+    @Override
     public ProductEntityDetailDto getProductById(Integer id) {
         Optional<ProductEntity> productEntity = productEntityRepository.findById(id);
 
@@ -62,6 +67,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
         }
     }
 
+    @Override
     public ProductEntityIndexDto createProduct(ProductEntityCreateDto productEntityCreateDto) {
         ProductCategoryEntity productCategoryEntity = categoryServiceInterface.getCategoryById(productEntityCreateDto.getCategoryId());
         SupplierEntity supplierEntity = supplierServiceInterface.getSupplierById(productEntityCreateDto.getSupplierId());
@@ -85,15 +91,38 @@ public class ProductServiceImpl implements ProductServiceInterface {
         return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(productEntityRepository.save(productEntity));
     }
 
-//    public Product updateProduct(Product product) {
-//        return productRepository.save(product);
-//    }
+    @Override
+    public ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto) {
+        Optional<ProductEntity> productEntity = productEntityRepository.findById(productEntityUpdateDto.getId());
+        if (productEntity.isPresent()) {
+            ProductCategoryEntity productCategoryEntity = categoryServiceInterface.getCategoryById(productEntityUpdateDto.getCategoryId());
+            SupplierEntity supplierEntity = supplierServiceInterface.getSupplierById(productEntityUpdateDto.getSupplierId());
+            DiscountEntity discountEntity = discountServiceInterface.getDiscountById(productEntityUpdateDto.getDiscountId());
+            Set<VariationEntity> variationEntitySet = new HashSet<>(variationEntityCreateDtoMapper.VariationEntityCreateDtoListToVariationEntityList(productEntityUpdateDto.getVariationEntityCreateDtoList()));
 
+            variationEntitySet.forEach(variationEntity -> {
+                updateParentVariationAndProductEntityForAllChildVariations(productEntity.get(), variationEntity, variationEntity.getChildVariationEntityList());
+            });
+            variationServiceInterface.deleteVariationInBatch(productEntity.get().getVariationEntitySet());
+
+            ProductEntity updatedProductEntity = productEntityUpdateDtoMapper.ProductEntityUpdateDtoToProductEntity(productEntityUpdateDto);
+            updatedProductEntity.setCategoryEntity(productCategoryEntity);
+            updatedProductEntity.setSupplierEntity(supplierEntity);
+            updatedProductEntity.setDiscountEntity(discountEntity);
+            updatedProductEntity.setVariationEntitySet(variationEntitySet);
+
+            return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(productEntityRepository.save(updatedProductEntity));
+        } else {
+            throw new ResourceNotFoundException("Could not find product with id " + productEntityUpdateDto.getId());
+        }
+    }
+
+    @Override
     public void deleteProduct(int id) {
         if (productEntityRepository.existsById(id)) {
             productEntityRepository.deleteById(id);
         } else {
-            throw new ResourceNotFoundException("Could not find user with id " + id);
+            throw new ResourceNotFoundException("Could not find product with id " + id);
         }
     }
 

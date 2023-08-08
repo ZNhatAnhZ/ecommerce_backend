@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.controller;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
+import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,9 +45,9 @@ public class ProductController {
     }
 
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Void> update(UserEntityUpdateDto userEntityUpdateDto) {
-//        userServiceInterface.updateUser(userEntityUpdateDto);
-//        return ResponseEntity.ok().build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductEntityIndexDto> update(@PathVariable("id") int id, @RequestBody ProductEntityUpdateDto productEntityUpdateDto) {
+        productEntityUpdateDto.setId(id);
+        return ResponseEntity.ok(productServiceInterface.updateProduct(productEntityUpdateDto));
+    }
 }
