@@ -38,6 +38,12 @@ public class ProductController {
         return ResponseEntity.ok(productEntityDetailDto);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductEntityIndexDto>> findByName(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam String name) {
+        Page<ProductEntityIndexDto> productEntityIndexDtoPage = productServiceInterface.searchProductByName(name, pageable);
+        return ResponseEntity.ok(productEntityIndexDtoPage);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         productServiceInterface.deleteProduct(id);

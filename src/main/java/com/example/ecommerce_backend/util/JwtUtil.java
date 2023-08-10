@@ -45,6 +45,7 @@ public class JwtUtil {
                 return true;
             } catch (JWTVerificationException e) {
                 e.printStackTrace();
+                return false;
             }
         }
 

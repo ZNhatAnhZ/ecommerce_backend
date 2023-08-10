@@ -13,6 +13,7 @@ import java.util.List;
 public interface ProductServiceInterface {
     void deleteProduct(int id);
     Page<ProductEntityIndexDto> getAllProducts(Pageable pageable);
+    Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable);
     ProductEntityDetailDto getProductById(Integer id);
     ProductEntityIndexDto createProduct(ProductEntityCreateDto productEntityCreateDto);
     ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto);

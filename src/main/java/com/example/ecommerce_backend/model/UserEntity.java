@@ -40,4 +40,7 @@ public class UserEntity {
 
     @Column(name = "telephone")
     private String telephone;
+
+    @Column(name = "email")
+    private String email;
 }

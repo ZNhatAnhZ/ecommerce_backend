@@ -1,5 +1,7 @@
 package com.example.ecommerce_backend.filter;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.example.ecommerce_backend.exception.InvalidCredentialException;
 import com.example.ecommerce_backend.model.CustomUserDetails;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
 import com.example.ecommerce_backend.util.JwtUtil;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,22 +29,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String headerAuth = request.getHeader("Authorization");
-
-        if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
-            String jwt = headerAuth.substring(7);
-            String username = jwtUtil.getUserNameFromJwtToken(jwt);
-
-            if (!jwt.isEmpty() && username != null && !username.isEmpty() && jwtUtil.validateJwtToken(jwt)) {
-                CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        customUserDetails, null, customUserDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }else {
-                log.error("Invalid jwt token or wrong credential");
-            }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, InvalidCredentialException {
+        try {
+            String jwt = checkTokenFormatThenReturnToken(request);
+            checkAuthenticationFromToken(jwt);
+        } catch (InvalidCredentialException invalidCredentialException) {
+            throw new InvalidCredentialException(invalidCredentialException.getMessage());
         }
         filterChain.doFilter(request, response);
     }
@@ -56,6 +49,45 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private String checkTokenFormatThenReturnToken(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+
+        if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
+            String jwt = headerAuth.substring(7);
+
+            try {
+                if (jwtUtil.validateJwtToken(jwt)) {
+                    return jwt;
+                }
+            } catch (JWTDecodeException jwtDecodeException) {
+                throw new InvalidCredentialException("wrong token format");
+            }
+
+        }
+
+        throw new InvalidCredentialException("wrong token format");
+    }
+
+    private void checkAuthenticationFromToken(String jwt) {
+        String username = jwtUtil.getUserNameFromJwtToken(jwt);
+
+        if (username != null && !username.isEmpty()) {
+            try {
+                CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        customUserDetails,
+                        null,
+                        customUserDetails.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (UsernameNotFoundException usernameNotFoundException) {
+                throw new InvalidCredentialException(usernameNotFoundException.getMessage());
+            }
+        } else {
+            throw new InvalidCredentialException("name is empty");
         }
     }
 }

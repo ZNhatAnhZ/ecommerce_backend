@@ -68,6 +68,13 @@ public class ProductServiceImpl implements ProductServiceInterface {
     }
 
     @Override
+    public Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable) {
+        Page<ProductEntity> productEntityPage = productEntityRepository.findAllByNameContainsIgnoreCase(name, pageable);
+
+        return productEntityPage.map(productEntityIndexDtoMapper::ProductEntityToProductEntityIndexDto);
+    }
+
+    @Override
     public ProductEntityIndexDto createProduct(ProductEntityCreateDto productEntityCreateDto) {
         ProductCategoryEntity productCategoryEntity = categoryServiceInterface.getCategoryById(productEntityCreateDto.getCategoryId());
         SupplierEntity supplierEntity = supplierServiceInterface.getSupplierById(productEntityCreateDto.getSupplierId());
