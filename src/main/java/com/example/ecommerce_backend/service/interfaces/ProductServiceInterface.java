@@ -4,11 +4,10 @@ import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
-import com.example.ecommerce_backend.model.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public interface ProductServiceInterface {
     void deleteProduct(int id);

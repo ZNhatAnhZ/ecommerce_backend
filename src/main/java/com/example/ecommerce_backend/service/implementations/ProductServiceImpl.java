@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +25,12 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.example.ecommerce_backend.model.VariationEntity.updateParentVariationAndProductEntityForAllChildVariations;
-
 @Service
 @Getter
 @Setter
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional
+@Slf4j
 public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductEntityRepository productEntityRepository;
     private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;

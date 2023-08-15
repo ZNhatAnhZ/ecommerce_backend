@@ -5,7 +5,6 @@ import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
 import com.example.ecommerce_backend.dto.UserEntity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.mapper.UserEntity.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
-import com.example.ecommerce_backend.service.implementations.UserServiceImpl;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RequestMapping("/api/users")
 @RestController
@@ -59,4 +56,11 @@ public class UserController {
         userServiceInterface.updateUser(userEntityUpdateDto);
         return ResponseEntity.ok().build();
     }
+
+//    @PostMapping("/forgotPassword")
+//    public ResponseEntity<Void> forgotPassword(@RequestBody UserEntityForgotPassword userEntityForgotPassword) {
+//        UserEntity userEntity = userServiceInterface.registerUser(userEntityCreateDto);
+//        UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.UserEntityToUserEntityIndexDto(userEntity);
+//        return ResponseEntity.ok().build();
+//    }
 }
