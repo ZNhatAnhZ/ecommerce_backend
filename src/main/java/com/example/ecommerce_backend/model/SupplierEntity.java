@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@org.hibernate.annotations.Cache(region = "supplier", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SupplierEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

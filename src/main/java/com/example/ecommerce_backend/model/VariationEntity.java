@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@org.hibernate.annotations.Cache(region = "variation", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VariationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

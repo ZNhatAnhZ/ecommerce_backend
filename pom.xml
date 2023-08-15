@@ -94,6 +94,11 @@
 			<artifactId>guava</artifactId>
 			<version>32.1.2-jre</version>
 		</dependency>
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson-hibernate-6</artifactId>
+			<version>3.23.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

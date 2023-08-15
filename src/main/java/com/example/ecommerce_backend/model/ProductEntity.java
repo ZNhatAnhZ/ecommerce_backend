@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@org.hibernate.annotations.Cache(region = "product", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
