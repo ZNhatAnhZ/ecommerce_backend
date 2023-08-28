@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @Getter
 @Setter
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 public class SupplierServiceImpl implements SupplierServiceInterface {
     private final SupplierEntityRepository supplierEntityRepository;

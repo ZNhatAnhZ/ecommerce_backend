@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequestMapping("/api/suppliers")
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class SupplierController {
     private final SupplierServiceInterface supplierServiceInterface;
 

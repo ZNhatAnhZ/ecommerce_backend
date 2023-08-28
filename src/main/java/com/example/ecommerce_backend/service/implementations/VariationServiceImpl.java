@@ -28,7 +28,7 @@ import java.util.Set;
 @Service
 @Getter
 @Setter
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 public class VariationServiceImpl implements VariationServiceInterface {
     private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;

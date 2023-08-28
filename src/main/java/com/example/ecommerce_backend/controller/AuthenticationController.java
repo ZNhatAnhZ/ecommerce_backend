@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/api/login")
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;

@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,7 @@ import java.util.Optional;
 @Getter
 @Setter
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserServiceInterface {
     private final UserEntityRepository userEntityRepository;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserServiceInterface {
     private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
     private final UserEntityUpdateDtoMapper userEntityUpdateDtoMapper;
     private final PasswordEncoder passwordEncoder;
+    @Qualifier("emailServiceImpl")
     private final EmailServiceInterface emailServiceInterface;
 
     @Override
@@ -45,7 +47,6 @@ public class UserServiceImpl implements UserServiceInterface {
 
             userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
             userEntity = userEntityRepository.save(userEntity);
-
             return userEntity;
         } else {
             throw new ResourceDuplicateException("username already exist");

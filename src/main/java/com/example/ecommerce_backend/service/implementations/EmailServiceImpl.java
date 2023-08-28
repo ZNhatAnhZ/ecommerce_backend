@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 @Getter
 @Setter
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 public class EmailServiceImpl implements EmailServiceInterface {
     private final JavaMailSender mailSender;

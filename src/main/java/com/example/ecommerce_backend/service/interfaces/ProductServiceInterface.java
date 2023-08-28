@@ -7,8 +7,6 @@ import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.concurrent.CompletableFuture;
-
 public interface ProductServiceInterface {
     void deleteProduct(int id);
     Page<ProductEntityIndexDto> getAllProducts(Pageable pageable);

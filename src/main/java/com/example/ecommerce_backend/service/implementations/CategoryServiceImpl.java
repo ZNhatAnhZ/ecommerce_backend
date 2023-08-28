@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 @Getter
 @Setter
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryServiceInterface {
     private final ProductCategoryEntityRepository productCategoryEntityRepository;

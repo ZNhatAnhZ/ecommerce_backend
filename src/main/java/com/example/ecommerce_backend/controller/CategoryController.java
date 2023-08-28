@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequestMapping("/api/categories")
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryServiceInterface categoryServiceInterface;
     @GetMapping

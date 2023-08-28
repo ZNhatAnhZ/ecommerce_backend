@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class UserController {
     private final UserServiceInterface userServiceInterface;
     private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;

@@ -23,7 +23,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/discounts")
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class DiscountController {
     private final DiscountServiceInterface discountServiceInterface;
     private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;

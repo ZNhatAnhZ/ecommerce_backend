@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 @Getter
 @Setter
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class ProductServiceImpl implements ProductServiceInterface {
@@ -36,9 +36,13 @@ public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;
     private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
     private final ProductEntityUpdateDtoMapper productEntityUpdateDtoMapper;
+    @Qualifier("categoryServiceImpl")
     private final CategoryServiceInterface categoryServiceInterface;
+    @Qualifier("discountServiceImpl")
     private final DiscountServiceInterface discountServiceInterface;
+    @Qualifier("supplierServiceImpl")
     private final SupplierServiceInterface supplierServiceInterface;
+    @Qualifier("variationServiceImpl")
     private final VariationServiceInterface variationServiceInterface;
     private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;
 

@@ -4,6 +4,7 @@ import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
 import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
+import com.example.ecommerce_backend.model.ProductEntity;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/products")
 @RestController
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ProductController {
     private final ProductServiceInterface productServiceInterface;
     @PostMapping
