@@ -38,15 +38,15 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity")
     private Collection<OrderItemEntity> orderItemsById;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private ProductCategoryEntity categoryEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "supplier_id", referencedColumnName = "id")
     private SupplierEntity supplierEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id", referencedColumnName = "id")
     private DiscountEntity discountEntity;
 

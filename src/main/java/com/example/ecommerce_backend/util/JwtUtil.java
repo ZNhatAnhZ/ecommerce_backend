@@ -23,7 +23,7 @@ public class JwtUtil {
         return JWT.create()
                 .withClaim("id", customUserDetails.getUserEntity().getId())
                 .withClaim("username", customUserDetails.getUsername())
-                .withClaim("authorities", customUserDetails.getAuthorities().stream().toList())
+//                .withClaim("authorities", customUserDetails.getAuthorities().stream().toList())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date((new Date()).getTime() + jwtExpiration))
                 .sign(Algorithm.HMAC256(jwtSecret));
