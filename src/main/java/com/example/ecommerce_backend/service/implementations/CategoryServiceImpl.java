@@ -9,12 +9,11 @@ import com.example.ecommerce_backend.mapper.CategoryEntity.CategoryEntityUpdateD
 import com.example.ecommerce_backend.model.ProductCategoryEntity;
 import com.example.ecommerce_backend.repository.ProductCategoryEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.CategoryServiceInterface;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

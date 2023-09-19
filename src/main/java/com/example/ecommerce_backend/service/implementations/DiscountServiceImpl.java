@@ -9,17 +9,15 @@ import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityCreateD
 import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityIndexDtoMapper;
 import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.DiscountEntity;
-import com.example.ecommerce_backend.model.SupplierEntity;
 import com.example.ecommerce_backend.repository.DiscountEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

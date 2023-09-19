@@ -23,7 +23,7 @@ public class CartItemEntity {
     private String sku;
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
-    private CartEntity cartByCartId;
+    private UserEntity user;
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private ProductEntity productByProductId;

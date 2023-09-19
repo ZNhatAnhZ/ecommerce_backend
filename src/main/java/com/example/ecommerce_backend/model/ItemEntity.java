@@ -1,10 +1,7 @@
 package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Table(name = "item", schema = "ecommerce")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemEntity {
@@ -31,17 +29,20 @@ public class ItemEntity {
     @Column(name = "stock")
     private String stock;
 
-    @OneToMany(mappedBy = "itemEntity")
+    @Column(name = "is_disabled")
+    private boolean isDisabled;
+
+    @OneToMany(mappedBy = "itemEntity", fetch = FetchType.LAZY)
     private List<CartItemEntity> cartItemsById;
 
-    @OneToMany(mappedBy = "itemEntity")
+    @OneToMany(mappedBy = "itemEntity", fetch = FetchType.LAZY)
     private List<OrderItemEntity> orderItemsById;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private ProductEntity productEntity;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "item_variation", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "variation_id"))
     private Set<VariationEntity> variationEntityList;
 }

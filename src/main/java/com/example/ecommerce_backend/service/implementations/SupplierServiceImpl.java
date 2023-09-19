@@ -6,16 +6,14 @@ import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.SupplierEntity.SupplierEntityCreateDtoMapper;
 import com.example.ecommerce_backend.mapper.SupplierEntity.SupplierEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.model.ProductCategoryEntity;
 import com.example.ecommerce_backend.model.SupplierEntity;
 import com.example.ecommerce_backend.repository.SupplierEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.SupplierServiceInterface;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

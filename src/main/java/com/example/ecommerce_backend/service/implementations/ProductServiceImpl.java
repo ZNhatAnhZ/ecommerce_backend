@@ -12,7 +12,6 @@ import com.example.ecommerce_backend.mapper.VariationEntity.VariationEntityCreat
 import com.example.ecommerce_backend.model.*;
 import com.example.ecommerce_backend.repository.ProductEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.*;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,13 +29,14 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
+@Transactional
 public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductEntityRepository productEntityRepository;
     private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;
     private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
     private final ProductEntityUpdateDtoMapper productEntityUpdateDtoMapper;
+    private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;
     @Qualifier("categoryServiceImpl")
     private final CategoryServiceInterface categoryServiceInterface;
     @Qualifier("discountServiceImpl")
@@ -44,7 +45,8 @@ public class ProductServiceImpl implements ProductServiceInterface {
     private final SupplierServiceInterface supplierServiceInterface;
     @Qualifier("variationServiceImpl")
     private final VariationServiceInterface variationServiceInterface;
-    private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;
+    @Qualifier("itemServiceImpl")
+    private final ItemServiceInterface itemServiceInterface;
 
     @Override
     public Page<ProductEntityIndexDto> getAllProducts(Pageable pageable) {
@@ -98,8 +100,11 @@ public class ProductServiceImpl implements ProductServiceInterface {
         });
 
         productEntity.setVariationEntitySet(variationEntitySet);
+        ProductEntity savedProductEntity = productEntityRepository.save(productEntity);
 
-        return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(productEntityRepository.save(productEntity));
+        itemServiceInterface.createAllItemsBasedOnProductEntity(savedProductEntity);
+
+        return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(savedProductEntity);
     }
 
     @Override

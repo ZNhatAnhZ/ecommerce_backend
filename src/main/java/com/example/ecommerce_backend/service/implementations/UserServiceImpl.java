@@ -12,15 +12,14 @@ import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.EmailServiceInterface;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
-import jakarta.transaction.Transactional;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 

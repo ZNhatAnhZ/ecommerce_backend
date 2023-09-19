@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.framework.qual.QualifierArgument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -53,7 +56,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return true;
         } else if (path.equals("/api/products") && request.getMethod().equals("GET")) {
             return true;
-        }  else if (path.equals("/swagger-ui/index.html")) {
+        }  else if (path.equals("/swagger-ui.html")) {
             return true;
         } else {
             return false;
@@ -63,7 +66,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private String checkTokenFormatThenReturnToken(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
-        if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
+        if (headerAuth == null) throw new InvalidCredentialException("missing authorization token");
+
+        if (headerAuth.startsWith("Bearer ")) {
             String jwt = headerAuth.substring(7);
 
             try {
@@ -73,7 +78,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             } catch (JWTDecodeException jwtDecodeException) {
                 throw new InvalidCredentialException("wrong token format");
             }
-
         }
 
         throw new InvalidCredentialException("wrong token format");

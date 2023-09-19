@@ -29,9 +29,6 @@ public class ProductEntity {
     @Column(name = "description")
     private String description;
 
-//    @Column(name = "is_completed")
-//    private int isCompleted;
-
     @OneToMany(mappedBy = "productByProductId")
     private Collection<CartItemEntity> cartItemsById;
 
