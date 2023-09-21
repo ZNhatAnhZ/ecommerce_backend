@@ -1,7 +1,10 @@
 package com.example.ecommerce_backend.service.interfaces;
 
+import com.example.ecommerce_backend.model.ItemEntity;
 import com.example.ecommerce_backend.model.ProductEntity;
 
+import java.util.List;
+
 public interface ItemServiceInterface {
-    void createAllItemsBasedOnProductEntity(ProductEntity productEntity);
+    List<ItemEntity> createAllItemsBasedOnProductEntity(ProductEntity productEntity);
 }

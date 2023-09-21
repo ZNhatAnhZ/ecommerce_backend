@@ -1,14 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
-import com.example.ecommerce_backend.model.ProductEntity;
+import com.example.ecommerce_backend.dto.ProductEntity.*;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductServiceInterface productServiceInterface;
     @PostMapping
-    public ResponseEntity<ProductEntityIndexDto> create(@RequestBody ProductEntityCreateDto productEntityCreateDto) {
+    public ResponseEntity<ProductEntityAfterCreatedDto> create(@RequestBody ProductEntityCreateDto productEntityCreateDto) {
         return ResponseEntity.ok(productServiceInterface.createProduct(productEntityCreateDto));
     }
 

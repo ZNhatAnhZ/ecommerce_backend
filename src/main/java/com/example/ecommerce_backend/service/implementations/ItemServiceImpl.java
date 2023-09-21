@@ -23,13 +23,14 @@ import java.util.*;
 public class ItemServiceImpl implements ItemServiceInterface {
     private final ItemEntityRepository itemEntityRepository;
     @Override
-    public void createAllItemsBasedOnProductEntity(ProductEntity productEntity) {
+    public List<ItemEntity> createAllItemsBasedOnProductEntity(ProductEntity productEntity) {
+        List<ItemEntity> itemEntityList = new ArrayList<>();
         productEntity.getVariationEntitySet()
                 .stream()
                 .filter(variationEntity -> variationEntity.getParentVariationEntity() == null)
                 .forEach(variationEntity -> {
                     List<Set<VariationEntity>> allCombinationForCurrentVariationEntity = getAllCombinationsOfCurrentVariationEntity(variationEntity);
-                    allCombinationForCurrentVariationEntity.forEach((combinationOfVariationEntity) -> {
+                    allCombinationForCurrentVariationEntity.forEach(combinationOfVariationEntity -> {
                         ItemEntity newItemEntity = ItemEntity.builder()
                                 .isDisabled(true)
                                 .sku(UUID.randomUUID().toString())
@@ -37,9 +38,11 @@ public class ItemServiceImpl implements ItemServiceInterface {
                                 .variationEntityList(combinationOfVariationEntity)
                                 .build();
 
-                        itemEntityRepository.save(newItemEntity);
+                        itemEntityList.add(itemEntityRepository.save(newItemEntity));
                     });
                 });
+
+        return itemEntityList;
     }
 
     private List<Set<VariationEntity>> getAllCombinationsOfCurrentVariationEntity(VariationEntity variationEntity) {

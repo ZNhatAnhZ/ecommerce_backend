@@ -5,7 +5,6 @@ import com.example.ecommerce_backend.dto.ProductCategoryEntity.CategoryEntityUpd
 import com.example.ecommerce_backend.model.ProductCategoryEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryServiceInterface {
     List<ProductCategoryEntity> getAllCategories();

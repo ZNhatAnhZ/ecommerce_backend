@@ -1,10 +1,10 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityCreateDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityDetailDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
+import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityAfterCreatedDto;
+import com.example.ecommerce_backend.dto.ProductEntity.*;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
+import com.example.ecommerce_backend.mapper.ItemEntity.ItemEntityAfterCreatedDtoMapper;
+import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityAfterCreatedDtoMapper;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityDetailDtoMapper;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityIndexDtoMapper;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityUpdateDtoMapper;
@@ -36,6 +36,8 @@ public class ProductServiceImpl implements ProductServiceInterface {
     private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;
     private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
     private final ProductEntityUpdateDtoMapper productEntityUpdateDtoMapper;
+    private final ProductEntityAfterCreatedDtoMapper productEntityAfterCreatedDtoMapper;
+    private final ItemEntityAfterCreatedDtoMapper itemEntityAfterCreatedDtoMapper;
     private final VariationEntityCreateDtoMapper variationEntityCreateDtoMapper;
     @Qualifier("categoryServiceImpl")
     private final CategoryServiceInterface categoryServiceInterface;
@@ -81,7 +83,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
     }
 
     @Override
-    public ProductEntityIndexDto createProduct(ProductEntityCreateDto productEntityCreateDto) {
+    public ProductEntityAfterCreatedDto createProduct(ProductEntityCreateDto productEntityCreateDto) {
         ProductCategoryEntity productCategoryEntity = categoryServiceInterface.getCategoryById(productEntityCreateDto.getCategoryId());
         SupplierEntity supplierEntity = supplierServiceInterface.getSupplierById(productEntityCreateDto.getSupplierId());
         DiscountEntity discountEntity = discountServiceInterface.getDiscountById(productEntityCreateDto.getDiscountId());
@@ -95,16 +97,17 @@ public class ProductServiceImpl implements ProductServiceInterface {
                 .supplierEntity(supplierEntity)
                 .build();
 
-        variationEntitySet.forEach(variationEntity -> {
-            updateParentVariationAndProductEntityForAllChildVariations(productEntity, variationEntity, variationEntity.getChildVariationEntityList());
-        });
+        variationEntitySet.forEach(variationEntity -> updateParentVariationAndProductEntityForAllChildVariations(productEntity, variationEntity, variationEntity.getChildVariationEntityList()));
 
         productEntity.setVariationEntitySet(variationEntitySet);
         ProductEntity savedProductEntity = productEntityRepository.save(productEntity);
 
-        itemServiceInterface.createAllItemsBasedOnProductEntity(savedProductEntity);
+        List<ItemEntity> itemEntityList = itemServiceInterface.createAllItemsBasedOnProductEntity(savedProductEntity);
+        List<ItemEntityAfterCreatedDto> itemEntityAfterCreatedDtoList = itemEntityList.stream().map(itemEntityAfterCreatedDtoMapper::toItemEntityAfterCreatedDto).toList();
+        ProductEntityAfterCreatedDto productEntityAfterCreatedDto = productEntityAfterCreatedDtoMapper.toProductEntityAfterCreatedDto(savedProductEntity);
+        productEntityAfterCreatedDto.setItemEntityAfterCreatedDtoList(itemEntityAfterCreatedDtoList);
 
-        return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(savedProductEntity);
+        return productEntityAfterCreatedDto;
     }
 
     @Override
@@ -116,9 +119,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
             DiscountEntity discountEntity = discountServiceInterface.getDiscountById(productEntityUpdateDto.getDiscountId());
             Set<VariationEntity> variationEntitySet = new HashSet<>(variationEntityCreateDtoMapper.VariationEntityCreateDtoListToVariationEntityList(productEntityUpdateDto.getVariationEntityCreateDtoList()));
 
-            variationEntitySet.forEach(variationEntity -> {
-                updateParentVariationAndProductEntityForAllChildVariations(productEntity.get(), variationEntity, variationEntity.getChildVariationEntityList());
-            });
+            variationEntitySet.forEach(variationEntity -> updateParentVariationAndProductEntityForAllChildVariations(productEntity.get(), variationEntity, variationEntity.getChildVariationEntityList()));
             variationServiceInterface.deleteVariationInBatch(productEntity.get().getVariationEntitySet());
 
             ProductEntity updatedProductEntity = productEntityUpdateDtoMapper.ProductEntityUpdateDtoToProductEntity(productEntityUpdateDto);
@@ -147,7 +148,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
             parent.setProductEntity(productEntity);
 
             if (children != null) {
-                children.forEach((child) -> {
+                children.forEach(child -> {
                     child.setProductEntity(productEntity);
                     child.setParentVariationEntity(parent);
                     updateParentVariationAndProductEntityForAllChildVariations(productEntity, child, child.getChildVariationEntityList());
