@@ -73,7 +73,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
                         .requestMatchers("/error/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
+                        .requestMatchers("/v3/api-docs").permitAll()
+                        .requestMatchers("/v3/api-docs.yaml").permitAll()
+                        .requestMatchers("v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

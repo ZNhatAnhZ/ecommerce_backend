@@ -1,5 +1,10 @@
 package com.example.ecommerce_backend.service.implementations;
 
+import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityIndexDto;
+import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityUpdateDto;
+import com.example.ecommerce_backend.exception.ResourceNotFoundException;
+import com.example.ecommerce_backend.mapper.ItemEntity.ItemEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.ItemEntity.ItemEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.ItemEntity;
 import com.example.ecommerce_backend.model.ProductEntity;
 import com.example.ecommerce_backend.model.VariationEntity;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Getter
@@ -22,6 +28,8 @@ import java.util.*;
 @Transactional
 public class ItemServiceImpl implements ItemServiceInterface {
     private final ItemEntityRepository itemEntityRepository;
+    private final ItemEntityIndexDtoMapper itemEntityIndexDtoMapper;
+    private final ItemEntityUpdateDtoMapper itemEntityUpdateDtoMapper;
     @Override
     public List<ItemEntity> createAllItemsBasedOnProductEntity(ProductEntity productEntity) {
         List<ItemEntity> itemEntityList = new ArrayList<>();
@@ -43,6 +51,38 @@ public class ItemServiceImpl implements ItemServiceInterface {
                 });
 
         return itemEntityList;
+    }
+
+    @Override
+    public ItemEntityIndexDto updateItemEntity(ItemEntityUpdateDto itemEntityUpdateDto) {
+        Optional<ItemEntity> itemEntity = itemEntityRepository.findById(itemEntityUpdateDto.getId());
+        if (itemEntity.isPresent()) {
+            itemEntity.get().setStock(itemEntityUpdateDto.getStock());
+            itemEntity.get().setPrice(itemEntityUpdateDto.getPrice());
+            itemEntity.get().setDisabled(itemEntityUpdateDto.isDisabled());
+            return itemEntityIndexDtoMapper.toItemEntityIndexDto(itemEntityRepository.save(itemEntity.get()));
+        } else {
+            throw new ResourceNotFoundException("Could not find item entity with id " + itemEntityUpdateDto.getId());
+        }
+    }
+
+    @Override
+    public List<ItemEntityIndexDto> batchUpdateItemEntity(List<ItemEntityUpdateDto> itemEntityUpdateDtoList) {
+        List<ItemEntity> itemEntityList = itemEntityUpdateDtoList.stream().map(itemEntityUpdateDto -> {
+            Optional<ItemEntity> itemEntity = itemEntityRepository.findById(itemEntityUpdateDto.getId());
+
+            if (itemEntity.isPresent()) {
+                itemEntity.get().setStock(itemEntityUpdateDto.getStock());
+                itemEntity.get().setPrice(itemEntityUpdateDto.getPrice());
+                itemEntity.get().setDisabled(itemEntityUpdateDto.isDisabled());
+
+                return itemEntity.get();
+            } else {
+                throw new ResourceNotFoundException("Could not find item entity with id " + itemEntityUpdateDto.getId());
+            }
+        }).toList();
+
+        return itemEntityRepository.saveAll(itemEntityList).stream().map(itemEntityIndexDtoMapper::toItemEntityIndexDto).toList();
     }
 
     private List<Set<VariationEntity>> getAllCombinationsOfCurrentVariationEntity(VariationEntity variationEntity) {

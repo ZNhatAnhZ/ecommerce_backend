@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ItemEntityCreateDto {
-    private int variationId;
+public class ItemEntityUpdateDto {
+    private int id;
     private String price;
-    private int stock;
-    private int productId;
+    private String stock;
+    private boolean isDisabled;
 }
