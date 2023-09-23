@@ -1,6 +1,5 @@
 package com.example.ecommerce_backend.mapper.VariationEntity;
 
-import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityCreateDto;
 import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityIndexDto;
 import com.example.ecommerce_backend.model.VariationEntity;
 import org.mapstruct.Mapper;
@@ -13,8 +12,8 @@ import java.util.Set;
 public interface VariationEntityIndexDtoMapper {
     @Mapping(source = "variationEntity.childVariationEntityList", target = "childVariationEntityIndexDtoList")
 //    @Mapping(source = "variationEntity.parentVariationEntity", target = "parentVariationEntityIndexDto")
-    VariationEntityIndexDto VariationEntityToVariationEntityIndexDto(VariationEntity variationEntity);
-    VariationEntity VariationEntityIndexDtoToVariationEntity(VariationEntityIndexDto variationEntityIndexDto);
-    List<VariationEntityIndexDto> VariationEntityListToVariationEntityIndexDtoList(List<VariationEntity> variationEntityList);
-    Set<VariationEntityIndexDto> VariationEntitySetToVariationEntityIndexDtoSet(Set<VariationEntity> variationEntitySet);
+    VariationEntityIndexDto ToVariationEntityIndexDto(VariationEntity variationEntity);
+    VariationEntity ToVariationEntity(VariationEntityIndexDto variationEntityIndexDto);
+    List<VariationEntityIndexDto> ToVariationEntityIndexDtoList(List<VariationEntity> variationEntityList);
+    Set<VariationEntityIndexDto> ToVariationEntityIndexDtoSet(Set<VariationEntity> variationEntitySet);
 }

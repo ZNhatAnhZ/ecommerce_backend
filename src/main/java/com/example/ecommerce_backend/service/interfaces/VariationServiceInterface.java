@@ -2,6 +2,7 @@ package com.example.ecommerce_backend.service.interfaces;
 
 import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityCreateDto;
 import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityIndexDto;
+import com.example.ecommerce_backend.dto.VariationEntity.VariationEntityUpdateInfoDto;
 import com.example.ecommerce_backend.model.VariationEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,4 +17,5 @@ public interface VariationServiceInterface {
     void deleteVariationInBatch(Set<VariationEntity> variationEntitySet);
     VariationEntityIndexDto findVariationById(int id);
     Page<VariationEntityIndexDto> findByCondition(Pageable pageable);
+    VariationEntityIndexDto updateVariation(VariationEntityUpdateInfoDto variationEntityUpdateInfoDto);
 }
