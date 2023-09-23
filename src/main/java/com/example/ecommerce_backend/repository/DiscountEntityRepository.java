@@ -1,6 +1,5 @@
 package com.example.ecommerce_backend.repository;
 
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityIndexDto;
 import com.example.ecommerce_backend.model.DiscountEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

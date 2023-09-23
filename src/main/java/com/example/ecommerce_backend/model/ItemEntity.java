@@ -3,7 +3,6 @@ package com.example.ecommerce_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

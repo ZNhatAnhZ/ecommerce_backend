@@ -8,7 +8,6 @@ import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,11 +55,4 @@ public class UserController {
         userServiceInterface.updateUser(userEntityUpdateDto);
         return ResponseEntity.ok().build();
     }
-
-//    @PostMapping("/forgotPassword")
-//    public ResponseEntity<Void> forgotPassword(@RequestBody UserEntityForgotPassword userEntityForgotPassword) {
-//        UserEntity userEntity = userServiceInterface.registerUser(userEntityCreateDto);
-//        UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.UserEntityToUserEntityIndexDto(userEntity);
-//        return ResponseEntity.ok().build();
-//    }
 }

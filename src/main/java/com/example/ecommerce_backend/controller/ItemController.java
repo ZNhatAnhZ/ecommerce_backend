@@ -2,8 +2,6 @@ package com.example.ecommerce_backend.controller;
 
 import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityIndexDto;
 import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityUpdateDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityIndexDto;
-import com.example.ecommerce_backend.dto.ProductEntity.ProductEntityUpdateDto;
 import com.example.ecommerce_backend.service.interfaces.ItemServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
     public Page<ProductEntityIndexDto> getAllProducts(Pageable pageable) {
         Page<ProductEntity> productEntityPage = productEntityRepository.findAll(pageable);
 
-        return productEntityPage.map(productEntityIndexDtoMapper::ProductEntityToProductEntityIndexDto);
+        return productEntityPage.map(productEntityIndexDtoMapper::toProductEntityIndexDto);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
     public Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable) {
         Page<ProductEntity> productEntityPage = productEntityRepository.findAllByNameContainsIgnoreCase(name, pageable);
 
-        return productEntityPage.map(productEntityIndexDtoMapper::ProductEntityToProductEntityIndexDto);
+        return productEntityPage.map(productEntityIndexDtoMapper::toProductEntityIndexDto);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
             updatedProductEntity.setDiscountEntity(discountEntity);
             updatedProductEntity.setVariationEntitySet(variationEntitySet);
 
-            return productEntityIndexDtoMapper.ProductEntityToProductEntityIndexDto(productEntityRepository.save(updatedProductEntity));
+            return productEntityIndexDtoMapper.toProductEntityIndexDto(productEntityRepository.save(updatedProductEntity));
         } else {
             throw new ResourceNotFoundException("Could not find product with id " + productEntityUpdateDto.getId());
         }

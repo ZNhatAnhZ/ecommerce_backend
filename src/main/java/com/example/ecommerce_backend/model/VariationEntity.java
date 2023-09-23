@@ -45,7 +45,7 @@ public class VariationEntity {
 
     public static void updateParentVariationAndProductEntityForAllChildVariations(ProductEntity productEntity, VariationEntity parent, List<VariationEntity> children) {
         if (children != null) {
-            children.forEach((child) -> {
+            children.forEach(child -> {
                 child.setProductEntity(productEntity);
                 child.setParentVariationEntity(parent);
                 updateParentVariationAndProductEntityForAllChildVariations(productEntity, child, child.getChildVariationEntityList());

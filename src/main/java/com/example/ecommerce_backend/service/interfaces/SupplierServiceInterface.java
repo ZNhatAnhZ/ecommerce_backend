@@ -5,7 +5,6 @@ import com.example.ecommerce_backend.dto.SupplierEntity.SupplierEntityUpdateDto;
 import com.example.ecommerce_backend.model.SupplierEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SupplierServiceInterface {
     List<SupplierEntity> getAllSuppliers();

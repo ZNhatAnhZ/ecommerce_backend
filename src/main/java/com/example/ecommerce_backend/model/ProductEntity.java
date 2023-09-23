@@ -2,11 +2,9 @@ package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,9 +26,6 @@ public class ProductEntity {
 
     @Column(name = "description")
     private String description;
-
-    @OneToMany(mappedBy = "productByProductId")
-    private Collection<CartItemEntity> cartItemsById;
 
     @OneToMany(mappedBy = "productEntity")
     private Collection<OrderItemEntity> orderItemsById;

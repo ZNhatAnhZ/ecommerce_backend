@@ -1,6 +1,5 @@
 package com.example.ecommerce_backend.dto.SupplierEntity;
 
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 

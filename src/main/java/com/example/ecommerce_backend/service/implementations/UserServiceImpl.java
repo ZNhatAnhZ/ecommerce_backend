@@ -40,18 +40,19 @@ public class UserServiceImpl implements UserServiceInterface {
 
     @Override
     public UserEntity registerUser(UserEntityCreateDto userDto) {
-        if (!userEntityRepository.existsByUsername(userDto.getUsername())) {
-            UserEntity userEntity = userEntityCreateDtoMapper.UserEntityCreateDtoToUserEntity(userDto);
-            emailServiceInterface.sendWelcomeEmail(userEntity);
-
-            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-            userEntity = userEntityRepository.save(userEntity);
-            return userEntity;
-        } else {
+        if (Boolean.TRUE.equals(userEntityRepository.existsByUsername(userDto.getUsername()))) {
             throw new ResourceDuplicateException("username already exist");
         }
+
+        UserEntity userEntity = userEntityCreateDtoMapper.UserEntityCreateDtoToUserEntity(userDto);
+        emailServiceInterface.sendWelcomeEmail(userEntity);
+
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity = userEntityRepository.save(userEntity);
+        return userEntity;
     }
 
+    @Override
     public void deleteUserById(int id) {
         if (userEntityRepository.existsById(id)) {
             userEntityRepository.deleteById(id);
@@ -60,6 +61,7 @@ public class UserServiceImpl implements UserServiceInterface {
         }
     }
 
+    @Override
     public UserEntity findUserById(int id) {
         Optional<UserEntity> userEntity = userEntityRepository.findById(id);
         if (userEntity.isPresent()) {
@@ -69,10 +71,12 @@ public class UserServiceImpl implements UserServiceInterface {
         }
     }
 
+    @Override
     public Page<UserEntityIndexDto> findByCondition(Pageable pageable) {
         return userEntityRepository.findAll(pageable).map(userEntityIndexDtoMapper::UserEntityToUserEntityIndexDto);
     }
 
+    @Override
     public UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto) {
         Optional<UserEntity> userEntity = userEntityRepository.findById(userEntityUpdateDto.getId());
         if (userEntity.isPresent()) {

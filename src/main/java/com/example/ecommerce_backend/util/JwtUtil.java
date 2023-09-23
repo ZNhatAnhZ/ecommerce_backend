@@ -38,7 +38,7 @@ public class JwtUtil {
     }
 
     public boolean validateJwtToken(String authToken) {
-        if (!isTokenExpired(authToken)) {
+        if (Boolean.FALSE.equals(isTokenExpired(authToken))) {
             try {
                 JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(authToken);
                 return true;

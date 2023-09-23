@@ -4,7 +4,6 @@ import com.example.ecommerce_backend.dto.ItemEntity.ItemEntityUpdateDto;
 import com.example.ecommerce_backend.mapper.ProductEntity.ProductEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.ItemEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {ProductEntityIndexDtoMapper.class})
 public interface ItemEntityUpdateDtoMapper {

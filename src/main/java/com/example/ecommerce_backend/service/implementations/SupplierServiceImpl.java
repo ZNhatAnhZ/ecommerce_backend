@@ -42,12 +42,12 @@ public class SupplierServiceImpl implements SupplierServiceInterface {
     }
 
     public SupplierEntity createSupplier(SupplierEntityCreateDto supplierEntityCreateDto) {
-        if (supplierEntityRepository.existsByName(supplierEntityCreateDto.getName())) {
+        if (Boolean.TRUE.equals(supplierEntityRepository.existsByName(supplierEntityCreateDto.getName()))) {
             throw new ResourceDuplicateException("Supplier with this name already exists");
-        } else {
-            SupplierEntity supplierEntity = supplierEntityCreateDtoMapper.SupplierEntityCreateDtoToSupplierEntity(supplierEntityCreateDto);
-            return supplierEntityRepository.save(supplierEntity);
         }
+
+        SupplierEntity supplierEntity = supplierEntityCreateDtoMapper.SupplierEntityCreateDtoToSupplierEntity(supplierEntityCreateDto);
+        return supplierEntityRepository.save(supplierEntity);
     }
 
     public SupplierEntity updateSupplier(SupplierEntityUpdateDto supplierEntityUpdateDto) {

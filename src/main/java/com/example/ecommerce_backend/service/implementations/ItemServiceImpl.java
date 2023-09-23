@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Getter
@@ -85,11 +84,20 @@ public class ItemServiceImpl implements ItemServiceInterface {
         return itemEntityRepository.saveAll(itemEntityList).stream().map(itemEntityIndexDtoMapper::toItemEntityIndexDto).toList();
     }
 
+    public ItemEntity findItemEntityById(int id) {
+        Optional<ItemEntity> itemEntity = itemEntityRepository.findById(id);
+        if (itemEntity.isPresent()) {
+            return itemEntity.get();
+        } else {
+            throw new ResourceNotFoundException("Could not find item entity with id " + id);
+        }
+    }
+
     private List<Set<VariationEntity>> getAllCombinationsOfCurrentVariationEntity(VariationEntity variationEntity) {
         List<Set<VariationEntity>> listOfCombination = new ArrayList<>();
 
         if (variationEntity.getChildVariationEntityList() != null) {
-            variationEntity.getChildVariationEntityList().forEach((childVariationEntity) -> {
+            variationEntity.getChildVariationEntityList().forEach(childVariationEntity -> {
                 List<Set<VariationEntity>> variationEntitiesFromChild = getAllCombinationsOfCurrentVariationEntity(childVariationEntity);
                 listOfCombination.addAll(variationEntitiesFromChild);
             });
@@ -98,9 +106,7 @@ public class ItemServiceImpl implements ItemServiceInterface {
             listOfCombination.add(defaultSet);
         }
 
-        listOfCombination.forEach((setOfVariationEntity) -> {
-            setOfVariationEntity.add(variationEntity);
-        });
+        listOfCombination.forEach(setOfVariationEntity -> setOfVariationEntity.add(variationEntity));
 
         return listOfCombination;
     }

@@ -2,9 +2,7 @@ package com.example.ecommerce_backend.configuration;
 
 import com.example.ecommerce_backend.filter.JwtAuthorizationFilter;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,9 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity()

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -43,4 +44,7 @@ public class UserEntity {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<CartItemEntity> cartItemEntityList;
 }

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.Collection;
-
 @Entity
 @Table(name = "supplier", schema = "ecommerce")
 @Getter

@@ -11,4 +11,5 @@ public interface ItemServiceInterface {
     List<ItemEntity> createAllItemsBasedOnProductEntity(ProductEntity productEntity);
     ItemEntityIndexDto updateItemEntity(ItemEntityUpdateDto itemEntityUpdateDto);
     List<ItemEntityIndexDto> batchUpdateItemEntity(List<ItemEntityUpdateDto> itemEntityUpdateDtoList);
+    ItemEntity findItemEntityById(int id);
 }

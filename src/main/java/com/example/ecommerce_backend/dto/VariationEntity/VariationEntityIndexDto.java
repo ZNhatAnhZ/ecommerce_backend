@@ -11,6 +11,5 @@ public class VariationEntityIndexDto {
     private int id;
     private String name;
     private String value;
-//    private VariationEntityIndexDto parentVariationEntityIndexDto;
     private List<VariationEntityIndexDto> childVariationEntityIndexDtoList;
 }
