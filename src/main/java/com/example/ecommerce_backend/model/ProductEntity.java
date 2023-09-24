@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -26,9 +25,6 @@ public class ProductEntity {
 
     @Column(name = "description")
     private String description;
-
-    @OneToMany(mappedBy = "productEntity")
-    private Collection<OrderItemEntity> orderItemsById;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id")

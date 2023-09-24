@@ -1,20 +1,18 @@
 package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "order", schema = "ecommerce")
+@Table(name = "`order`", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -33,20 +31,23 @@ public class OrderEntity {
     @Column(name = "shipping")
     private String shipping;
 
+    @Column(name = "paypal_order_id")
+    private String paypalOrderId;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity userEntity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id", referencedColumnName = "id")
     private DiscountEntity discountEntity;
 
-    @OneToMany(mappedBy = "orderEntity")
+    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
     private List<OrderItemEntity> orderItemEntityList;
 }
