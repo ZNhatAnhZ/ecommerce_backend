@@ -7,6 +7,7 @@ import com.example.ecommerce_backend.dto.OrderEntity.UserPayOrderDto;
 import com.example.ecommerce_backend.dto.PaypalDTO.*;
 import com.example.ecommerce_backend.exception.InvalidOrderException;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
+import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.model.ItemEntity;
 import com.example.ecommerce_backend.model.OrderEntity;
 import com.example.ecommerce_backend.model.OrderItemEntity;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -122,6 +124,23 @@ public class OrderServiceImpl {
 
     public OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto) {
         AccessTokenResponseDto accessTokenResponseDto = paypalClientInterface.sendGetAccessToken().bodyToMono(AccessTokenResponseDto.class).block();
-        return paypalClientInterface.sendCaptureOrder(accessTokenResponseDto, userPayOrderDto).bodyToMono(OrderResponseDto.class).block();
+        OrderResponseDto orderResponseDto = paypalClientInterface.sendCaptureOrder(accessTokenResponseDto, userPayOrderDto).bodyToMono(OrderResponseDto.class).block();
+
+        if (orderResponseDto == null || orderResponseDto.getId() == null || orderResponseDto.getStatus() == null) {
+            throw new InvalidOrderException("Order capture response from paypal API is invalid");
+        }
+
+        Optional<OrderEntity> orderEntity = orderEntityRepository.findByPaypalOrderId(orderResponseDto.getId());
+
+        if (orderEntity.isEmpty()) {
+            throw new ResourceNotFoundException("Can not find order with paypal id: " + orderResponseDto.getId());
+        }
+
+        orderEntity.get().setStatus(orderResponseDto.getStatus());
+        orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+
+        orderEntityRepository.save(orderEntity.get());
+
+        return orderResponseDto;
     }
 }
