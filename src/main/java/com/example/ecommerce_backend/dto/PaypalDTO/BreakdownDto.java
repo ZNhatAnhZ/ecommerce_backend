@@ -10,12 +10,8 @@ import java.io.Serializable;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
-public class ItemDto implements Serializable {
-    private String name;
-    private String quantity;
-    private String description;
-    private String sku;
-    private String category;
-    @JsonProperty("unit_amount")
-    private AmountDto unitAmount;
+public class BreakdownDto implements Serializable {
+    @JsonProperty("item_total")
+    ItemTotalDto itemTotal;
+    DiscountDto discount;
 }

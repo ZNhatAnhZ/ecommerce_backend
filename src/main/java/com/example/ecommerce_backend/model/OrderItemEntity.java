@@ -1,10 +1,7 @@
 package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -14,20 +11,18 @@ import java.sql.Timestamp;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class OrderItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
 
-    @Column(name = "sku")
-    private String sku;
-
     @Column(name = "quantity")
-    private Integer quantity;
+    private int quantity;
 
     @Column(name = "price")
-    private String price;
+    private String totalPrice;
 
     @Column(name = "created_at")
     private Timestamp createdAt;
@@ -35,15 +30,11 @@ public class OrderItemEntity {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private OrderEntity orderEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity productEntity;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", referencedColumnName = "id")
     private ItemEntity itemEntity;
 }

@@ -6,15 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @AllArgsConstructor
-public class AmountDto implements Serializable {
+public class DiscountDto {
     @JsonProperty("currency_code")
     private String currencyCode;
     private String value;
-    private BreakdownDto breakdown;
 }
