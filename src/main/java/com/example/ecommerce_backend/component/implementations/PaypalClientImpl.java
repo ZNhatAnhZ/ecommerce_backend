@@ -6,7 +6,7 @@ import com.example.ecommerce_backend.constant.PaypalEndpoints;
 import com.example.ecommerce_backend.dto.OrderEntity.UserPayOrderDto;
 import com.example.ecommerce_backend.dto.PaypalDTO.AccessTokenResponseDto;
 import com.example.ecommerce_backend.dto.PaypalDTO.OrderDto;
-import com.example.ecommerce_backend.dto.PaypalDTO.OrderResponseDto;
+import com.example.ecommerce_backend.exception.UnavailablePaymentException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class PaypalClientImpl implements PaypalClientInterface {
                     .bodyValue(requestBody)
                     .retrieve();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new UnavailablePaymentException("Paypal API url error");
         }
     }
 
@@ -59,7 +59,7 @@ public class PaypalClientImpl implements PaypalClientInterface {
         try {
             log.error(new ObjectMapper().writeValueAsString(orderDto));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new UnavailablePaymentException("Error when parsing order");
         }
 
         try {
@@ -71,7 +71,7 @@ public class PaypalClientImpl implements PaypalClientInterface {
                     .bodyValue(orderDto)
                     .retrieve();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new UnavailablePaymentException("Paypal API url error");
         }
     }
 
@@ -85,7 +85,7 @@ public class PaypalClientImpl implements PaypalClientInterface {
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve();
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new UnavailablePaymentException("Paypal API url error");
         }
     }
 }
