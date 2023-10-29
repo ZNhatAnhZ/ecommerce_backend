@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@org.hibernate.annotations.Cache(region = "supplier", usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(region = "supplier", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SupplierEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

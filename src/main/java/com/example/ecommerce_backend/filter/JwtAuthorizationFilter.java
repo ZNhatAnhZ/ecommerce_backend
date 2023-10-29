@@ -54,7 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return true;
         } else if (path.equals("/api/users") && request.getMethod().equals("POST")) {
             return true;
-        } else if (path.equals("/api/products") && request.getMethod().equals("GET")) {
+        } else if (path.contains("/api/products") && request.getMethod().equals("GET")) {
             return true;
         } else if (path.split("/")[1].equals("swagger-ui") || path.equals("/swagger-ui.html")) {
             return true;

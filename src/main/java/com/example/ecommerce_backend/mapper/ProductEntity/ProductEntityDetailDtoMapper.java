@@ -11,8 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",
-        uses = {VariationEntityCreateDtoMapper.class,
-                VariationEntityIndexDtoMapper.class, CategoryEntityCreateDtoMapper.class,
+        uses = {VariationEntityIndexDtoMapper.class, CategoryEntityCreateDtoMapper.class,
                 SupplierEntityCreateDtoMapper.class, DiscountEntityIndexDtoMapper.class})
 public interface ProductEntityDetailDtoMapper {
     ProductEntity ProductEntityDetailDtoToProductEntity(ProductEntityDetailDto productEntityDetailDto);
