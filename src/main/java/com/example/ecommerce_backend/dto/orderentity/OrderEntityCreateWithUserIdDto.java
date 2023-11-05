@@ -1,4 +1,4 @@
-package com.example.ecommerce_backend.dto.OrderEntity;
+package com.example.ecommerce_backend.dto.orderentity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.example.ecommerce_backend.model.OrderItemEntity}
@@ -18,10 +19,10 @@ import java.io.Serializable;
 @Setter
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderItemCreateDto implements Serializable {
-    private int userId;
-    private Integer cartItemEntityId;
-    private int quantity;
-    private int itemEntityId;
-    private String itemEntitySku;
+public class OrderEntityCreateWithUserIdDto implements Serializable {
+
+	private int userId;
+
+	private List<OrderItemEntityCreateDto> itemList;
+
 }

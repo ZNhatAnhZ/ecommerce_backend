@@ -14,40 +14,45 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class OrderEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @Column(name = "sub_total")
-    private String subTotal;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "grand_total")
-    private String grandTotal;
+	@Column(name = "sub_total")
+	private String subTotal;
 
-    @Column(name = "status")
-    private String status;
+	@Column(name = "grand_total")
+	private String grandTotal;
 
-    @Column(name = "shipping")
-    private String shipping;
+	@Column(name = "status")
+	private String status;
 
-    @Column(name = "paypal_order_id")
-    private String paypalOrderId;
+	@Column(name = "shipping")
+	private String shipping;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+	@Column(name = "paypal_order_id")
+	private String paypalOrderId;
 
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+	@Column(name = "created_at")
+	private Timestamp createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserEntity userEntity;
+	@Column(name = "updated_at")
+	private Timestamp updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "discount_id", referencedColumnName = "id")
-    private DiscountEntity discountEntity;
+	@Column(name = "email")
+	private String email;
 
-    @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
-    private List<OrderItemEntity> orderItemEntityList;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private UserEntity userEntity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "discount_id", referencedColumnName = "id")
+	private DiscountEntity discountEntity;
+
+	@OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
+	private List<OrderItemEntity> orderItemEntityList;
+
 }

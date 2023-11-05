@@ -2,9 +2,11 @@ package com.example.ecommerce_backend.service.implementations;
 
 import com.example.ecommerce_backend.component.interfaces.PaypalClientInterface;
 import com.example.ecommerce_backend.constant.PaypalOrderIntent;
-import com.example.ecommerce_backend.dto.OrderEntity.OrderItemCreateDto;
-import com.example.ecommerce_backend.dto.OrderEntity.UserPayOrderDto;
-import com.example.ecommerce_backend.dto.PaypalDTO.*;
+import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithEmailDto;
+import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithUserIdDto;
+import com.example.ecommerce_backend.dto.orderentity.OrderItemEntityCreateDto;
+import com.example.ecommerce_backend.dto.orderentity.UserPayOrderDto;
+import com.example.ecommerce_backend.dto.paypaldto.*;
 import com.example.ecommerce_backend.exception.InvalidOrderException;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
@@ -37,130 +39,195 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional
 public class OrderServiceImpl implements OrderServiceInterface {
-    private final OrderEntityRepository orderEntityRepository;
-    private final PaypalClientInterface paypalClientInterface;
-    private final ItemServiceInterface itemServiceInterface;
-    private final CartServiceInterface cartServiceInterface;
-    private final UserServiceInterface userServiceInterface;
 
-    @Override
-    public OrderResponseDto createOrder(List<OrderItemCreateDto> orderItemCreateDtoList) {
-        if (orderItemCreateDtoList.isEmpty()) {
-            throw new InvalidOrderException("Order item list is empty");
-        }
+	private final OrderEntityRepository orderEntityRepository;
 
-        AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
-        AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
+	private final PaypalClientInterface paypalClientInterface;
 
-        OrderEntity savedOrderEntity = buildOrderAndSaveToLocalDB(orderItemCreateDtoList, grandTotal, discountPrice);
-        OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
-        OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
+	private final ItemServiceInterface itemServiceInterface;
 
-        savedOrderEntity.setStatus(orderResponseDto.getStatus());
-        savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
-        orderEntityRepository.save(savedOrderEntity);
+	private final CartServiceInterface cartServiceInterface;
 
-        return orderResponseDto;
-    }
+	private final UserServiceInterface userServiceInterface;
 
-    @Override
-    public OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto) {
-        OrderResponseDto orderResponseDto = sendCaptureOrderRequestToPaypal(userPayOrderDto);
+	// @Override
+	public OrderResponseDto createOrderForUser(OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto) {
+		AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
+		AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
 
-        Optional<OrderEntity> orderEntity = orderEntityRepository.findByPaypalOrderId(orderResponseDto.getId());
-        if (orderEntity.isEmpty()) {
-            throw new ResourceNotFoundException("Can not find order with paypal id: " + orderResponseDto.getId());
-        }
+		OrderEntity savedOrderEntity = buildOrderWithUserIdAndSaveToLocalDB(orderEntityCreateWithUserIdDto, grandTotal,
+				discountPrice);
+		OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
+		OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
 
-        orderEntity.get().setStatus(orderResponseDto.getStatus());
-        orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-        orderEntityRepository.save(orderEntity.get());
+		savedOrderEntity.setStatus(orderResponseDto.getStatus());
+		savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
+		orderEntityRepository.save(savedOrderEntity);
 
-        return orderResponseDto;
-    }
+		return orderResponseDto;
+	}
 
-    private OrderEntity buildOrderAndSaveToLocalDB(List<OrderItemCreateDto> orderItemCreateDtoList, AtomicReference<Double> grandTotal, AtomicReference<Double> discountPrice) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        UserEntity userEntity = userServiceInterface.findUserById(orderItemCreateDtoList.get(0).getUserId());
-        OrderEntity newOrderEntity = OrderEntity.builder()
-                .userEntity(userEntity)
-                .status("CREATED")
-                .createdAt(timestamp)
-                .build();
+	// @Override
+	public OrderResponseDto createOrderForEmail(OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto) {
+		AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
+		AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
 
-        List<OrderItemEntity> orderItemEntityList = orderItemCreateDtoList.stream().map((orderItemCreateDto -> {
-            ItemEntity itemEntity = itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
+		OrderEntity savedOrderEntity = buildOrderWithEmailAndSaveToLocalDB(orderEntityCreateWithEmailDto, grandTotal,
+				discountPrice);
+		OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
+		OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
 
-            if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
-                throw new InvalidQuantityException("The requested item stock is smaller than the requested quantity");
-            }
+		savedOrderEntity.setStatus(orderResponseDto.getStatus());
+		savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
+		orderEntityRepository.save(savedOrderEntity);
 
-            if (orderItemCreateDto.getCartItemEntityId() != null) {
-                cartServiceInterface.delete(orderItemCreateDto.getCartItemEntityId());
-            }
+		return orderResponseDto;
+	}
 
-            double discountPercent = Double.parseDouble(itemEntity.getProductEntity().getDiscountEntity().getDiscountPercent()) / 100;
-            double totalPrice = (Integer.parseInt(itemEntity.getPrice()) * orderItemCreateDto.getQuantity()) * (1 - discountPercent);
-            grandTotal.updateAndGet(v -> v + totalPrice);
-            discountPrice.updateAndGet(v -> v + ((Integer.parseInt(itemEntity.getPrice()) * orderItemCreateDto.getQuantity()) * discountPercent));
+	@Override
+	public OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto) {
+		OrderResponseDto orderResponseDto = sendCaptureOrderRequestToPaypal(userPayOrderDto);
 
-            return OrderItemEntity.builder()
-                    .orderEntity(newOrderEntity)
-                    .itemEntity(itemEntity)
-                    .totalPrice(String.valueOf(totalPrice))
-                    .quantity(orderItemCreateDto.getQuantity())
-                    .createdAt(timestamp)
-                    .build();
-        })).collect(Collectors.toList());
+		Optional<OrderEntity> orderEntity = orderEntityRepository.findByPaypalOrderId(orderResponseDto.getId());
+		if (orderEntity.isEmpty()) {
+			throw new ResourceNotFoundException("Can not find order with paypal id: " + orderResponseDto.getId());
+		}
 
-        newOrderEntity.setGrandTotal(String.valueOf(grandTotal.get()));
-        newOrderEntity.setOrderItemEntityList(orderItemEntityList);
-        return orderEntityRepository.save(newOrderEntity);
-    }
+		orderEntity.get().setStatus(orderResponseDto.getStatus());
+		orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		orderEntityRepository.save(orderEntity.get());
 
-    private OrderDto buildOrderDto(OrderEntity savedOrderEntity, AtomicReference<Double> discountPrice) {
-        List<ItemDto> itemDtoList = savedOrderEntity.getOrderItemEntityList().stream().map(orderItemEntity -> ItemDto.builder()
-                .name(orderItemEntity.getItemEntity().getProductEntity().getName())
-                .sku(orderItemEntity.getItemEntity().getSku())
-                .quantity(String.valueOf(orderItemEntity.getQuantity()))
-                .unitAmount(new AmountDto("USD", String.valueOf(Double.parseDouble(orderItemEntity.getItemEntity().getPrice())), null))
-                .build()).toList();
+		return orderResponseDto;
+	}
 
-        return OrderDto.builder()
-                .intent(PaypalOrderIntent.CAPTURE)
-                .purchaseUnits(List.of(PurchaseUnitDto.builder()
-                        .amount(AmountDto.builder()
-                                .value(savedOrderEntity.getGrandTotal())
-                                .currencyCode("USD")
-                                .breakdown(BreakdownDto.builder()
-                                        .discount(new DiscountDto("USD", String.valueOf(discountPrice.get())))
-                                        .itemTotal(new ItemTotalDto("USD", String.valueOf(discountPrice.get() + Double.parseDouble(savedOrderEntity.getGrandTotal()))))
-                                        .build())
-                                .build())
-                        .items(itemDtoList)
-                        .build()))
-                .build();
-    }
+	private OrderEntity buildOrderWithEmailAndSaveToLocalDB(OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto,
+			AtomicReference<Double> grandTotal, AtomicReference<Double> discountPrice) {
+		OrderEntity newOrderEntity = OrderEntity.builder()
+			.email(orderEntityCreateWithEmailDto.getEmail())
+			.status("CREATED")
+			.createdAt(new Timestamp(System.currentTimeMillis()))
+			.build();
 
-    private OrderResponseDto sendCreateOrderRequestToPaypal(OrderDto orderRequest) {
-        AccessTokenResponseDto accessTokenResponseDto = paypalClientInterface.sendGetAccessToken().bodyToMono(AccessTokenResponseDto.class).block();
-        OrderResponseDto orderResponseDto = paypalClientInterface.sendCreateOrder(accessTokenResponseDto, orderRequest).bodyToMono(OrderResponseDto.class).block();
+		List<OrderItemEntity> orderItemEntityList = buildListOfOrderItemEntity(
+				orderEntityCreateWithEmailDto.getItemList(), grandTotal, discountPrice, newOrderEntity);
 
-        if (orderResponseDto == null || orderResponseDto.getId() == null || orderResponseDto.getStatus() == null) {
-            throw new InvalidOrderException("Order create response from paypal API is invalid");
-        }
+		newOrderEntity.setGrandTotal(String.valueOf(grandTotal.get()));
+		newOrderEntity.setOrderItemEntityList(orderItemEntityList);
+		return orderEntityRepository.save(newOrderEntity);
+	}
 
-        return orderResponseDto;
-    }
+	private OrderEntity buildOrderWithUserIdAndSaveToLocalDB(
+			OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto, AtomicReference<Double> grandTotal,
+			AtomicReference<Double> discountPrice) {
+		UserEntity userEntity = userServiceInterface.findUserById(orderEntityCreateWithUserIdDto.getUserId());
+		OrderEntity newOrderEntity = OrderEntity.builder()
+			.userEntity(userEntity)
+			.email(userEntity.getEmail())
+			.status("CREATED")
+			.createdAt(new Timestamp(System.currentTimeMillis()))
+			.build();
 
-    private OrderResponseDto sendCaptureOrderRequestToPaypal(UserPayOrderDto userPayOrderDto) {
-        AccessTokenResponseDto accessTokenResponseDto = paypalClientInterface.sendGetAccessToken().bodyToMono(AccessTokenResponseDto.class).block();
-        OrderResponseDto orderResponseDto = paypalClientInterface.sendCaptureOrder(accessTokenResponseDto, userPayOrderDto).bodyToMono(OrderResponseDto.class).block();
+		List<OrderItemEntity> orderItemEntityList = buildListOfOrderItemEntity(
+				orderEntityCreateWithUserIdDto.getItemList(), grandTotal, discountPrice, newOrderEntity);
 
-        if (orderResponseDto == null || orderResponseDto.getId() == null || orderResponseDto.getStatus() == null) {
-            throw new InvalidOrderException("Order capture response from paypal API is invalid");
-        }
+		newOrderEntity.setGrandTotal(String.valueOf(grandTotal.get()));
+		newOrderEntity.setOrderItemEntityList(orderItemEntityList);
+		return orderEntityRepository.save(newOrderEntity);
+	}
 
-        return orderResponseDto;
-    }
+	private List<OrderItemEntity> buildListOfOrderItemEntity(
+			List<OrderItemEntityCreateDto> orderItemEntityCreateDtoList, AtomicReference<Double> grandTotal,
+			AtomicReference<Double> discountPrice, OrderEntity newOrderEntity) {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+		return orderItemEntityCreateDtoList.stream().map((orderItemCreateDto -> {
+			ItemEntity itemEntity = itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
+
+			if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
+				throw new InvalidQuantityException("The requested item stock is smaller than the requested quantity");
+			}
+
+			if (orderItemCreateDto.getCartItemId() != null) {
+				cartServiceInterface.delete(orderItemCreateDto.getCartItemId());
+			}
+
+			double discountPercent = Double
+				.parseDouble(itemEntity.getProductEntity().getDiscountEntity().getDiscountPercent()) / 100;
+			double totalPrice = (Integer.parseInt(itemEntity.getPrice()) * orderItemCreateDto.getQuantity())
+					* (1 - discountPercent);
+			grandTotal.updateAndGet(v -> v + totalPrice);
+			discountPrice.updateAndGet(v -> v
+					+ ((Integer.parseInt(itemEntity.getPrice()) * orderItemCreateDto.getQuantity()) * discountPercent));
+
+			return OrderItemEntity.builder()
+				.orderEntity(newOrderEntity)
+				.itemEntity(itemEntity)
+				.totalPrice(String.valueOf(totalPrice))
+				.quantity(orderItemCreateDto.getQuantity())
+				.createdAt(timestamp)
+				.build();
+		})).collect(Collectors.toList());
+	}
+
+	private OrderDto buildOrderDto(OrderEntity savedOrderEntity, AtomicReference<Double> discountPrice) {
+		List<ItemDto> itemDtoList = savedOrderEntity.getOrderItemEntityList()
+			.stream()
+			.map(orderItemEntity -> ItemDto.builder()
+				.name(orderItemEntity.getItemEntity().getProductEntity().getName())
+				.sku(orderItemEntity.getItemEntity().getSku())
+				.quantity(String.valueOf(orderItemEntity.getQuantity()))
+				.unitAmount(new AmountDto("USD",
+						String.valueOf(Double.parseDouble(orderItemEntity.getItemEntity().getPrice())), null))
+				.build())
+			.toList();
+
+		return OrderDto.builder()
+			.intent(PaypalOrderIntent.CAPTURE)
+			.purchaseUnits(List.of(PurchaseUnitDto.builder()
+				.amount(AmountDto.builder()
+					.value(savedOrderEntity.getGrandTotal())
+					.currencyCode("USD")
+					.breakdown(BreakdownDto.builder()
+						.discount(new DiscountDto("USD", String.valueOf(discountPrice.get())))
+						.itemTotal(new ItemTotalDto("USD",
+								String.valueOf(
+										discountPrice.get() + Double.parseDouble(savedOrderEntity.getGrandTotal()))))
+						.build())
+					.build())
+				.items(itemDtoList)
+				.build()))
+			.build();
+	}
+
+	private OrderResponseDto sendCreateOrderRequestToPaypal(OrderDto orderRequest) {
+		AccessTokenResponseDto accessTokenResponseDto = paypalClientInterface.sendGetAccessToken()
+			.bodyToMono(AccessTokenResponseDto.class)
+			.block();
+		OrderResponseDto orderResponseDto = paypalClientInterface.sendCreateOrder(accessTokenResponseDto, orderRequest)
+			.bodyToMono(OrderResponseDto.class)
+			.block();
+
+		if (orderResponseDto == null || orderResponseDto.getId() == null || orderResponseDto.getStatus() == null) {
+			throw new InvalidOrderException("Order create response from paypal API is invalid");
+		}
+
+		return orderResponseDto;
+	}
+
+	private OrderResponseDto sendCaptureOrderRequestToPaypal(UserPayOrderDto userPayOrderDto) {
+		AccessTokenResponseDto accessTokenResponseDto = paypalClientInterface.sendGetAccessToken()
+			.bodyToMono(AccessTokenResponseDto.class)
+			.block();
+		OrderResponseDto orderResponseDto = paypalClientInterface
+			.sendCaptureOrder(accessTokenResponseDto, userPayOrderDto)
+			.bodyToMono(OrderResponseDto.class)
+			.block();
+
+		if (orderResponseDto == null || orderResponseDto.getId() == null || orderResponseDto.getStatus() == null) {
+			throw new InvalidOrderException("Order capture response from paypal API is invalid");
+		}
+
+		return orderResponseDto;
+	}
+
 }

@@ -29,77 +29,95 @@ import java.util.concurrent.Executor;
 @EnableWebSecurity()
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final WebConfig webConfig;
 
-    @Bean
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setMaxPoolSize(20);
-        executor.setCorePoolSize(5);
-        executor.setThreadNamePrefix("CUSTOM-");
+	private final CustomUserDetailsService customUserDetailsService;
 
-        // Initialize the executor
-        executor.initialize();
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
-        return executor;
-    }
+	private final WebConfig webConfig;
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+	@Bean
+	public Executor getAsyncExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setMaxPoolSize(20);
+		executor.setCorePoolSize(5);
+		executor.setThreadNamePrefix("CUSTOM-");
 
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		// Initialize the executor
+		executor.initialize();
 
-        authProvider.setUserDetailsService(customUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+		return executor;
+	}
 
-        return authProvider;
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(webConfig.getCorsAllowedOrigins()));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-//        configuration.setExposedHeaders(List.of("Access-Control-Allow-Origin", "Authorization"));
+		authProvider.setUserDetailsService(customUserDetailsService);
+		authProvider.setPasswordEncoder(passwordEncoder());
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+		return authProvider;
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/*").permitAll()
-                        .requestMatchers("/error/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/swagger-ui.html").permitAll()
-                        .requestMatchers("/v3/api-docs").permitAll()
-                        .requestMatchers("/v3/api-docs.yaml").permitAll()
-                        .requestMatchers("v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
-                );
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-        http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(List.of(webConfig.getCorsAllowedOrigins()));
+		configuration.setAllowedMethods(List.of("*"));
+		configuration.setAllowedHeaders(List.of("*"));
 
-        return http.build();
-    }
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.cors(
+				httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+			.csrf(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/login")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/users")
+				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/products/**")
+				.permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/categories/**")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/*/confirm")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/with_email")
+				.permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/with_user")
+				.permitAll()
+				.requestMatchers("/error/**")
+				.permitAll()
+				.requestMatchers("/swagger-ui/**")
+				.permitAll()
+				.requestMatchers("/swagger-ui.html")
+				.permitAll()
+				.requestMatchers("/v3/api-docs")
+				.permitAll()
+				.requestMatchers("/v3/api-docs.yaml")
+				.permitAll()
+				.requestMatchers("v3/api-docs/**")
+				.permitAll()
+				.anyRequest()
+				.authenticated());
+
+		http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+
+		return http.build();
+	}
+
 }

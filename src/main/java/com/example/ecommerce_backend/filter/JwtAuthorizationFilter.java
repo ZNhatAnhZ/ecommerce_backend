@@ -31,77 +31,92 @@ import java.io.IOException;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-    private final JwtUtil jwtUtil;
-    private final CustomUserDetailsService customUserDetailsService;
-    private final HandlerExceptionResolver handlerExceptionResolver;
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String jwt = checkTokenFormatThenReturnToken(request);
-            checkAuthenticationFromToken(jwt);
-        } catch (InvalidCredentialException invalidCredentialException) {
-            handlerExceptionResolver.resolveException(request, response, null, invalidCredentialException);
-            return;
-        }
-        filterChain.doFilter(request, response);
-    }
 
-    @Override
-    protected boolean shouldNotFilter(
-            HttpServletRequest request) {
-        String path = request.getServletPath();
-        if (path.equals("/api/login")) {
-            return true;
-        } else if (path.equals("/api/users") && request.getMethod().equals("POST")) {
-            return true;
-        } else if (path.contains("/api/products") && request.getMethod().equals("GET")) {
-            return true;
-        } else if (path.split("/")[1].equals("swagger-ui") || path.equals("/swagger-ui.html")) {
-            return true;
-        }  else if (path.split("/")[2].equals("api-docs") || path.equals("/v3/api-docs") || path.equals("/v3/api-docs.yaml")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	private final JwtUtil jwtUtil;
 
-    private String checkTokenFormatThenReturnToken(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+	private final CustomUserDetailsService customUserDetailsService;
 
-        if (headerAuth == null) throw new InvalidCredentialException("missing authorization token");
+	private final HandlerExceptionResolver handlerExceptionResolver;
 
-        if (headerAuth.startsWith("Bearer ")) {
-            String jwt = headerAuth.substring(7);
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String jwt = checkTokenFormatThenReturnToken(request);
+			checkAuthenticationFromToken(jwt);
+		}
+		catch (InvalidCredentialException invalidCredentialException) {
+			handlerExceptionResolver.resolveException(request, response, null, invalidCredentialException);
+			return;
+		}
+		filterChain.doFilter(request, response);
+	}
 
-            try {
-                if (jwtUtil.validateJwtToken(jwt)) {
-                    return jwt;
-                }
-            } catch (JWTDecodeException jwtDecodeException) {
-                throw new InvalidCredentialException("wrong token format");
-            }
-        }
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		String path = request.getServletPath();
 
-        throw new InvalidCredentialException("wrong token format");
-    }
+		if (request.getMethod().equals("POST") && (path.equals("/api/users")
+				|| path.equals("/api/login")
+				|| path.equals("/api/orders/with_email")
+				|| path.equals("/api/orders/with_user"))) {
+			return true;
+		}
+		else if (request.getMethod().equals("GET") && (path.contains("/api/products")
+				|| path.equals("/api/categories"))) {
+			return true;
+		}
+		else if (path.split("/")[1].equals("swagger-ui") || path.equals("/swagger-ui.html")) {
+			return true;
+		}
+		else if (path.split("/")[2].equals("api-docs") || path.equals("/v3/api-docs")
+				|| path.equals("/v3/api-docs.yaml")) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
-    private void checkAuthenticationFromToken(String jwt) {
-        String username = jwtUtil.getUserNameFromJwtToken(jwt);
+	private String checkTokenFormatThenReturnToken(HttpServletRequest request) {
+		String headerAuth = request.getHeader("Authorization");
 
-        if (username != null && !username.isEmpty()) {
-            try {
-                CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        customUserDetails,
-                        null,
-                        customUserDetails.getAuthorities()
-                );
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (UsernameNotFoundException usernameNotFoundException) {
-                throw new InvalidCredentialException(usernameNotFoundException.getMessage());
-            }
-        } else {
-            throw new InvalidCredentialException("name is empty");
-        }
-    }
+		if (headerAuth == null)
+			throw new InvalidCredentialException("missing authorization token");
+
+		if (headerAuth.startsWith("Bearer ")) {
+			String jwt = headerAuth.substring(7);
+
+			try {
+				if (jwtUtil.validateJwtToken(jwt)) {
+					return jwt;
+				}
+			}
+			catch (JWTDecodeException jwtDecodeException) {
+				throw new InvalidCredentialException("wrong token format");
+			}
+		}
+
+		throw new InvalidCredentialException("wrong token format");
+	}
+
+	private void checkAuthenticationFromToken(String jwt) {
+		String username = jwtUtil.getUserNameFromJwtToken(jwt);
+
+		if (username != null && !username.isEmpty()) {
+			try {
+				CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(username);
+				Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, null,
+						customUserDetails.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+			catch (UsernameNotFoundException usernameNotFoundException) {
+				throw new InvalidCredentialException(usernameNotFoundException.getMessage());
+			}
+		}
+		else {
+			throw new InvalidCredentialException("name is empty");
+		}
+	}
+
 }
