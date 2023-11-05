@@ -13,46 +13,50 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    @Value("${jwtSecret}")
-    private String jwtSecret;
 
-    @Value("${jwtExpiration}")
-    private int jwtExpiration;
+	@Value("${jwtSecret}")
+	private String jwtSecret;
 
-    public String generateJwtToken(CustomUserDetails customUserDetails) {
-        return JWT.create()
-                .withClaim("id", customUserDetails.getUserEntity().getId())
-                .withClaim("username", customUserDetails.getUsername())
-//                .withClaim("authorities", customUserDetails.getAuthorities().stream().toList())
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date((new Date()).getTime() + jwtExpiration))
-                .sign(Algorithm.HMAC256(jwtSecret));
-    }
+	@Value("${jwtExpiration}")
+	private int jwtExpiration;
 
-    public String getUserNameFromJwtToken(String token) {
-        return JWT.decode(token).getClaims().get("username").asString();
-    }
+	public String generateJwtToken(CustomUserDetails customUserDetails) {
+		return JWT.create()
+			.withClaim("id", customUserDetails.getUserEntity().getId())
+			.withClaim("username", customUserDetails.getUsername())
+			// .withClaim("authorities",
+			// customUserDetails.getAuthorities().stream().toList())
+			.withIssuedAt(new Date())
+			.withExpiresAt(new Date((new Date()).getTime() + jwtExpiration))
+			.sign(Algorithm.HMAC256(jwtSecret));
+	}
 
-    public Collection<? extends GrantedAuthority> getAuthoritiesFromJwtToken(String token) {
-        return JWT.decode(token).getClaims().get("authorities").asList(GrantedAuthority.class);
-    }
+	public String getUserNameFromJwtToken(String token) {
+		return JWT.decode(token).getClaims().get("username").asString();
+	}
 
-    public boolean validateJwtToken(String authToken) {
-        if (Boolean.FALSE.equals(isTokenExpired(authToken))) {
-            try {
-                JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(authToken);
-                return true;
-            } catch (JWTVerificationException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
+	public Collection<? extends GrantedAuthority> getAuthoritiesFromJwtToken(String token) {
+		return JWT.decode(token).getClaims().get("authorities").asList(GrantedAuthority.class);
+	}
 
-        return false;
-    }
+	public boolean validateJwtToken(String authToken) {
+		if (Boolean.FALSE.equals(isTokenExpired(authToken))) {
+			try {
+				JWT.require(Algorithm.HMAC256(jwtSecret)).build().verify(authToken);
+				return true;
+			}
+			catch (JWTVerificationException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
 
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = JWT.decode(token).getExpiresAt();
-        return expiration.before(new Date());
-    }
+		return false;
+	}
+
+	private Boolean isTokenExpired(String token) {
+		final Date expiration = JWT.decode(token).getExpiresAt();
+		return expiration.before(new Date());
+	}
+
 }

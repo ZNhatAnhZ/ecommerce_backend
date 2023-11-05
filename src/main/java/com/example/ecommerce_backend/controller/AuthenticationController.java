@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityLoggedInDto;
-import com.example.ecommerce_backend.mapper.UserEntity.UserEntityLoggedInDtoMapper;
+import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityLoggedInDto;
+import com.example.ecommerce_backend.mapper.userentity.UserEntityLoggedInDtoMapper;
 import com.example.ecommerce_backend.model.CustomUserDetails;
 import com.example.ecommerce_backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,28 +23,34 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationController {
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
-    private final UserEntityLoggedInDtoMapper userEntityLoggedInDtoMapper;
 
-    @PostMapping
-    public ResponseEntity<?> login(@RequestBody UserEntityCreateDto userEntityCreateDto) {
-        Map<String, Object> responseMap = new HashMap<>();
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userEntityCreateDto.getUsername(), userEntityCreateDto.getPassword()));
+	private final AuthenticationManager authenticationManager;
 
-            if (authentication.isAuthenticated()) {
-                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-                UserEntityLoggedInDto userEntityLoggedInDto = userEntityLoggedInDtoMapper.UserEntityToUserEntityLoggedInDto(customUserDetails.getUserEntity());
-                userEntityLoggedInDto.setJwt(jwtUtil.generateJwtToken(customUserDetails));
-                return new ResponseEntity<>(userEntityLoggedInDto, HttpStatus.OK);
-            }
+	private final JwtUtil jwtUtil;
 
-        } catch (BadCredentialsException e) {
-            responseMap.put("message", "Invalid Credentials");
-            return ResponseEntity.status(401).body(responseMap);
-        }
-        return null;
-    }
+	private final UserEntityLoggedInDtoMapper userEntityLoggedInDtoMapper;
+
+	@PostMapping
+	public ResponseEntity<?> login(@RequestBody UserEntityCreateDto userEntityCreateDto) {
+		Map<String, Object> responseMap = new HashMap<>();
+		try {
+			Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					userEntityCreateDto.getUsername(), userEntityCreateDto.getPassword()));
+
+			if (authentication.isAuthenticated()) {
+				CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+				UserEntityLoggedInDto userEntityLoggedInDto = userEntityLoggedInDtoMapper
+					.toDto(customUserDetails.getUserEntity());
+				userEntityLoggedInDto.setJwt(jwtUtil.generateJwtToken(customUserDetails));
+				return new ResponseEntity<>(userEntityLoggedInDto, HttpStatus.OK);
+			}
+
+		}
+		catch (BadCredentialsException e) {
+			responseMap.put("message", "Invalid Credentials");
+			return ResponseEntity.status(401).body(responseMap);
+		}
+		return null;
+	}
+
 }

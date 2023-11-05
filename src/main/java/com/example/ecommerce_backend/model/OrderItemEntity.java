@@ -13,28 +13,30 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 public class OrderItemEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @Column(name = "quantity")
-    private int quantity;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "price")
-    private String totalPrice;
+	@Column(name = "quantity")
+	private int quantity;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+	@Column(name = "price")
+	private String totalPrice;
 
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+	@Column(name = "created_at")
+	private Timestamp createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private OrderEntity orderEntity;
+	@Column(name = "updated_at")
+	private Timestamp updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
-    private ItemEntity itemEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id", referencedColumnName = "id")
+	private OrderEntity orderEntity;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "item_id", referencedColumnName = "id")
+	private ItemEntity itemEntity;
+
 }

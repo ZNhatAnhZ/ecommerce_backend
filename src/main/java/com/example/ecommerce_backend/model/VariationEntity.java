@@ -17,39 +17,43 @@ import java.util.List;
 @AllArgsConstructor
 @org.hibernate.annotations.Cache(region = "variation", usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VariationEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @Column(name = "name")
-    private String name;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "value")
-    private String value;
+	@Column(name = "name")
+	private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private ProductEntity productEntity;
+	@Column(name = "value")
+	private String value;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "depend_on", referencedColumnName = "id")
-    private VariationEntity parentVariationEntity;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	private ProductEntity productEntity;
 
-    @OneToMany(mappedBy = "parentVariationEntity", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private List<VariationEntity> childVariationEntityList;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "depend_on", referencedColumnName = "id")
+	private VariationEntity parentVariationEntity;
 
-    public void addChildVariationEntity(VariationEntity variationEntity) {
-        childVariationEntityList.add(variationEntity);
-    }
+	@OneToMany(mappedBy = "parentVariationEntity", cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+	private List<VariationEntity> childVariationEntityList;
 
-    public static void updateParentVariationAndProductEntityForAllChildVariations(ProductEntity productEntity, VariationEntity parent, List<VariationEntity> children) {
-        if (children != null) {
-            children.forEach(child -> {
-                child.setProductEntity(productEntity);
-                child.setParentVariationEntity(parent);
-                updateParentVariationAndProductEntityForAllChildVariations(productEntity, child, child.getChildVariationEntityList());
-            });
-        }
-    }
+	public void addChildVariationEntity(VariationEntity variationEntity) {
+		childVariationEntityList.add(variationEntity);
+	}
+
+	public static void updateParentVariationAndProductEntityForAllChildVariations(ProductEntity productEntity,
+			VariationEntity parent, List<VariationEntity> children) {
+		if (children != null) {
+			children.forEach(child -> {
+				child.setProductEntity(productEntity);
+				child.setParentVariationEntity(parent);
+				updateParentVariationAndProductEntityForAllChildVariations(productEntity, child,
+						child.getChildVariationEntityList());
+			});
+		}
+	}
+
 }

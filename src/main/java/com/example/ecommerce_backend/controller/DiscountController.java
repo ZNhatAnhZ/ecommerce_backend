@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityCreateDto;
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityIndexDto;
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityUpdateDto;
-import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityIndexDtoMapper;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityCreateDto;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityUpdateDto;
+import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.DiscountEntity;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -16,43 +16,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/discounts")
 @Slf4j
 @RequiredArgsConstructor
 public class DiscountController {
-    private final DiscountServiceInterface discountServiceInterface;
-    private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
-    @GetMapping
-    public Page<DiscountEntityIndexDto> index(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return discountServiceInterface.findByCondition(pageable);
-    }
+	private final DiscountServiceInterface discountServiceInterface;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DiscountEntityIndexDto> getDiscountById(@PathVariable int id) {
-        DiscountEntity discount = discountServiceInterface.getDiscountById(id);
-        DiscountEntityIndexDto discountEntityIndexDto = discountEntityIndexDtoMapper.discountEntityToDiscountEntityIndexDto(discount);
-        return ResponseEntity.ok(discountEntityIndexDto);
-    }
+	private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
-    @PostMapping
-    public ResponseEntity<DiscountEntity> createDiscount(@RequestBody DiscountEntityCreateDto DiscountEntityCreateDto) {
-        DiscountEntity createdDiscount = discountServiceInterface.createDiscount(DiscountEntityCreateDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdDiscount);
-    }
+	@GetMapping
+	public Page<DiscountEntityIndexDto> index(
+			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+		return discountServiceInterface.findByCondition(pageable);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DiscountEntity> updateDiscount(@PathVariable int id, @RequestBody DiscountEntityUpdateDto DiscountEntityUpdateDto) {
-        DiscountEntityUpdateDto.setId(id);
-        DiscountEntity updatedDiscount = discountServiceInterface.updateDiscount(DiscountEntityUpdateDto);
-        return ResponseEntity.ok(updatedDiscount);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<DiscountEntityIndexDto> getDiscountById(@PathVariable int id) {
+		DiscountEntity discount = discountServiceInterface.getDiscountById(id);
+		DiscountEntityIndexDto discountEntityIndexDto = discountEntityIndexDtoMapper
+			.toDto(discount);
+		return ResponseEntity.ok(discountEntityIndexDto);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDiscount(@PathVariable int id) {
-        discountServiceInterface.deleteDiscount(id);
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping
+	public ResponseEntity<DiscountEntity> createDiscount(@RequestBody DiscountEntityCreateDto discountEntityCreateDto) {
+		DiscountEntity createdDiscount = discountServiceInterface.createDiscount(discountEntityCreateDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(createdDiscount);
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<DiscountEntity> updateDiscount(@PathVariable int id,
+			@RequestBody DiscountEntityUpdateDto discountEntityUpdateDto) {
+		discountEntityUpdateDto.setId(id);
+		DiscountEntity updatedDiscount = discountServiceInterface.updateDiscount(discountEntityUpdateDto);
+		return ResponseEntity.ok(updatedDiscount);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteDiscount(@PathVariable int id) {
+		discountServiceInterface.deleteDiscount(id);
+		return ResponseEntity.ok().build();
+	}
+
 }

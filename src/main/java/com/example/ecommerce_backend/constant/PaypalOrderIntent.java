@@ -6,8 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PaypalOrderIntent {
-    CAPTURE("CAPTURE"),
-    AUTHORIZE("AUTHORIZE");
 
-    private final String value;
+	CAPTURE("CAPTURE"), AUTHORIZE("AUTHORIZE");
+
+	private final String value;
+
 }

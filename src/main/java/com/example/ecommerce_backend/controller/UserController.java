@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityUpdateDto;
-import com.example.ecommerce_backend.mapper.UserEntity.UserEntityIndexDtoMapper;
+import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityIndexDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
+import com.example.ecommerce_backend.mapper.userentity.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -20,39 +20,42 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 public class UserController {
-    private final UserServiceInterface userServiceInterface;
-    private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
 
-    @PostMapping
-    public ResponseEntity<UserEntityIndexDto> create(@RequestBody UserEntityCreateDto userEntityCreateDto) {
-        UserEntity userEntity = userServiceInterface.registerUser(userEntityCreateDto);
-        UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.UserEntityToUserEntityIndexDto(userEntity);
-        return ResponseEntity.ok(userEntityIndexDto);
-    }
+	private final UserServiceInterface userServiceInterface;
 
-    @GetMapping
-    public ResponseEntity<Page<UserEntityIndexDto>> index(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<UserEntityIndexDto> userPage = userServiceInterface.findByCondition(pageable);
-        return ResponseEntity.ok(userPage);
-    }
+	private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserEntityIndexDto> findById(@PathVariable("id") int id) {
-        UserEntity user = userServiceInterface.findUserById(id);
-        UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.UserEntityToUserEntityIndexDto(user);
-        return ResponseEntity.ok(userEntityIndexDto);
-    }
+	@PostMapping
+	public ResponseEntity<UserEntityIndexDto> create(@RequestBody UserEntityCreateDto userEntityCreateDto) {
+		UserEntity userEntity = userServiceInterface.registerUser(userEntityCreateDto);
+		UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.toDto(userEntity);
+		return ResponseEntity.ok(userEntityIndexDto);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
-        userServiceInterface.deleteUserById(id);
-        return ResponseEntity.ok().build();
-    }
+	@GetMapping
+	public ResponseEntity<Page<UserEntityIndexDto>> index(
+			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<UserEntityIndexDto> userPage = userServiceInterface.findByCondition(pageable);
+		return ResponseEntity.ok(userPage);
+	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<UserEntityIndexDto> findById(@PathVariable("id") int id) {
+		UserEntity user = userServiceInterface.findUserById(id);
+		UserEntityIndexDto userEntityIndexDto = userEntityIndexDtoMapper.toDto(user);
+		return ResponseEntity.ok(userEntityIndexDto);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(UserEntityUpdateDto userEntityUpdateDto) {
-        userServiceInterface.updateUser(userEntityUpdateDto);
-        return ResponseEntity.ok().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable("id") int id) {
+		userServiceInterface.deleteUserById(id);
+		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> update(UserEntityUpdateDto userEntityUpdateDto) {
+		userServiceInterface.updateUser(userEntityUpdateDto);
+		return ResponseEntity.ok().build();
+	}
+
 }

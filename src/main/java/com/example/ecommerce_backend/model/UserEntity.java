@@ -18,33 +18,36 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private Set<PermissionEntity> permissionEntityList;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "username")
-    private String username;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_permission", joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	private Set<PermissionEntity> permissionEntityList;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "username")
+	private String username;
 
-    @Column(name = "first_name")
-    private String firstName;
+	@Column(name = "password")
+	private String password;
 
-    @Column(name = "last_name")
-    private String lastName;
+	@Column(name = "first_name")
+	private String firstName;
 
-    @Column(name = "telephone")
-    private String telephone;
+	@Column(name = "last_name")
+	private String lastName;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name = "telephone")
+	private String telephone;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<CartItemEntity> cartItemEntityList;
+	@Column(name = "email")
+	private String email;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<CartItemEntity> cartItemEntityList;
+
 }

@@ -15,26 +15,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiscountEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @Column(name = "name")
-    private String name;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "description")
-    private String description;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "discount_percent")
-    private String discountPercent;
+	@Column(name = "description")
+	private String description;
 
-    @Column(name = "active")
-    private String active;
+	@Column(name = "discount_percent")
+	private String discountPercent;
 
-    @OneToMany(mappedBy = "discountEntity")
-    private List<OrderEntity> orderEntityList;
+	@Column(name = "active")
+	private String active;
 
-    @OneToMany(mappedBy = "discountEntity", fetch = FetchType.LAZY)
-    private List<ProductEntity> productEntityList;
+	@OneToMany(mappedBy = "discountEntity")
+	private List<OrderEntity> orderEntityList;
+
+	@OneToMany(mappedBy = "discountEntity", fetch = FetchType.LAZY)
+	private List<ProductEntity> productEntityList;
+
 }

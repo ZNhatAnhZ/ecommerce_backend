@@ -30,47 +30,51 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 @Transactional
 public class EmailServiceImpl implements EmailServiceInterface {
-    private final JavaMailSender mailSender;
-    @Value("hostSender")
-    private String hostSender;
 
-    @Override
-    public void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
+	private final JavaMailSender mailSender;
 
-        mailSender.send(message);
-    }
+	@Value("hostSender")
+	private String hostSender;
 
-    @Override
-    public void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
+	@Override
+	public void sendEmail(String to, String subject, String body) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(body);
 
-        message.setFrom(new InternetAddress(hostSender));
-        message.setRecipients(MimeMessage.RecipientType.TO, to);
-        message.setSubject(subject);
+		mailSender.send(message);
+	}
 
-        // Set the email's content to be the HTML template
-        message.setContent(body, "text/html; charset=utf-8");
+	@Override
+	public void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException {
+		MimeMessage message = mailSender.createMimeMessage();
 
-        mailSender.send(message);
-    }
+		message.setFrom(new InternetAddress(hostSender));
+		message.setRecipients(MimeMessage.RecipientType.TO, to);
+		message.setSubject(subject);
 
-    @Async
-    public void sendWelcomeEmail(UserEntity userEntity) {
-        try {
-            File file = ResourceUtils.getFile("classpath:welcome_email.html");
-            String htmlTemplate = Files.asCharSource(file, StandardCharsets.UTF_8).read();
+		// Set the email's content to be the HTML template
+		message.setContent(body, "text/html; charset=utf-8");
 
-            // Replace placeholders in the HTML template with dynamic values
-            htmlTemplate = htmlTemplate.replace("[Customer's Name]", userEntity.getFirstName());
-            sendEmailFromTemplate(userEntity.getEmail(), "User successfully registered to ecommerce app", htmlTemplate);
+		mailSender.send(message);
+	}
 
-        } catch (IOException | MessagingException ex) {
-            log.error(ex.toString());
-            throw new EmailSendingException(ex.toString());
-        }
-    }
+	@Async
+	public void sendWelcomeEmail(UserEntity userEntity) {
+		try {
+			File file = ResourceUtils.getFile("classpath:welcome_email.html");
+			String htmlTemplate = Files.asCharSource(file, StandardCharsets.UTF_8).read();
+
+			// Replace placeholders in the HTML template with dynamic values
+			htmlTemplate = htmlTemplate.replace("[Customer's Name]", userEntity.getFirstName());
+			sendEmailFromTemplate(userEntity.getEmail(), "User successfully registered to ecommerce app", htmlTemplate);
+
+		}
+		catch (IOException | MessagingException ex) {
+			log.error(ex.toString());
+			throw new EmailSendingException(ex.toString());
+		}
+	}
+
 }

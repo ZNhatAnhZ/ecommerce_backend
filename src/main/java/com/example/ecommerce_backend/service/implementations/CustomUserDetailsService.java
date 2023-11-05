@@ -15,14 +15,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class CustomUserDetailsService implements UserDetailsService {
-    private final UserEntityRepository userEntityRepository;
-    @Override
-    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntity = userEntityRepository.findUserEntityByUsername(username);
-        if (userEntity.isPresent()) {
-            return new CustomUserDetails(userEntity.get());
-        } else {
-            throw new UsernameNotFoundException("User Not Found with -> username: " + username);
-        }
-    }
+
+	private final UserEntityRepository userEntityRepository;
+
+	@Override
+	public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Optional<UserEntity> userEntity = userEntityRepository.findUserEntityByUsername(username);
+		if (userEntity.isPresent()) {
+			return new CustomUserDetails(userEntity.get());
+		}
+		else {
+			throw new UsernameNotFoundException("User Not Found with -> username: " + username);
+		}
+	}
+
 }

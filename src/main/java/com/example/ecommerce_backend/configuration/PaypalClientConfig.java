@@ -11,10 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class PaypalClientConfig {
-    @NotEmpty
-    private String baseUrl;
-    @NotEmpty
-    private String clientId;
-    @NotEmpty
-    private String secret;
+
+	@NotEmpty
+	private String baseUrl;
+
+	@NotEmpty
+	private String clientId;
+
+	@NotEmpty
+	private String secret;
+
 }

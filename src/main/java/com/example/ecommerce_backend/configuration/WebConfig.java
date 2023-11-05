@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class WebConfig {
-    @NotEmpty
-    private String corsAllowedOrigins;
+
+	@NotEmpty
+	private String corsAllowedOrigins;
+
 }

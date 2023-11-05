@@ -1,13 +1,13 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityIndexDto;
-import com.example.ecommerce_backend.dto.UserEntity.UserEntityUpdateDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityIndexDto;
+import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.UserEntity.UserEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.UserEntity.UserEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.UserEntity.UserEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.mapper.userentity.UserEntityCreateDtoMapper;
+import com.example.ecommerce_backend.mapper.userentity.UserEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.userentity.UserEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.EmailServiceInterface;
@@ -30,64 +30,72 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserServiceInterface {
-    private final UserEntityRepository userEntityRepository;
-    private final UserEntityCreateDtoMapper userEntityCreateDtoMapper;
-    private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
-    private final UserEntityUpdateDtoMapper userEntityUpdateDtoMapper;
-    private final PasswordEncoder passwordEncoder;
-    @Qualifier("emailServiceImpl")
-    private final EmailServiceInterface emailServiceInterface;
 
-    @Override
-    public UserEntity registerUser(UserEntityCreateDto userDto) {
-        if (Boolean.TRUE.equals(userEntityRepository.existsByUsername(userDto.getUsername()))) {
-            throw new ResourceDuplicateException("username already exist");
-        }
+	private final UserEntityRepository userEntityRepository;
 
-        UserEntity userEntity = userEntityCreateDtoMapper.UserEntityCreateDtoToUserEntity(userDto);
-        emailServiceInterface.sendWelcomeEmail(userEntity);
+	private final UserEntityCreateDtoMapper userEntityCreateDtoMapper;
 
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        userEntity = userEntityRepository.save(userEntity);
-        return userEntity;
-    }
+	private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
 
-    @Override
-    public void deleteUserById(int id) {
-        if (userEntityRepository.existsById(id)) {
-            userEntityRepository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("Could not find user with id " + id);
-        }
-    }
+	private final UserEntityUpdateDtoMapper userEntityUpdateDtoMapper;
 
-    @Override
-    public UserEntity findUserById(int id) {
-        Optional<UserEntity> userEntity = userEntityRepository.findById(id);
-        if (userEntity.isPresent()) {
-            return userEntity.get();
-        } else {
-            throw new ResourceNotFoundException("Could not find user with id " + id);
-        }
-    }
+	private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public Page<UserEntityIndexDto> findByCondition(Pageable pageable) {
-        return userEntityRepository.findAll(pageable).map(userEntityIndexDtoMapper::UserEntityToUserEntityIndexDto);
-    }
+	@Qualifier("emailServiceImpl")
+	private final EmailServiceInterface emailServiceInterface;
 
-    @Override
-    public UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto) {
-        Optional<UserEntity> userEntity = userEntityRepository.findById(userEntityUpdateDto.getId());
-        if (userEntity.isPresent()) {
-            userEntity.get().setFirstName(userEntityUpdateDto.getFirstName());
-            userEntity.get().setLastName(userEntityUpdateDto.getLastName());
-            userEntity.get().setTelephone(userEntityUpdateDto.getTelephone());
-            return userEntityRepository.save(userEntity.get());
-        } else {
-            throw new ResourceNotFoundException("Could not find user with id " + userEntityUpdateDto.getId());
-        }
-    }
+	@Override
+	public UserEntity registerUser(UserEntityCreateDto userDto) {
+		if (Boolean.TRUE.equals(userEntityRepository.existsByUsername(userDto.getUsername()))) {
+			throw new ResourceDuplicateException("username already exist");
+		}
 
+		UserEntity userEntity = userEntityCreateDtoMapper.toEntity(userDto);
+		emailServiceInterface.sendWelcomeEmail(userEntity);
+
+		userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+		userEntity = userEntityRepository.save(userEntity);
+		return userEntity;
+	}
+
+	@Override
+	public void deleteUserById(int id) {
+		if (userEntityRepository.existsById(id)) {
+			userEntityRepository.deleteById(id);
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find user with id " + id);
+		}
+	}
+
+	@Override
+	public UserEntity findUserById(int id) {
+		Optional<UserEntity> userEntity = userEntityRepository.findById(id);
+		if (userEntity.isPresent()) {
+			return userEntity.get();
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find user with id " + id);
+		}
+	}
+
+	@Override
+	public Page<UserEntityIndexDto> findByCondition(Pageable pageable) {
+		return userEntityRepository.findAll(pageable).map(userEntityIndexDtoMapper::toDto);
+	}
+
+	@Override
+	public UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto) {
+		Optional<UserEntity> userEntity = userEntityRepository.findById(userEntityUpdateDto.getId());
+		if (userEntity.isPresent()) {
+			userEntity.get().setFirstName(userEntityUpdateDto.getFirstName());
+			userEntity.get().setLastName(userEntityUpdateDto.getLastName());
+			userEntity.get().setTelephone(userEntityUpdateDto.getTelephone());
+			return userEntityRepository.save(userEntity.get());
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find user with id " + userEntityUpdateDto.getId());
+		}
+	}
 
 }

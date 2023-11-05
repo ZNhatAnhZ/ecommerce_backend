@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "supplier", schema = "ecommerce")
@@ -13,22 +12,25 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@org.hibernate.annotations.Cache(region = "supplier", usage = CacheConcurrencyStrategy.READ_WRITE)
+// @org.hibernate.annotations.Cache(region = "supplier", usage =
+// CacheConcurrencyStrategy.READ_WRITE)
 public class SupplierEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id")
-    private int id;
 
-    @Column(name = "name")
-    private String name;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "id")
+	private int id;
 
-    @Column(name = "telephone")
-    private String telephone;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name = "address1")
-    private String address1;
+	@Column(name = "telephone")
+	private String telephone;
 
-    @Column(name = "address2")
-    private String address2;
+	@Column(name = "address1")
+	private String address1;
+
+	@Column(name = "address2")
+	private String address2;
+
 }

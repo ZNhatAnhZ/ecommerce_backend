@@ -1,13 +1,13 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityCreateDto;
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityIndexDto;
-import com.example.ecommerce_backend.dto.DiscountEntity.DiscountEntityUpdateDto;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityCreateDto;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
+import com.example.ecommerce_backend.dto.discountentity.DiscountEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.DiscountEntity.DiscountEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityCreateDtoMapper;
+import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.DiscountEntity;
 import com.example.ecommerce_backend.repository.DiscountEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
@@ -28,51 +28,63 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class DiscountServiceImpl implements DiscountServiceInterface {
-    private final DiscountEntityRepository discountEntityRepository;
-    private final DiscountEntityCreateDtoMapper discountEntityCreateDtoMapper;
-    private final DiscountEntityUpdateDtoMapper discountEntityUpdateDtoMapper;
-    private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
-    public List<DiscountEntity> getAllDiscounts() {
-        return discountEntityRepository.findAll();
-    }
+	private final DiscountEntityRepository discountEntityRepository;
 
-    public Page<DiscountEntityIndexDto> findByCondition(Pageable pageable) {
-        return discountEntityRepository.findAll(pageable).map(discountEntityIndexDtoMapper::discountEntityToDiscountEntityIndexDto);
-    }
+	private final DiscountEntityCreateDtoMapper discountEntityCreateDtoMapper;
 
-    public DiscountEntity getDiscountById(int id) {
-        Optional<DiscountEntity> discountEntity = discountEntityRepository.findById(id);
-        if (discountEntity.isPresent()) {
-            return discountEntity.get();
-        } else {
-            throw new ResourceNotFoundException("Could not find discount with id " + id);
-        }
-    }
+	private final DiscountEntityUpdateDtoMapper discountEntityUpdateDtoMapper;
 
-    public DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto) {
-        if (discountEntityRepository.existsByName(discountCreateDto.getName())) {
-            throw new ResourceDuplicateException("this discount is already exist");
-        } else {
-            DiscountEntity discountEntity = discountEntityCreateDtoMapper.DiscountCreateDtoToDiscountEntity(discountCreateDto);
-            return discountEntityRepository.save(discountEntity);
-        }
-    }
+	private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
-    public DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto) {
-        if (discountEntityRepository.existsById(discountUpdateDto.getId())) {
-            DiscountEntity discountEntity = discountEntityUpdateDtoMapper.DiscountUpdateDtoToDiscountEntity(discountUpdateDto);
-            return discountEntityRepository.save(discountEntity);
-        } else {
-            throw new ResourceNotFoundException("Could not find discount with id " + discountUpdateDto.getId());
-        }
-    }
+	public List<DiscountEntity> getAllDiscounts() {
+		return discountEntityRepository.findAll();
+	}
 
-    public void deleteDiscount(int id) {
-        if (discountEntityRepository.existsById(id)) {
-            discountEntityRepository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("Could not find discount with id " + id);
-        }
-    }
+	public Page<DiscountEntityIndexDto> findByCondition(Pageable pageable) {
+		return discountEntityRepository.findAll(pageable)
+			.map(discountEntityIndexDtoMapper::toDto);
+	}
+
+	public DiscountEntity getDiscountById(int id) {
+		Optional<DiscountEntity> discountEntity = discountEntityRepository.findById(id);
+		if (discountEntity.isPresent()) {
+			return discountEntity.get();
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find discount with id " + id);
+		}
+	}
+
+	public DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto) {
+		if (discountEntityRepository.existsByName(discountCreateDto.getName())) {
+			throw new ResourceDuplicateException("this discount is already exist");
+		}
+		else {
+			DiscountEntity discountEntity = discountEntityCreateDtoMapper
+				.toEntity(discountCreateDto);
+			return discountEntityRepository.save(discountEntity);
+		}
+	}
+
+	public DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto) {
+		if (discountEntityRepository.existsById(discountUpdateDto.getId())) {
+			DiscountEntity discountEntity = discountEntityUpdateDtoMapper
+				.toEntity(discountUpdateDto);
+			return discountEntityRepository.save(discountEntity);
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find discount with id " + discountUpdateDto.getId());
+		}
+	}
+
+	public void deleteDiscount(int id) {
+		if (discountEntityRepository.existsById(id)) {
+			discountEntityRepository.deleteById(id);
+		}
+		else {
+			throw new ResourceNotFoundException("Could not find discount with id " + id);
+		}
+	}
+
 }
