@@ -7,8 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface SupplierEntityUpdateDtoMapper {
 
-	SupplierEntity toEntity(SupplierEntityUpdateDto supplierEntityUpdateDto);
+  SupplierEntity toEntity(SupplierEntityUpdateDto supplierEntityUpdateDto);
 
-	SupplierEntityUpdateDto toDto(SupplierEntity supplierEntity);
-
+  SupplierEntityUpdateDto toDto(SupplierEntity supplierEntity);
 }

@@ -7,12 +7,11 @@ import lombok.Data;
 @Builder
 public class UserEntityUpdateDto {
 
-	private int id;
+  private int id;
 
-	private String firstName;
+  private String firstName;
 
-	private String lastName;
+  private String lastName;
 
-	private String telephone;
-
+  private String telephone;
 }

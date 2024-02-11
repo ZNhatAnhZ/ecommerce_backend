@@ -9,14 +9,13 @@ import com.example.ecommerce_backend.mapper.categoryentity.CategoryEntityUpdateD
 import com.example.ecommerce_backend.model.ProductCategoryEntity;
 import com.example.ecommerce_backend.repository.ProductCategoryEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.CategoryServiceInterface;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -25,55 +24,52 @@ import java.util.Optional;
 @Transactional
 public class CategoryServiceImpl implements CategoryServiceInterface {
 
-	private final ProductCategoryEntityRepository productCategoryEntityRepository;
+  private final ProductCategoryEntityRepository productCategoryEntityRepository;
 
-	private final CategoryEntityCreateDtoMapper categoryEntityCreateDtoMapper;
+  private final CategoryEntityCreateDtoMapper categoryEntityCreateDtoMapper;
 
-	private final CategoryEntityUpdateDtoMapper categoryEntityUpdateDtoMapper;
+  private final CategoryEntityUpdateDtoMapper categoryEntityUpdateDtoMapper;
 
-	public List<ProductCategoryEntity> getAllCategories() {
-		return productCategoryEntityRepository.findAll();
-	}
+  public List<ProductCategoryEntity> getAllCategories() {
+    return productCategoryEntityRepository.findAll();
+  }
 
-	public ProductCategoryEntity getCategoryById(int id) {
-		Optional<ProductCategoryEntity> productCategoryEntity = productCategoryEntityRepository.findById(id);
-		if (productCategoryEntity.isPresent()) {
-			return productCategoryEntity.get();
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find category with id " + id);
-		}
-	}
+  public ProductCategoryEntity getCategoryById(int id) {
+    Optional<ProductCategoryEntity> productCategoryEntity =
+        productCategoryEntityRepository.findById(id);
+    if (productCategoryEntity.isPresent()) {
+      return productCategoryEntity.get();
+    } else {
+      throw new ResourceNotFoundException("Could not find category with id " + id);
+    }
+  }
 
-	public ProductCategoryEntity createCategory(CategoryEntityCreateDto categoryEntityCreateDto) {
-		if (productCategoryEntityRepository.existsByName(categoryEntityCreateDto.getName())) {
-			throw new ResourceDuplicateException("this category is already exist");
-		}
-		else {
-			ProductCategoryEntity productCategoryEntity = categoryEntityCreateDtoMapper
-				.toEntity(categoryEntityCreateDto);
-			return productCategoryEntityRepository.save(productCategoryEntity);
-		}
-	}
+  public ProductCategoryEntity createCategory(CategoryEntityCreateDto categoryEntityCreateDto) {
+    if (productCategoryEntityRepository.existsByName(categoryEntityCreateDto.getName())) {
+      throw new ResourceDuplicateException("this category is already exist");
+    } else {
+      ProductCategoryEntity productCategoryEntity =
+          categoryEntityCreateDtoMapper.toEntity(categoryEntityCreateDto);
+      return productCategoryEntityRepository.save(productCategoryEntity);
+    }
+  }
 
-	public ProductCategoryEntity updateCategory(CategoryEntityUpdateDto categoryEntityUpdateDto) {
-		if (productCategoryEntityRepository.existsById(categoryEntityUpdateDto.getId())) {
-			ProductCategoryEntity productCategoryEntity = categoryEntityUpdateDtoMapper
-				.toEntity(categoryEntityUpdateDto);
-			return productCategoryEntityRepository.save(productCategoryEntity);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find category with id " + categoryEntityUpdateDto.getId());
-		}
-	}
+  public ProductCategoryEntity updateCategory(CategoryEntityUpdateDto categoryEntityUpdateDto) {
+    if (productCategoryEntityRepository.existsById(categoryEntityUpdateDto.getId())) {
+      ProductCategoryEntity productCategoryEntity =
+          categoryEntityUpdateDtoMapper.toEntity(categoryEntityUpdateDto);
+      return productCategoryEntityRepository.save(productCategoryEntity);
+    } else {
+      throw new ResourceNotFoundException(
+          "Could not find category with id " + categoryEntityUpdateDto.getId());
+    }
+  }
 
-	public void deleteCategory(int id) {
-		if (productCategoryEntityRepository.existsById(id)) {
-			productCategoryEntityRepository.deleteById(id);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find category with id " + id);
-		}
-	}
-
+  public void deleteCategory(int id) {
+    if (productCategoryEntityRepository.existsById(id)) {
+      productCategoryEntityRepository.deleteById(id);
+    } else {
+      throw new ResourceNotFoundException("Could not find category with id " + id);
+    }
+  }
 }

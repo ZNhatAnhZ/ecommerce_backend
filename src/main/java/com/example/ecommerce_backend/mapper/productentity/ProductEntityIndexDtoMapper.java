@@ -7,12 +7,16 @@ import com.example.ecommerce_backend.mapper.supplierentity.SupplierEntityCreateD
 import com.example.ecommerce_backend.model.ProductEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = { CategoryEntityCreateDtoMapper.class, SupplierEntityCreateDtoMapper.class,
-		DiscountEntityIndexDtoMapper.class })
+@Mapper(
+    componentModel = "spring",
+    uses = {
+      CategoryEntityCreateDtoMapper.class,
+      SupplierEntityCreateDtoMapper.class,
+      DiscountEntityIndexDtoMapper.class
+    })
 public interface ProductEntityIndexDtoMapper {
 
-	ProductEntity toEntity(ProductEntityIndexDto productEntityIndexDto);
+  ProductEntity toEntity(ProductEntityIndexDto productEntityIndexDto);
 
-	ProductEntityIndexDto toDto(ProductEntity productEntity);
-
+  ProductEntityIndexDto toDto(ProductEntity productEntity);
 }

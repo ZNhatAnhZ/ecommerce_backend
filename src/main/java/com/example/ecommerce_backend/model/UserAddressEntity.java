@@ -14,28 +14,27 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserAddressEntity {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "id")
-	private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "id")
+  private int id;
 
-	@Column(name = "address_line1")
-	private String addressLine1;
+  @Column(name = "address_line1")
+  private String addressLine1;
 
-	@Column(name = "address_line2")
-	private String addressLine2;
+  @Column(name = "address_line2")
+  private String addressLine2;
 
-	@Column(name = "city")
-	private String city;
+  @Column(name = "city")
+  private String city;
 
-	@Column(name = "postal_code")
-	private String postalCode;
+  @Column(name = "postal_code")
+  private String postalCode;
 
-	@Column(name = "country")
-	private String country;
+  @Column(name = "country")
+  private String country;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private UserEntity userByUserId;
-
+  @ManyToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private UserEntity userByUserId;
 }

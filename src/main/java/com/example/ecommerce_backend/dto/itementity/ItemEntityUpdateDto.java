@@ -7,12 +7,11 @@ import lombok.Data;
 @Builder
 public class ItemEntityUpdateDto {
 
-	private int id;
+  private int id;
 
-	private String price;
+  private String price;
 
-	private String stock;
+  private String stock;
 
-	private boolean isDisabled;
-
+  private boolean isDisabled;
 }

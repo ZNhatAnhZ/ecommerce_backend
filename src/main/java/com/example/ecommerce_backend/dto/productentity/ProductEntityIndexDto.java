@@ -10,16 +10,15 @@ import lombok.Data;
 @Builder
 public class ProductEntityIndexDto {
 
-	private int id;
+  private int id;
 
-	private String name;
+  private String name;
 
-	private String description;
+  private String description;
 
-	private CategoryEntityCreateDto categoryEntity;
+  private CategoryEntityCreateDto categoryEntity;
 
-	private SupplierEntityCreateDto supplierEntity;
+  private SupplierEntityCreateDto supplierEntity;
 
-	private DiscountEntityIndexDto discountEntity;
-
+  private DiscountEntityIndexDto discountEntity;
 }

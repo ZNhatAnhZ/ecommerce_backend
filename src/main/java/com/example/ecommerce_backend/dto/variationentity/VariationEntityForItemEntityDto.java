@@ -7,10 +7,9 @@ import lombok.Data;
 @Builder
 public class VariationEntityForItemEntityDto {
 
-	private int id;
+  private int id;
 
-	private String name;
+  private String name;
 
-	private String value;
-
+  private String value;
 }

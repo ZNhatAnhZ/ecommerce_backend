@@ -12,9 +12,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class DiscountDto {
 
-	@JsonProperty("currency_code")
-	private String currencyCode;
+  @JsonProperty("currency_code")
+  private String currencyCode;
 
-	private String value;
-
+  private String value;
 }

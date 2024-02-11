@@ -7,8 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface VariationEntityForItemEntityMapper {
 
-	VariationEntity toEntity(VariationEntityForItemEntityDto variationEntityForItemEntityDto);
+  VariationEntity toEntity(VariationEntityForItemEntityDto variationEntityForItemEntityDto);
 
-	VariationEntityForItemEntityDto toDto(VariationEntity variationEntity);
-
+  VariationEntityForItemEntityDto toDto(VariationEntity variationEntity);
 }

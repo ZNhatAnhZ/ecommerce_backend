@@ -1,18 +1,16 @@
 package com.example.ecommerce_backend.dto.variationentity;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
 public class VariationEntityUpdateDto {
 
-	private String name;
+  private String name;
 
-	private String value;
+  private String value;
 
-	private List<VariationEntityUpdateDto> variationEntityUpdateDtoList;
-
+  private List<VariationEntityUpdateDto> variationEntityUpdateDtoList;
 }

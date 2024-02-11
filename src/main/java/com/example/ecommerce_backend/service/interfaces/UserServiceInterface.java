@@ -9,14 +9,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserServiceInterface {
 
-	UserEntity registerUser(UserEntityCreateDto userDto);
+  UserEntity registerUser(UserEntityCreateDto userDto);
 
-	void deleteUserById(int id);
+  void deleteUserById(int id);
 
-	UserEntity findUserById(int id);
+  UserEntity findUserById(int id);
 
-	Page<UserEntityIndexDto> findByCondition(Pageable pageable);
+  Page<UserEntityIndexDto> findByCondition(Pageable pageable);
 
-	UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto);
-
+  UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto);
 }

@@ -5,10 +5,9 @@ import jakarta.mail.MessagingException;
 
 public interface EmailServiceInterface {
 
-	void sendEmail(String to, String subject, String body);
+  void sendEmail(String to, String subject, String body);
 
-	void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException;
+  void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException;
 
-	public void sendWelcomeEmail(UserEntity userEntity);
-
+  public void sendWelcomeEmail(UserEntity userEntity);
 }

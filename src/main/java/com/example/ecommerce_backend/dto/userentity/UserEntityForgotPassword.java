@@ -7,6 +7,5 @@ import lombok.Data;
 @Builder
 public class UserEntityForgotPassword {
 
-	private String email;
-
+  private String email;
 }

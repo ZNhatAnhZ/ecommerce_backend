@@ -9,14 +9,13 @@ import com.example.ecommerce_backend.mapper.supplierentity.SupplierEntityUpdateD
 import com.example.ecommerce_backend.model.SupplierEntity;
 import com.example.ecommerce_backend.repository.SupplierEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.SupplierServiceInterface;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Getter
@@ -25,54 +24,51 @@ import java.util.Optional;
 @Transactional
 public class SupplierServiceImpl implements SupplierServiceInterface {
 
-	private final SupplierEntityRepository supplierEntityRepository;
+  private final SupplierEntityRepository supplierEntityRepository;
 
-	private final SupplierEntityCreateDtoMapper supplierEntityCreateDtoMapper;
+  private final SupplierEntityCreateDtoMapper supplierEntityCreateDtoMapper;
 
-	private final SupplierEntityUpdateDtoMapper supplierEntityUpdateDtoMapper;
+  private final SupplierEntityUpdateDtoMapper supplierEntityUpdateDtoMapper;
 
-	public List<SupplierEntity> getAllSuppliers() {
-		return supplierEntityRepository.findAll();
-	}
+  public List<SupplierEntity> getAllSuppliers() {
+    return supplierEntityRepository.findAll();
+  }
 
-	public SupplierEntity getSupplierById(int id) {
-		Optional<SupplierEntity> supplierEntity = supplierEntityRepository.findById(id);
-		if (supplierEntity.isPresent()) {
-			return supplierEntity.get();
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find supplier with id " + id);
-		}
-	}
+  public SupplierEntity getSupplierById(int id) {
+    Optional<SupplierEntity> supplierEntity = supplierEntityRepository.findById(id);
+    if (supplierEntity.isPresent()) {
+      return supplierEntity.get();
+    } else {
+      throw new ResourceNotFoundException("Could not find supplier with id " + id);
+    }
+  }
 
-	public SupplierEntity createSupplier(SupplierEntityCreateDto supplierEntityCreateDto) {
-		if (Boolean.TRUE.equals(supplierEntityRepository.existsByName(supplierEntityCreateDto.getName()))) {
-			throw new ResourceDuplicateException("Supplier with this name already exists");
-		}
+  public SupplierEntity createSupplier(SupplierEntityCreateDto supplierEntityCreateDto) {
+    if (Boolean.TRUE.equals(
+        supplierEntityRepository.existsByName(supplierEntityCreateDto.getName()))) {
+      throw new ResourceDuplicateException("Supplier with this name already exists");
+    }
 
-		SupplierEntity supplierEntity = supplierEntityCreateDtoMapper
-			.toEntity(supplierEntityCreateDto);
-		return supplierEntityRepository.save(supplierEntity);
-	}
+    SupplierEntity supplierEntity = supplierEntityCreateDtoMapper.toEntity(supplierEntityCreateDto);
+    return supplierEntityRepository.save(supplierEntity);
+  }
 
-	public SupplierEntity updateSupplier(SupplierEntityUpdateDto supplierEntityUpdateDto) {
-		if (supplierEntityRepository.existsById(supplierEntityUpdateDto.getId())) {
-			SupplierEntity supplierEntity = supplierEntityUpdateDtoMapper
-				.toEntity(supplierEntityUpdateDto);
-			return supplierEntityRepository.save(supplierEntity);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find supplier with id " + supplierEntityUpdateDto.getId());
-		}
-	}
+  public SupplierEntity updateSupplier(SupplierEntityUpdateDto supplierEntityUpdateDto) {
+    if (supplierEntityRepository.existsById(supplierEntityUpdateDto.getId())) {
+      SupplierEntity supplierEntity =
+          supplierEntityUpdateDtoMapper.toEntity(supplierEntityUpdateDto);
+      return supplierEntityRepository.save(supplierEntity);
+    } else {
+      throw new ResourceNotFoundException(
+          "Could not find supplier with id " + supplierEntityUpdateDto.getId());
+    }
+  }
 
-	public void deleteSupplier(int id) {
-		if (supplierEntityRepository.existsById(id)) {
-			supplierEntityRepository.deleteById(id);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find supplier with id " + id);
-		}
-	}
-
+  public void deleteSupplier(int id) {
+    if (supplierEntityRepository.existsById(id)) {
+      supplierEntityRepository.deleteById(id);
+    } else {
+      throw new ResourceNotFoundException("Could not find supplier with id " + id);
+    }
+  }
 }

@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DiscountEntityRepository extends JpaRepository<DiscountEntity, Integer> {
 
-	boolean existsByName(String name);
+  boolean existsByName(String name);
 
-	@EntityGraph(attributePaths = { "productEntityList.supplierEntity" }, type = EntityGraph.EntityGraphType.FETCH)
-	@Override
-	Page<DiscountEntity> findAll(Pageable pageable);
-
+  @EntityGraph(
+      attributePaths = {"productEntityList.supplierEntity"},
+      type = EntityGraph.EntityGraphType.FETCH)
+  @Override
+  Page<DiscountEntity> findAll(Pageable pageable);
 }

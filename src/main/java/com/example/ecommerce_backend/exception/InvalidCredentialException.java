@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class InvalidCredentialException extends RuntimeException {
 
-	public InvalidCredentialException(String s) {
-		super(s);
-	}
-
+  public InvalidCredentialException(String s) {
+    super(s);
+  }
 }

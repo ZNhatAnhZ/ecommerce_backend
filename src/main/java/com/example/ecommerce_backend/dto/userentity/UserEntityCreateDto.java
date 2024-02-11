@@ -7,16 +7,15 @@ import lombok.Data;
 @Builder
 public class UserEntityCreateDto {
 
-	private String username;
+  private String username;
 
-	private String password;
+  private String password;
 
-	private String firstName;
+  private String firstName;
 
-	private String lastName;
+  private String lastName;
 
-	private String telephone;
+  private String telephone;
 
-	private String email;
-
+  private String email;
 }

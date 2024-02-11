@@ -5,15 +5,15 @@ import com.example.ecommerce_backend.model.VariationEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
-import java.util.Set;
-
-@Mapper(componentModel = "spring", uses = { VariationEntityIndexDtoMapper.class })
+@Mapper(
+    componentModel = "spring",
+    uses = {VariationEntityIndexDtoMapper.class})
 public interface VariationEntityIndexDtoMapper {
 
-	VariationEntity toEntity(VariationEntityIndexDto variationEntityIndexDto);
+  VariationEntity toEntity(VariationEntityIndexDto variationEntityIndexDto);
 
-	@Mapping(source = "variationEntity.childVariationEntityList", target = "childVariationEntityIndexDtoList")
-	VariationEntityIndexDto toDto(VariationEntity variationEntity);
-
+  @Mapping(
+      source = "variationEntity.childVariationEntityList",
+      target = "childVariationEntityIndexDtoList")
+  VariationEntityIndexDto toDto(VariationEntity variationEntity);
 }

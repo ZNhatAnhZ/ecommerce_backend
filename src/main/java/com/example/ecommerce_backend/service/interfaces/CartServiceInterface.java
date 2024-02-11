@@ -8,12 +8,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface CartServiceInterface {
 
-	Page<CartItemEntityIndexDto> getAllItemEntitiesFromCart(int cartId, Pageable pageable);
+  Page<CartItemEntityIndexDto> getAllItemEntitiesFromCart(int cartId, Pageable pageable);
 
-	CartItemEntityIndexDto addItemEntityToCart(CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto);
+  CartItemEntityIndexDto addItemEntityToCart(
+      CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto);
 
-	CartItemEntityIndexDto updateCartItemQuantity(CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto);
+  CartItemEntityIndexDto updateCartItemQuantity(
+      CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto);
 
-	void delete(int id);
-
+  void delete(int id);
 }

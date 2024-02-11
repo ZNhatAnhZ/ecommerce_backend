@@ -7,8 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ProductEntityAfterCreatedDtoMapper {
 
-	ProductEntity toEntity(ProductEntityAfterCreatedDto productEntityAfterCreatedDto);
+  ProductEntity toEntity(ProductEntityAfterCreatedDto productEntityAfterCreatedDto);
 
-	ProductEntityAfterCreatedDto toDto(ProductEntity productEntity);
-
+  ProductEntityAfterCreatedDto toDto(ProductEntity productEntity);
 }

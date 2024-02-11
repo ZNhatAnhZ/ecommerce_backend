@@ -7,6 +7,9 @@ import com.google.common.io.Files;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,10 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 @Service
 @Getter
 @Setter
@@ -31,50 +30,50 @@ import java.nio.charset.StandardCharsets;
 @Transactional
 public class EmailServiceImpl implements EmailServiceInterface {
 
-	private final JavaMailSender mailSender;
+  private final JavaMailSender mailSender;
 
-	@Value("hostSender")
-	private String hostSender;
+  @Value("hostSender")
+  private String hostSender;
 
-	@Override
-	public void sendEmail(String to, String subject, String body) {
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setSubject(subject);
-		message.setText(body);
+  @Override
+  public void sendEmail(String to, String subject, String body) {
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(to);
+    message.setSubject(subject);
+    message.setText(body);
 
-		mailSender.send(message);
-	}
+    mailSender.send(message);
+  }
 
-	@Override
-	public void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException {
-		MimeMessage message = mailSender.createMimeMessage();
+  @Override
+  public void sendEmailFromTemplate(String to, String subject, String body)
+      throws MessagingException {
+    MimeMessage message = mailSender.createMimeMessage();
 
-		message.setFrom(new InternetAddress(hostSender));
-		message.setRecipients(MimeMessage.RecipientType.TO, to);
-		message.setSubject(subject);
+    message.setFrom(new InternetAddress(hostSender));
+    message.setRecipients(MimeMessage.RecipientType.TO, to);
+    message.setSubject(subject);
 
-		// Set the email's content to be the HTML template
-		message.setContent(body, "text/html; charset=utf-8");
+    // Set the email's content to be the HTML template
+    message.setContent(body, "text/html; charset=utf-8");
 
-		mailSender.send(message);
-	}
+    mailSender.send(message);
+  }
 
-	@Async
-	public void sendWelcomeEmail(UserEntity userEntity) {
-		try {
-			File file = ResourceUtils.getFile("classpath:welcome_email.html");
-			String htmlTemplate = Files.asCharSource(file, StandardCharsets.UTF_8).read();
+  @Async
+  public void sendWelcomeEmail(UserEntity userEntity) {
+    try {
+      File file = ResourceUtils.getFile("classpath:welcome_email.html");
+      String htmlTemplate = Files.asCharSource(file, StandardCharsets.UTF_8).read();
 
-			// Replace placeholders in the HTML template with dynamic values
-			htmlTemplate = htmlTemplate.replace("[Customer's Name]", userEntity.getFirstName());
-			sendEmailFromTemplate(userEntity.getEmail(), "User successfully registered to ecommerce app", htmlTemplate);
+      // Replace placeholders in the HTML template with dynamic values
+      htmlTemplate = htmlTemplate.replace("[Customer's Name]", userEntity.getFirstName());
+      sendEmailFromTemplate(
+          userEntity.getEmail(), "User successfully registered to ecommerce app", htmlTemplate);
 
-		}
-		catch (IOException | MessagingException ex) {
-			log.error(ex.toString());
-			throw new EmailSendingException(ex.toString());
-		}
-	}
-
+    } catch (IOException | MessagingException ex) {
+      log.error(ex.toString());
+      throw new EmailSendingException(ex.toString());
+    }
+  }
 }

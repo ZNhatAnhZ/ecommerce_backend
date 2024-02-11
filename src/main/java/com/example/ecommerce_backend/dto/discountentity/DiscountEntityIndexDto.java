@@ -7,14 +7,13 @@ import lombok.Data;
 @Builder
 public class DiscountEntityIndexDto {
 
-	private int id;
+  private int id;
 
-	private String name;
+  private String name;
 
-	private String description;
+  private String description;
 
-	private String discountPercent;
+  private String discountPercent;
 
-	private String active;
-
+  private String active;
 }

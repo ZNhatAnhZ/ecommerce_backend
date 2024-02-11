@@ -1,27 +1,25 @@
 package com.example.ecommerce_backend.dto.productentity;
 
 import com.example.ecommerce_backend.dto.variationentity.VariationEntityCreateDto;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
 public class ProductEntityUpdateDto {
 
-	private int id;
+  private int id;
 
-	private String name;
+  private String name;
 
-	private String description;
+  private String description;
 
-	private int categoryId;
+  private int categoryId;
 
-	private int supplierId;
+  private int supplierId;
 
-	private int discountId;
+  private int discountId;
 
-	private List<VariationEntityCreateDto> variationEntityCreateDtoList;
-
+  private List<VariationEntityCreateDto> variationEntityCreateDtoList;
 }

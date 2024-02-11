@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.BAD_GATEWAY)
 public class EmailSendingException extends RuntimeException {
 
-	public EmailSendingException(String s) {
-		super(s);
-	}
-
+  public EmailSendingException(String s) {
+    super(s);
+  }
 }

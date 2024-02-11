@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(code = HttpStatus.SERVICE_UNAVAILABLE)
 public class UnavailablePaymentException extends RuntimeException {
 
-	public UnavailablePaymentException(String s) {
-		super(s);
-	}
-
+  public UnavailablePaymentException(String s) {
+    super(s);
+  }
 }

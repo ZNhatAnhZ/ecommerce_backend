@@ -11,6 +11,8 @@ import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityUpdateD
 import com.example.ecommerce_backend.model.DiscountEntity;
 import com.example.ecommerce_backend.repository.DiscountEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
+import java.util.List;
+import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,9 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @Getter
 @Setter
@@ -29,62 +28,55 @@ import java.util.Optional;
 @Transactional
 public class DiscountServiceImpl implements DiscountServiceInterface {
 
-	private final DiscountEntityRepository discountEntityRepository;
+  private final DiscountEntityRepository discountEntityRepository;
 
-	private final DiscountEntityCreateDtoMapper discountEntityCreateDtoMapper;
+  private final DiscountEntityCreateDtoMapper discountEntityCreateDtoMapper;
 
-	private final DiscountEntityUpdateDtoMapper discountEntityUpdateDtoMapper;
+  private final DiscountEntityUpdateDtoMapper discountEntityUpdateDtoMapper;
 
-	private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
+  private final DiscountEntityIndexDtoMapper discountEntityIndexDtoMapper;
 
-	public List<DiscountEntity> getAllDiscounts() {
-		return discountEntityRepository.findAll();
-	}
+  public List<DiscountEntity> getAllDiscounts() {
+    return discountEntityRepository.findAll();
+  }
 
-	public Page<DiscountEntityIndexDto> findByCondition(Pageable pageable) {
-		return discountEntityRepository.findAll(pageable)
-			.map(discountEntityIndexDtoMapper::toDto);
-	}
+  public Page<DiscountEntityIndexDto> findByCondition(Pageable pageable) {
+    return discountEntityRepository.findAll(pageable).map(discountEntityIndexDtoMapper::toDto);
+  }
 
-	public DiscountEntity getDiscountById(int id) {
-		Optional<DiscountEntity> discountEntity = discountEntityRepository.findById(id);
-		if (discountEntity.isPresent()) {
-			return discountEntity.get();
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find discount with id " + id);
-		}
-	}
+  public DiscountEntity getDiscountById(int id) {
+    Optional<DiscountEntity> discountEntity = discountEntityRepository.findById(id);
+    if (discountEntity.isPresent()) {
+      return discountEntity.get();
+    } else {
+      throw new ResourceNotFoundException("Could not find discount with id " + id);
+    }
+  }
 
-	public DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto) {
-		if (discountEntityRepository.existsByName(discountCreateDto.getName())) {
-			throw new ResourceDuplicateException("this discount is already exist");
-		}
-		else {
-			DiscountEntity discountEntity = discountEntityCreateDtoMapper
-				.toEntity(discountCreateDto);
-			return discountEntityRepository.save(discountEntity);
-		}
-	}
+  public DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto) {
+    if (discountEntityRepository.existsByName(discountCreateDto.getName())) {
+      throw new ResourceDuplicateException("this discount is already exist");
+    } else {
+      DiscountEntity discountEntity = discountEntityCreateDtoMapper.toEntity(discountCreateDto);
+      return discountEntityRepository.save(discountEntity);
+    }
+  }
 
-	public DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto) {
-		if (discountEntityRepository.existsById(discountUpdateDto.getId())) {
-			DiscountEntity discountEntity = discountEntityUpdateDtoMapper
-				.toEntity(discountUpdateDto);
-			return discountEntityRepository.save(discountEntity);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find discount with id " + discountUpdateDto.getId());
-		}
-	}
+  public DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto) {
+    if (discountEntityRepository.existsById(discountUpdateDto.getId())) {
+      DiscountEntity discountEntity = discountEntityUpdateDtoMapper.toEntity(discountUpdateDto);
+      return discountEntityRepository.save(discountEntity);
+    } else {
+      throw new ResourceNotFoundException(
+          "Could not find discount with id " + discountUpdateDto.getId());
+    }
+  }
 
-	public void deleteDiscount(int id) {
-		if (discountEntityRepository.existsById(id)) {
-			discountEntityRepository.deleteById(id);
-		}
-		else {
-			throw new ResourceNotFoundException("Could not find discount with id " + id);
-		}
-	}
-
+  public void deleteDiscount(int id) {
+    if (discountEntityRepository.existsById(id)) {
+      discountEntityRepository.deleteById(id);
+    } else {
+      throw new ResourceNotFoundException("Could not find discount with id " + id);
+    }
+  }
 }

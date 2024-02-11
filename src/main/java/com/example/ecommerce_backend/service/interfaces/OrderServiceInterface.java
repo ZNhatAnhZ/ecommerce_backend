@@ -5,7 +5,6 @@ import com.example.ecommerce_backend.dto.paypaldto.OrderResponseDto;
 
 public interface OrderServiceInterface {
 
-	// OrderResponseDto createOrder(List<OrderItemCreateDto> orderItemCreateDtoList);
-	OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto);
-
+  // OrderResponseDto createOrder(List<OrderItemCreateDto> orderItemCreateDtoList);
+  OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto);
 }

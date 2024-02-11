@@ -16,21 +16,20 @@ import lombok.Setter;
 // CacheConcurrencyStrategy.READ_WRITE)
 public class SupplierEntity {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "id")
-	private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "id")
+  private int id;
 
-	@Column(name = "name")
-	private String name;
+  @Column(name = "name")
+  private String name;
 
-	@Column(name = "telephone")
-	private String telephone;
+  @Column(name = "telephone")
+  private String telephone;
 
-	@Column(name = "address1")
-	private String address1;
+  @Column(name = "address1")
+  private String address1;
 
-	@Column(name = "address2")
-	private String address2;
-
+  @Column(name = "address2")
+  private String address2;
 }

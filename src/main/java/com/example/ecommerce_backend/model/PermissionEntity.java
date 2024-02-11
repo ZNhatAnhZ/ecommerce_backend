@@ -14,12 +14,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PermissionEntity {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "id")
-	private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "id")
+  private int id;
 
-	@Column(name = "name")
-	private String name;
-
+  @Column(name = "name")
+  private String name;
 }

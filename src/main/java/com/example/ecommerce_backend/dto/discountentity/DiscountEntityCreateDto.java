@@ -7,12 +7,11 @@ import lombok.Data;
 @Builder
 public class DiscountEntityCreateDto {
 
-	private String name;
+  private String name;
 
-	private String description;
+  private String description;
 
-	private String discountPercent;
+  private String discountPercent;
 
-	private String active;
-
+  private String active;
 }

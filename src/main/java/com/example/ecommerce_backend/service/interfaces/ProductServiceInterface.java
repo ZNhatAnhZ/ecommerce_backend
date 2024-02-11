@@ -6,16 +6,15 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductServiceInterface {
 
-	void deleteProduct(int id);
+  void deleteProduct(int id);
 
-	Page<ProductEntityIndexDto> getAllProducts(Pageable pageable);
+  Page<ProductEntityIndexDto> getAllProducts(Pageable pageable);
 
-	Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable);
+  Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable);
 
-	ProductEntityDetailDto getProductById(Integer id);
+  ProductEntityDetailDto getProductById(Integer id);
 
-	ProductEntityAfterCreatedDto createProduct(ProductEntityCreateDto productEntityCreateDto);
+  ProductEntityAfterCreatedDto createProduct(ProductEntityCreateDto productEntityCreateDto);
 
-	ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto);
-
+  ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto);
 }

@@ -13,18 +13,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@org.hibernate.annotations.Cache(region = "productCategory", usage = CacheConcurrencyStrategy.READ_WRITE)
+@org.hibernate.annotations.Cache(
+    region = "productCategory",
+    usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductCategoryEntity {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "id")
-	private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "id")
+  private int id;
 
-	@Column(name = "name")
-	private String name;
+  @Column(name = "name")
+  private String name;
 
-	@Column(name = "description")
-	private String description;
-
+  @Column(name = "description")
+  private String description;
 }

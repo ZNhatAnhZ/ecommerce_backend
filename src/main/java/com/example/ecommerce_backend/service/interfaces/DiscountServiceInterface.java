@@ -4,23 +4,21 @@ import com.example.ecommerce_backend.dto.discountentity.DiscountEntityCreateDto;
 import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
 import com.example.ecommerce_backend.dto.discountentity.DiscountEntityUpdateDto;
 import com.example.ecommerce_backend.model.DiscountEntity;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface DiscountServiceInterface {
 
-	List<DiscountEntity> getAllDiscounts();
+  List<DiscountEntity> getAllDiscounts();
 
-	DiscountEntity getDiscountById(int id);
+  DiscountEntity getDiscountById(int id);
 
-	DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto);
+  DiscountEntity createDiscount(DiscountEntityCreateDto discountCreateDto);
 
-	DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto);
+  DiscountEntity updateDiscount(DiscountEntityUpdateDto discountUpdateDto);
 
-	void deleteDiscount(int id);
+  void deleteDiscount(int id);
 
-	Page<DiscountEntityIndexDto> findByCondition(Pageable pageable);
-
+  Page<DiscountEntityIndexDto> findByCondition(Pageable pageable);
 }

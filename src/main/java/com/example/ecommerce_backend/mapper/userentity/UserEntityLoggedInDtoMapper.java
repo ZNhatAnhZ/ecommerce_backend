@@ -7,8 +7,7 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserEntityLoggedInDtoMapper {
 
-	UserEntity toEntity(UserEntityLoggedInDto userEntityLoggedInDto);
+  UserEntity toEntity(UserEntityLoggedInDto userEntityLoggedInDto);
 
-	UserEntityLoggedInDto toDto(UserEntity userEntity);
-
+  UserEntityLoggedInDto toDto(UserEntity userEntity);
 }

@@ -18,27 +18,28 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class VariationController {
 
-	private final VariationServiceInterface variationServiceInterface;
+  private final VariationServiceInterface variationServiceInterface;
 
-	@GetMapping
-	public Page<VariationEntityIndexDto> index(
-			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-		return variationServiceInterface.findByCondition(pageable);
-	}
+  @GetMapping
+  public Page<VariationEntityIndexDto> index(
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    return variationServiceInterface.findByCondition(pageable);
+  }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<VariationEntityIndexDto> getVariationById(@PathVariable int id) {
-		VariationEntityIndexDto variationEntityIndexDto = variationServiceInterface.findVariationById(id);
-		return ResponseEntity.ok(variationEntityIndexDto);
-	}
+  @GetMapping("/{id}")
+  public ResponseEntity<VariationEntityIndexDto> getVariationById(@PathVariable int id) {
+    VariationEntityIndexDto variationEntityIndexDto =
+        variationServiceInterface.findVariationById(id);
+    return ResponseEntity.ok(variationEntityIndexDto);
+  }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<VariationEntityIndexDto> updateVariation(@PathVariable int id,
-			@RequestBody VariationEntityUpdateInfoDto variationEntityUpdateInfoDto) {
-		variationEntityUpdateInfoDto.setId(id);
-		VariationEntityIndexDto variationEntityIndexDto = variationServiceInterface
-			.updateVariation(variationEntityUpdateInfoDto);
-		return ResponseEntity.ok(variationEntityIndexDto);
-	}
-
+  @PutMapping("/{id}")
+  public ResponseEntity<VariationEntityIndexDto> updateVariation(
+      @PathVariable int id,
+      @RequestBody VariationEntityUpdateInfoDto variationEntityUpdateInfoDto) {
+    variationEntityUpdateInfoDto.setId(id);
+    VariationEntityIndexDto variationEntityIndexDto =
+        variationServiceInterface.updateVariation(variationEntityUpdateInfoDto);
+    return ResponseEntity.ok(variationEntityIndexDto);
+  }
 }

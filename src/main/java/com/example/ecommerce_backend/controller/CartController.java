@@ -19,35 +19,40 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CartController {
 
-	private final CartServiceInterface cartServiceInterface;
+  private final CartServiceInterface cartServiceInterface;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Page<CartItemEntityIndexDto>> getAllItemEntitiesFromCart(@PathVariable("id") int id,
-			@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<CartItemEntityIndexDto> cartItemEntityIndexDtoList = cartServiceInterface.getAllItemEntitiesFromCart(id,
-				pageable);
-		return ResponseEntity.ok(cartItemEntityIndexDtoList);
-	}
+  @GetMapping("/{id}")
+  public ResponseEntity<Page<CartItemEntityIndexDto>> getAllItemEntitiesFromCart(
+      @PathVariable("id") int id,
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    Page<CartItemEntityIndexDto> cartItemEntityIndexDtoList =
+        cartServiceInterface.getAllItemEntitiesFromCart(id, pageable);
+    return ResponseEntity.ok(cartItemEntityIndexDtoList);
+  }
 
-	@PostMapping("/{id}")
-	public ResponseEntity<CartItemEntityIndexDto> addItemEntityToCart(@PathVariable int id,
-			@RequestBody CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
-		cartItemEntityCreateRequestDto.setUserId(id);
-		return ResponseEntity.ok(cartServiceInterface.addItemEntityToCart(cartItemEntityCreateRequestDto));
-	}
+  @PostMapping("/{id}")
+  public ResponseEntity<CartItemEntityIndexDto> addItemEntityToCart(
+      @PathVariable int id,
+      @RequestBody CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
+    cartItemEntityCreateRequestDto.setUserId(id);
+    return ResponseEntity.ok(
+        cartServiceInterface.addItemEntityToCart(cartItemEntityCreateRequestDto));
+  }
 
-	@PutMapping("/{cartId}/cartItems/{cartItemId}")
-	public ResponseEntity<CartItemEntityIndexDto> updateCartItemQuantity(@PathVariable("cartId") int cartId,
-			@PathVariable("cartItemId") int cartItemId,
-			@RequestBody CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
-		cartItemEntityUpdateQuantityDto.setId(cartItemId);
-		return ResponseEntity.ok(cartServiceInterface.updateCartItemQuantity(cartItemEntityUpdateQuantityDto));
-	}
+  @PutMapping("/{cartId}/cartItems/{cartItemId}")
+  public ResponseEntity<CartItemEntityIndexDto> updateCartItemQuantity(
+      @PathVariable("cartId") int cartId,
+      @PathVariable("cartItemId") int cartItemId,
+      @RequestBody CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
+    cartItemEntityUpdateQuantityDto.setId(cartItemId);
+    return ResponseEntity.ok(
+        cartServiceInterface.updateCartItemQuantity(cartItemEntityUpdateQuantityDto));
+  }
 
-	@DeleteMapping("/{cartId}/cartItems/{cartItemId}")
-	public ResponseEntity<Void> delete(@PathVariable("cartId") int cartId, @PathVariable("cartItemId") int cartItemId) {
-		cartServiceInterface.delete(cartItemId);
-		return ResponseEntity.ok().build();
-	}
-
+  @DeleteMapping("/{cartId}/cartItems/{cartItemId}")
+  public ResponseEntity<Void> delete(
+      @PathVariable("cartId") int cartId, @PathVariable("cartItemId") int cartItemId) {
+    cartServiceInterface.delete(cartItemId);
+    return ResponseEntity.ok().build();
+  }
 }

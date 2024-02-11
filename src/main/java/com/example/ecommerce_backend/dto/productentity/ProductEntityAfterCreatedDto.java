@@ -1,21 +1,19 @@
 package com.example.ecommerce_backend.dto.productentity;
 
 import com.example.ecommerce_backend.dto.itementity.ItemEntityAfterCreatedDto;
+import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Builder
 public class ProductEntityAfterCreatedDto {
 
-	private int id;
+  private int id;
 
-	private String name;
+  private String name;
 
-	private String description;
+  private String description;
 
-	private List<ItemEntityAfterCreatedDto> itemEntityAfterCreatedDtoList;
-
+  private List<ItemEntityAfterCreatedDto> itemEntityAfterCreatedDtoList;
 }

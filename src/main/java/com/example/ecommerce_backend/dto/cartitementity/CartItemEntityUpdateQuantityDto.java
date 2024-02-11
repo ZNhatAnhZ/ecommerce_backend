@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartItemEntityUpdateQuantityDto {
 
-	private int id;
+  private int id;
 
-	private int quantity;
-
+  private int quantity;
 }

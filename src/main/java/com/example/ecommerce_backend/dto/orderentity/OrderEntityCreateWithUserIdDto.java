@@ -1,18 +1,15 @@
 package com.example.ecommerce_backend.dto.orderentity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.List;
-
-/**
- * DTO for {@link com.example.ecommerce_backend.model.OrderItemEntity}
- */
+/** DTO for {@link com.example.ecommerce_backend.model.OrderItemEntity} */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,8 +18,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderEntityCreateWithUserIdDto implements Serializable {
 
-	private int userId;
+  private int userId;
 
-	private List<OrderItemEntityCreateDto> itemList;
-
+  private List<OrderItemEntityCreateDto> itemList;
 }

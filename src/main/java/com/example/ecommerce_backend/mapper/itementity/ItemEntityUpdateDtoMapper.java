@@ -5,11 +5,12 @@ import com.example.ecommerce_backend.mapper.productentity.ProductEntityIndexDtoM
 import com.example.ecommerce_backend.model.ItemEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = { ProductEntityIndexDtoMapper.class })
+@Mapper(
+    componentModel = "spring",
+    uses = {ProductEntityIndexDtoMapper.class})
 public interface ItemEntityUpdateDtoMapper {
 
-	ItemEntity toEntity(ItemEntityUpdateDto itemEntityUpdateDto);
+  ItemEntity toEntity(ItemEntityUpdateDto itemEntityUpdateDto);
 
-	ItemEntityUpdateDto toDto(ItemEntity itemEntity);
-
+  ItemEntityUpdateDto toDto(ItemEntity itemEntity);
 }

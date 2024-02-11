@@ -10,11 +10,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface ItemEntityIndexDtoMapper {
 
-	ItemEntity toEntity(ItemEntityIndexDto itemEntityIndexDto);
+  ItemEntity toEntity(ItemEntityIndexDto itemEntityIndexDto);
 
-	ItemEntityIndexDto toDto(ItemEntity itemEntity);
+  ItemEntityIndexDto toDto(ItemEntity itemEntity);
 
-	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-	ItemEntity partialUpdate(ItemEntityIndexDto itemEntityIndexDto, @MappingTarget ItemEntity itemEntity);
-
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  ItemEntity partialUpdate(
+      ItemEntityIndexDto itemEntityIndexDto, @MappingTarget ItemEntity itemEntity);
 }

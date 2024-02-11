@@ -1,9 +1,8 @@
 package com.example.ecommerce_backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.sql.Timestamp;
+import lombok.*;
 
 @Entity
 @Table(name = "order_item", schema = "ecommerce")
@@ -14,29 +13,28 @@ import java.sql.Timestamp;
 @Builder
 public class OrderItemEntity {
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id
-	@Column(name = "id")
-	private int id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @Column(name = "id")
+  private int id;
 
-	@Column(name = "quantity")
-	private int quantity;
+  @Column(name = "quantity")
+  private int quantity;
 
-	@Column(name = "price")
-	private String totalPrice;
+  @Column(name = "price")
+  private String totalPrice;
 
-	@Column(name = "created_at")
-	private Timestamp createdAt;
+  @Column(name = "created_at")
+  private Timestamp createdAt;
 
-	@Column(name = "updated_at")
-	private Timestamp updatedAt;
+  @Column(name = "updated_at")
+  private Timestamp updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "order_id", referencedColumnName = "id")
-	private OrderEntity orderEntity;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "order_id", referencedColumnName = "id")
+  private OrderEntity orderEntity;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "item_id", referencedColumnName = "id")
-	private ItemEntity itemEntity;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "item_id", referencedColumnName = "id")
+  private ItemEntity itemEntity;
 }

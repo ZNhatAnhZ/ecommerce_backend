@@ -7,14 +7,13 @@ import lombok.Data;
 @Builder
 public class UserEntityIndexDto {
 
-	private int id;
+  private int id;
 
-	private String username;
+  private String username;
 
-	private String firstName;
+  private String firstName;
 
-	private String lastName;
+  private String lastName;
 
-	private String telephone;
-
+  private String telephone;
 }

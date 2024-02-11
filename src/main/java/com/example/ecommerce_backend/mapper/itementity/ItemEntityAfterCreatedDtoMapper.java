@@ -5,11 +5,12 @@ import com.example.ecommerce_backend.mapper.variationentity.VariationEntityForIt
 import com.example.ecommerce_backend.model.ItemEntity;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = { VariationEntityForItemEntityMapper.class })
+@Mapper(
+    componentModel = "spring",
+    uses = {VariationEntityForItemEntityMapper.class})
 public interface ItemEntityAfterCreatedDtoMapper {
 
-	ItemEntity toEntity(ItemEntityAfterCreatedDto itemEntityAfterCreatedDto);
+  ItemEntity toEntity(ItemEntityAfterCreatedDto itemEntityAfterCreatedDto);
 
-	ItemEntityAfterCreatedDto toDto(ItemEntity itemEntity);
-
+  ItemEntityAfterCreatedDto toDto(ItemEntity itemEntity);
 }

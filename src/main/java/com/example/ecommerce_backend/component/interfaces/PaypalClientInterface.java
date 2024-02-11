@@ -7,11 +7,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 public interface PaypalClientInterface {
 
-	WebClient.ResponseSpec sendGetAccessToken();
+  WebClient.ResponseSpec sendGetAccessToken();
 
-	WebClient.ResponseSpec sendCreateOrder(AccessTokenResponseDto accessTokenResponseDto, OrderDto orderDto);
+  WebClient.ResponseSpec sendCreateOrder(
+      AccessTokenResponseDto accessTokenResponseDto, OrderDto orderDto);
 
-	WebClient.ResponseSpec sendCaptureOrder(AccessTokenResponseDto accessTokenResponseDto,
-			UserPayOrderDto userPayOrderDto);
-
+  WebClient.ResponseSpec sendCaptureOrder(
+      AccessTokenResponseDto accessTokenResponseDto, UserPayOrderDto userPayOrderDto);
 }

@@ -16,24 +16,23 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderController {
 
-	private final OrderServiceImpl orderService;
+  private final OrderServiceImpl orderService;
 
-	@PostMapping("/with_user")
-	public ResponseEntity<OrderResponseDto> createOrder(
-			@RequestBody OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto) {
-		return ResponseEntity.ok(orderService.createOrderForUser(orderEntityCreateWithUserIdDto));
-	}
+  @PostMapping("/with_user")
+  public ResponseEntity<OrderResponseDto> createOrder(
+      @RequestBody OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto) {
+    return ResponseEntity.ok(orderService.createOrderForUser(orderEntityCreateWithUserIdDto));
+  }
 
-	@PostMapping("/with_email")
-	public ResponseEntity<OrderResponseDto> createOrder(
-			@RequestBody OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto) {
-		return ResponseEntity.ok(orderService.createOrderForEmail(orderEntityCreateWithEmailDto));
-	}
+  @PostMapping("/with_email")
+  public ResponseEntity<OrderResponseDto> createOrder(
+      @RequestBody OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto) {
+    return ResponseEntity.ok(orderService.createOrderForEmail(orderEntityCreateWithEmailDto));
+  }
 
-	@PostMapping("/{id}/confirm")
-	public ResponseEntity<OrderResponseDto> payOrder(@PathVariable String id,
-			@RequestBody UserPayOrderDto userPayOrderDto) {
-		return ResponseEntity.ok(orderService.payOrder(userPayOrderDto));
-	}
-
+  @PostMapping("/{id}/confirm")
+  public ResponseEntity<OrderResponseDto> payOrder(
+      @PathVariable String id, @RequestBody UserPayOrderDto userPayOrderDto) {
+    return ResponseEntity.ok(orderService.payOrder(userPayOrderDto));
+  }
 }

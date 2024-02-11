@@ -7,8 +7,7 @@ import lombok.Data;
 @Builder
 public class CategoryEntityCreateDto {
 
-	String name;
+  String name;
 
-	String description;
-
+  String description;
 }
