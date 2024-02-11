@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -86,36 +87,25 @@ public class SecurityConfig {
 		http.cors(
 				httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
 			.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/api/login")
-				.permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/users")
-				.permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/products/**")
-				.permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/categories/**")
-				.permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/orders/*/confirm")
-				.permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/orders/with_email")
-				.permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/orders/with_user")
-				.permitAll()
-				.requestMatchers("/error/**")
-				.permitAll()
-				.requestMatchers("/swagger-ui/**")
-				.permitAll()
-				.requestMatchers("/swagger-ui.html")
-				.permitAll()
-				.requestMatchers("/v3/api-docs")
-				.permitAll()
-				.requestMatchers("/v3/api-docs.yaml")
-				.permitAll()
-				.requestMatchers("v3/api-docs/**")
-				.permitAll()
+			.authorizeHttpRequests(authorize ->
+					authorize.requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/*/confirm").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/with_email").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/orders/with_user").permitAll()
+				.requestMatchers("/error/**").permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
+				.requestMatchers("/swagger-ui.html").permitAll()
+				.requestMatchers("/v3/api-docs").permitAll()
+				.requestMatchers("/v3/api-docs.yaml").permitAll()
+				.requestMatchers("v3/api-docs/**").permitAll()
 				.anyRequest()
-				.authenticated());
+				.authenticated())
+		.oauth2Login(Customizer.withDefaults());
 
-		http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+//		http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
 
 		return http.build();
 	}
