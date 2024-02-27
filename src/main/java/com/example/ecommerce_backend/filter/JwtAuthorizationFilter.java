@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-@Component
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+//@Component
+@RequiredArgsConstructor
 @Slf4j
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
@@ -40,6 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       String jwt = checkTokenFormatThenReturnToken(request);
       checkAuthenticationFromToken(jwt);
     } catch (InvalidCredentialException invalidCredentialException) {
+      log.error(invalidCredentialException.getMessage());
       handlerExceptionResolver.resolveException(
           request, response, null, invalidCredentialException);
       return;
