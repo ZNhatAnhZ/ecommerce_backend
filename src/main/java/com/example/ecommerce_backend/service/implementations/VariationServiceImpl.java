@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.service.implementations;
 
 import com.example.ecommerce_backend.dto.variationentity.VariationEntityCreateDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityIndexDto;
 import com.example.ecommerce_backend.dto.variationentity.VariationEntityUpdateInfoDto;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.variationentity.VariationEntityCreateDtoMapper;
@@ -41,11 +40,10 @@ public class VariationServiceImpl implements VariationServiceInterface {
   private final VariationEntityRepository variationEntityRepository;
 
   @Override
-  public VariationEntityIndexDto createVariation(
-      VariationEntityCreateDto variationEntityCreateDto) {
+  public VariationEntity createVariation(VariationEntityCreateDto variationEntityCreateDto) {
     VariationEntity variationEntity =
         variationEntityCreateDtoMapper.toEntity(variationEntityCreateDto);
-    return variationEntityIndexDtoMapper.toDto(variationEntityRepository.save(variationEntity));
+    return variationEntityRepository.save(variationEntity);
   }
 
   @Override
@@ -72,30 +70,29 @@ public class VariationServiceImpl implements VariationServiceInterface {
   }
 
   @Override
-  public VariationEntityIndexDto findVariationById(int id) {
+  public VariationEntity findVariationById(int id) {
     Optional<VariationEntity> variationEntity = variationEntityRepository.findById(id);
     if (variationEntity.isPresent()) {
-      return variationEntityIndexDtoMapper.toDto(variationEntity.get());
+      return variationEntity.get();
     } else {
       throw new ResourceNotFoundException("Could not find variation with id " + id);
     }
   }
 
   @Override
-  public Page<VariationEntityIndexDto> findByCondition(Pageable pageable) {
-    return variationEntityRepository.findAll(pageable).map(variationEntityIndexDtoMapper::toDto);
+  public Page<VariationEntity> findByCondition(Pageable pageable) {
+    return variationEntityRepository.findAll(pageable);
   }
 
   @Override
-  public VariationEntityIndexDto updateVariation(
+  public VariationEntity updateVariation(
       VariationEntityUpdateInfoDto variationEntityUpdateInfoDto) {
     Optional<VariationEntity> variationEntity =
         variationEntityRepository.findById(variationEntityUpdateInfoDto.getId());
     if (variationEntity.isPresent()) {
       variationEntity.get().setName(variationEntityUpdateInfoDto.getName());
       variationEntity.get().setValue(variationEntityUpdateInfoDto.getValue());
-      return variationEntityIndexDtoMapper.toDto(
-          variationEntityRepository.save(variationEntity.get()));
+      return variationEntityRepository.save(variationEntity.get());
     } else {
       throw new ResourceNotFoundException(
           "Could not find variation with id " + variationEntityUpdateInfoDto.getId());

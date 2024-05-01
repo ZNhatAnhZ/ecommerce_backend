@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.service.interfaces;
 
 import com.example.ecommerce_backend.dto.variationentity.VariationEntityCreateDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityIndexDto;
 import com.example.ecommerce_backend.dto.variationentity.VariationEntityUpdateInfoDto;
 import com.example.ecommerce_backend.model.VariationEntity;
 import java.util.List;
@@ -11,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface VariationServiceInterface {
 
-  VariationEntityIndexDto createVariation(VariationEntityCreateDto variationEntityCreateDto);
+  VariationEntity createVariation(VariationEntityCreateDto variationEntityCreateDto);
 
   List<VariationEntity> createVariationInBulk(
       List<VariationEntityCreateDto> variationEntityCreateDtoList);
@@ -20,10 +19,9 @@ public interface VariationServiceInterface {
 
   void deleteVariationInBatch(Set<VariationEntity> variationEntitySet);
 
-  VariationEntityIndexDto findVariationById(int id);
+  VariationEntity findVariationById(int id);
 
-  Page<VariationEntityIndexDto> findByCondition(Pageable pageable);
+  Page<VariationEntity> findByCondition(Pageable pageable);
 
-  VariationEntityIndexDto updateVariation(
-      VariationEntityUpdateInfoDto variationEntityUpdateInfoDto);
+  VariationEntity updateVariation(VariationEntityUpdateInfoDto variationEntityUpdateInfoDto);
 }

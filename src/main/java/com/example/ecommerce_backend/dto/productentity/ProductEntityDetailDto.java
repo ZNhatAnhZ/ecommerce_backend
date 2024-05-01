@@ -3,7 +3,7 @@ package com.example.ecommerce_backend.dto.productentity;
 import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
 import com.example.ecommerce_backend.dto.productcategoryentity.CategoryEntityCreateDto;
 import com.example.ecommerce_backend.dto.supplierentity.SupplierEntityCreateDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityIndexDto;
+import com.example.ecommerce_backend.dto.variationentity.VariationEntityFlatIndexDto;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +18,11 @@ public class ProductEntityDetailDto {
 
   private String description;
 
-  private CategoryEntityCreateDto categoryEntityCreateDto;
+  private CategoryEntityCreateDto categoryEntity;
 
-  private SupplierEntityCreateDto supplierEntityCreateDto;
+  private SupplierEntityCreateDto supplierEntity;
 
-  private DiscountEntityIndexDto discountEntityIndexDto;
+  private DiscountEntityIndexDto discountEntity;
 
-  private Set<VariationEntityIndexDto> variationEntityIndexDtoSet;
+  private Set<VariationEntityFlatIndexDto> variationEntity;
 }

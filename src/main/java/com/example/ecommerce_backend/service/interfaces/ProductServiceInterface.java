@@ -1,6 +1,7 @@
 package com.example.ecommerce_backend.service.interfaces;
 
 import com.example.ecommerce_backend.dto.productentity.*;
+import com.example.ecommerce_backend.model.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,7 +13,7 @@ public interface ProductServiceInterface {
 
   Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable);
 
-  ProductEntityDetailDto getProductById(Integer id);
+  ProductEntity getProductById(Integer id);
 
   ProductEntityAfterCreatedDto createProduct(ProductEntityCreateDto productEntityCreateDto);
 

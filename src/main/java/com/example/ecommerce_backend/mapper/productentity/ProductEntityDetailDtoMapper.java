@@ -4,7 +4,7 @@ import com.example.ecommerce_backend.dto.productentity.ProductEntityDetailDto;
 import com.example.ecommerce_backend.mapper.categoryentity.CategoryEntityCreateDtoMapper;
 import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityIndexDtoMapper;
 import com.example.ecommerce_backend.mapper.supplierentity.SupplierEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityIndexDtoMapper;
+import com.example.ecommerce_backend.mapper.variationentity.VariationEntityFlatIndexDtoMapper;
 import com.example.ecommerce_backend.model.ProductEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,7 +12,7 @@ import org.mapstruct.Mapping;
 @Mapper(
     componentModel = "spring",
     uses = {
-      VariationEntityIndexDtoMapper.class,
+      VariationEntityFlatIndexDtoMapper.class,
       CategoryEntityCreateDtoMapper.class,
       SupplierEntityCreateDtoMapper.class,
       DiscountEntityIndexDtoMapper.class
@@ -21,9 +21,9 @@ public interface ProductEntityDetailDtoMapper {
 
   ProductEntity toEntity(ProductEntityDetailDto productEntityDetailDto);
 
-  @Mapping(source = "productEntity.categoryEntity", target = "categoryEntityCreateDto")
-  @Mapping(source = "productEntity.discountEntity", target = "discountEntityIndexDto")
-  @Mapping(source = "productEntity.supplierEntity", target = "supplierEntityCreateDto")
-  @Mapping(source = "productEntity.variationEntitySet", target = "variationEntityIndexDtoSet")
+  @Mapping(source = "categoryEntity", target = "categoryEntity")
+  @Mapping(source = "discountEntity", target = "discountEntity")
+  @Mapping(source = "supplierEntity", target = "supplierEntity")
+  @Mapping(source = "variationEntitySet", target = "variationEntity")
   ProductEntityDetailDto toDto(ProductEntity productEntity);
 }

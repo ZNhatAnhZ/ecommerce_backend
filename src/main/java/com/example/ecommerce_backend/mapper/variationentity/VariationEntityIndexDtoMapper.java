@@ -12,8 +12,6 @@ public interface VariationEntityIndexDtoMapper {
 
   VariationEntity toEntity(VariationEntityIndexDto variationEntityIndexDto);
 
-  @Mapping(
-      source = "variationEntity.childVariationEntityList",
-      target = "childVariationEntityIndexDtoList")
+  @Mapping(source = "childVariationEntityList", target = "childVariationEntityIndexDtoList")
   VariationEntityIndexDto toDto(VariationEntity variationEntity);
 }

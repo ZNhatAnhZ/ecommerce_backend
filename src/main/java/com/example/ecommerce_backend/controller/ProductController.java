@@ -1,6 +1,7 @@
 package com.example.ecommerce_backend.controller;
 
 import com.example.ecommerce_backend.dto.productentity.*;
+import com.example.ecommerce_backend.mapper.productentity.ProductEntityDetailDtoMapper;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductServiceInterface productServiceInterface;
+  private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
 
   @PostMapping
   public ResponseEntity<ProductEntityAfterCreatedDto> create(
@@ -35,8 +37,8 @@ public class ProductController {
 
   @GetMapping("/{id}")
   public ResponseEntity<ProductEntityDetailDto> findById(@PathVariable("id") int id) {
-    ProductEntityDetailDto productEntityDetailDto = productServiceInterface.getProductById(id);
-    return ResponseEntity.ok(productEntityDetailDto);
+    return ResponseEntity.ok(
+        productEntityDetailDtoMapper.toDto(productServiceInterface.getProductById(id)));
   }
 
   @GetMapping("/search")

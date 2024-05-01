@@ -13,7 +13,6 @@ import com.example.ecommerce_backend.model.*;
 import com.example.ecommerce_backend.repository.ProductEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.*;
 import java.util.*;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -69,17 +68,11 @@ public class ProductServiceImpl implements ProductServiceInterface {
   }
 
   @Override
-  public ProductEntityDetailDto getProductById(Integer id) {
+  public ProductEntity getProductById(Integer id) {
     Optional<ProductEntity> productEntity = productEntityRepository.findById(id);
 
     if (productEntity.isPresent()) {
-      productEntity
-          .get()
-          .setVariationEntitySet(
-              productEntity.get().getVariationEntitySet().stream()
-                  .filter(variationEntity -> variationEntity.getParentVariationEntity() == null)
-                  .collect(Collectors.toSet()));
-      return productEntityDetailDtoMapper.toDto(productEntity.get());
+      return productEntity.get();
     } else {
       throw new ResourceNotFoundException("Could not find product with id " + id);
     }
