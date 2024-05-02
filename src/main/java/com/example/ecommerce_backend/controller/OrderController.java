@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithEmailDto;
-import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithUserIdDto;
+import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateDto;
 import com.example.ecommerce_backend.dto.orderentity.UserPayOrderDto;
 import com.example.ecommerce_backend.dto.paypaldto.OrderResponseDto;
 import com.example.ecommerce_backend.service.implementations.OrderServiceImpl;
@@ -18,21 +17,16 @@ public class OrderController {
 
   private final OrderServiceImpl orderService;
 
-  @PostMapping("/with_user")
+  @PostMapping
   public ResponseEntity<OrderResponseDto> createOrder(
-      @RequestBody OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto) {
-    return ResponseEntity.ok(orderService.createOrderForUser(orderEntityCreateWithUserIdDto));
-  }
-
-  @PostMapping("/with_email")
-  public ResponseEntity<OrderResponseDto> createOrder(
-      @RequestBody OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto) {
-    return ResponseEntity.ok(orderService.createOrderForEmail(orderEntityCreateWithEmailDto));
+      @RequestBody OrderEntityCreateDto orderEntityCreateDto) {
+    return ResponseEntity.ok(orderService.createOrder(orderEntityCreateDto));
   }
 
   @PostMapping("/{id}/confirm")
   public ResponseEntity<OrderResponseDto> payOrder(
       @PathVariable String id, @RequestBody UserPayOrderDto userPayOrderDto) {
+    userPayOrderDto.setOrderId(id);
     return ResponseEntity.ok(orderService.payOrder(userPayOrderDto));
   }
 }

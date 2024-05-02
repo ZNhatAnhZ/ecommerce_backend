@@ -106,7 +106,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
-<!--		<dependency>-->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--		<dependency>-->
 <!--			<groupId>org.redisson</groupId>-->
 <!--			<artifactId>redisson-hibernate-6</artifactId>-->
 <!--			<version>3.23.2</version>-->

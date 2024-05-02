@@ -1,11 +1,9 @@
 package com.example.ecommerce_backend.service.implementations;
 
 import com.example.ecommerce_backend.component.interfaces.PaypalClientInterface;
+import com.example.ecommerce_backend.constant.OrderCreateType;
 import com.example.ecommerce_backend.constant.PaypalOrderIntent;
-import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithEmailDto;
-import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateWithUserIdDto;
-import com.example.ecommerce_backend.dto.orderentity.OrderItemEntityCreateDto;
-import com.example.ecommerce_backend.dto.orderentity.UserPayOrderDto;
+import com.example.ecommerce_backend.dto.orderentity.*;
 import com.example.ecommerce_backend.dto.paypaldto.*;
 import com.example.ecommerce_backend.exception.InvalidOrderException;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
@@ -28,6 +26,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,41 +48,27 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
   private final UserServiceInterface userServiceInterface;
 
-  // @Override
-  public OrderResponseDto createOrderForUser(
-      OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto) {
+  @Override
+  public OrderResponseDto createOrder(@NotNull OrderEntityCreateDto orderEntityCreateDto) {
     AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
     AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
+    OrderEntity savedOrderEntity;
 
-    OrderEntity savedOrderEntity =
-        buildOrderWithUserIdAndSaveToLocalDB(
-            orderEntityCreateWithUserIdDto, grandTotal, discountPrice);
+    if (orderEntityCreateDto.getOrderCreateType() == OrderCreateType.WITH_USERID) {
+      savedOrderEntity =
+          buildOrderWithUserIdAndSaveToLocalDB(orderEntityCreateDto, grandTotal, discountPrice);
+    } else if (orderEntityCreateDto.getOrderCreateType() == OrderCreateType.WITH_EMAIL) {
+      savedOrderEntity =
+          buildOrderWithEmailAndSaveToLocalDB(orderEntityCreateDto, grandTotal, discountPrice);
+    } else {
+      throw new InvalidOrderException("Invalid order create type");
+    }
+
     OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
     OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
-
     savedOrderEntity.setStatus(orderResponseDto.getStatus());
     savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
     orderEntityRepository.save(savedOrderEntity);
-
-    return orderResponseDto;
-  }
-
-  // @Override
-  public OrderResponseDto createOrderForEmail(
-      OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto) {
-    AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
-    AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
-
-    OrderEntity savedOrderEntity =
-        buildOrderWithEmailAndSaveToLocalDB(
-            orderEntityCreateWithEmailDto, grandTotal, discountPrice);
-    OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
-    OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
-
-    savedOrderEntity.setStatus(orderResponseDto.getStatus());
-    savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
-    orderEntityRepository.save(savedOrderEntity);
-
     return orderResponseDto;
   }
 
@@ -105,32 +90,33 @@ public class OrderServiceImpl implements OrderServiceInterface {
     return orderResponseDto;
   }
 
+  @NotNull
   private OrderEntity buildOrderWithEmailAndSaveToLocalDB(
-      OrderEntityCreateWithEmailDto orderEntityCreateWithEmailDto,
+      @NotNull OrderEntityCreateDto orderEntityCreateDto,
       AtomicReference<Double> grandTotal,
       AtomicReference<Double> discountPrice) {
     OrderEntity newOrderEntity =
         OrderEntity.builder()
-            .email(orderEntityCreateWithEmailDto.getEmail())
+            .email(orderEntityCreateDto.getEmail())
             .status("CREATED")
             .createdAt(new Timestamp(System.currentTimeMillis()))
             .build();
 
     List<OrderItemEntity> orderItemEntityList =
         buildListOfOrderItemEntity(
-            orderEntityCreateWithEmailDto.getItemList(), grandTotal, discountPrice, newOrderEntity);
+            orderEntityCreateDto.getItemList(), grandTotal, discountPrice, newOrderEntity);
 
     newOrderEntity.setGrandTotal(String.valueOf(grandTotal.get()));
     newOrderEntity.setOrderItemEntityList(orderItemEntityList);
     return orderEntityRepository.save(newOrderEntity);
   }
 
+  @NotNull
   private OrderEntity buildOrderWithUserIdAndSaveToLocalDB(
-      OrderEntityCreateWithUserIdDto orderEntityCreateWithUserIdDto,
+      @NotNull OrderEntityCreateDto orderEntityCreateDto,
       AtomicReference<Double> grandTotal,
       AtomicReference<Double> discountPrice) {
-    UserEntity userEntity =
-        userServiceInterface.findUserById(orderEntityCreateWithUserIdDto.getUserId());
+    UserEntity userEntity = userServiceInterface.findUserById(orderEntityCreateDto.getUserId());
     OrderEntity newOrderEntity =
         OrderEntity.builder()
             .userEntity(userEntity)
@@ -141,18 +127,16 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     List<OrderItemEntity> orderItemEntityList =
         buildListOfOrderItemEntity(
-            orderEntityCreateWithUserIdDto.getItemList(),
-            grandTotal,
-            discountPrice,
-            newOrderEntity);
+            orderEntityCreateDto.getItemList(), grandTotal, discountPrice, newOrderEntity);
 
     newOrderEntity.setGrandTotal(String.valueOf(grandTotal.get()));
     newOrderEntity.setOrderItemEntityList(orderItemEntityList);
     return orderEntityRepository.save(newOrderEntity);
   }
 
+  @SuppressWarnings("java:S6204")
   private List<OrderItemEntity> buildListOfOrderItemEntity(
-      List<OrderItemEntityCreateDto> orderItemEntityCreateDtoList,
+      @NotNull List<OrderItemEntityCreateDto> orderItemEntityCreateDtoList,
       AtomicReference<Double> grandTotal,
       AtomicReference<Double> discountPrice,
       OrderEntity newOrderEntity) {
@@ -200,7 +184,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
   }
 
   private OrderDto buildOrderDto(
-      OrderEntity savedOrderEntity, AtomicReference<Double> discountPrice) {
+      @NotNull OrderEntity savedOrderEntity, @NotNull AtomicReference<Double> discountPrice) {
     List<ItemDto> itemDtoList =
         savedOrderEntity.getOrderItemEntityList().stream()
             .map(
@@ -245,6 +229,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
         .build();
   }
 
+  @NotNull
   private OrderResponseDto sendCreateOrderRequestToPaypal(OrderDto orderRequest) {
     AccessTokenResponseDto accessTokenResponseDto =
         paypalClientInterface.sendGetAccessToken().bodyToMono(AccessTokenResponseDto.class).block();
@@ -263,6 +248,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
     return orderResponseDto;
   }
 
+  @NotNull
   private OrderResponseDto sendCaptureOrderRequestToPaypal(UserPayOrderDto userPayOrderDto) {
     AccessTokenResponseDto accessTokenResponseDto =
         paypalClientInterface.sendGetAccessToken().bodyToMono(AccessTokenResponseDto.class).block();

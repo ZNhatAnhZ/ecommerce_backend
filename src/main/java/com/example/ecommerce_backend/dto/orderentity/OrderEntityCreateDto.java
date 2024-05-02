@@ -1,5 +1,6 @@
 package com.example.ecommerce_backend.dto.orderentity;
 
+import com.example.ecommerce_backend.constant.OrderCreateType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.List;
@@ -9,14 +10,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-/** DTO for {@link com.example.ecommerce_backend.model.OrderEntity} */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderEntityCreateWithEmailDto implements Serializable {
+public class OrderEntityCreateDto implements Serializable {
+
+  private OrderCreateType orderCreateType;
+
+  private int userId;
 
   private String email;
 
