@@ -2,6 +2,7 @@ package com.example.ecommerce_backend.dto.cartitementity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,11 @@ public class CartItemEntityCreateRequestDto implements Serializable {
 
   private Integer quantity;
 
-  private int userId;
+  private Integer userId;
 
-  private int itemEntityId;
+  private Integer itemEntityId;
+
+  private Set<Integer> variationEntityIdSet;
+
+  private Integer productId;
 }

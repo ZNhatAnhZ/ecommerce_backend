@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,24 @@ public class ItemServiceImpl implements ItemServiceInterface {
   private final ItemEntityUpdateDtoMapper itemEntityUpdateDtoMapper;
 
   @Override
-  public List<ItemEntity> createAllItemsBasedOnProductEntity(ProductEntity productEntity) {
+  public ItemEntity findItemEntityUsingVariationEntityIdSet(
+      int productId, Set<Integer> variationEntityIdSet) {
+    Optional<ItemEntity> itemEntity =
+        itemEntityRepository.findItemEntityByVariationEntityIds(
+            productId, variationEntityIdSet, variationEntityIdSet.size());
+    if (itemEntity.isPresent()) {
+      return itemEntity.get();
+    } else {
+      throw new ResourceNotFoundException(
+          "Could not find item entity with product id "
+              + productId
+              + " and variation entity id set "
+              + variationEntityIdSet);
+    }
+  }
+
+  @Override
+  public List<ItemEntity> createAllItemsBasedOnProductEntity(@NotNull ProductEntity productEntity) {
     List<ItemEntity> itemEntityList = new ArrayList<>();
     productEntity.getVariationEntitySet().stream()
         .filter(variationEntity -> variationEntity.getParentVariationEntity() == null)
@@ -59,7 +77,7 @@ public class ItemServiceImpl implements ItemServiceInterface {
   }
 
   @Override
-  public ItemEntityIndexDto updateItemEntity(ItemEntityUpdateDto itemEntityUpdateDto) {
+  public ItemEntityIndexDto updateItemEntity(@NotNull ItemEntityUpdateDto itemEntityUpdateDto) {
     Optional<ItemEntity> itemEntity = itemEntityRepository.findById(itemEntityUpdateDto.getId());
     if (itemEntity.isPresent()) {
       itemEntity.get().setStock(itemEntityUpdateDto.getStock());
@@ -74,7 +92,7 @@ public class ItemServiceImpl implements ItemServiceInterface {
 
   @Override
   public List<ItemEntityIndexDto> batchUpdateItemEntity(
-      List<ItemEntityUpdateDto> itemEntityUpdateDtoList) {
+      @NotNull List<ItemEntityUpdateDto> itemEntityUpdateDtoList) {
     List<ItemEntity> itemEntityList =
         itemEntityUpdateDtoList.stream()
             .map(
@@ -109,8 +127,9 @@ public class ItemServiceImpl implements ItemServiceInterface {
     }
   }
 
+  @NotNull
   private List<Set<VariationEntity>> getAllCombinationsOfCurrentVariationEntity(
-      VariationEntity variationEntity) {
+      @NotNull VariationEntity variationEntity) {
     List<Set<VariationEntity>> listOfCombination = new ArrayList<>();
 
     if (variationEntity.getChildVariationEntityList() != null) {

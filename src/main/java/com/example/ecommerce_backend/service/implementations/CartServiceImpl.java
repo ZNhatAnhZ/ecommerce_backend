@@ -19,6 +19,7 @@ import java.util.Optional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -48,9 +49,18 @@ public class CartServiceImpl implements CartServiceInterface {
   }
 
   public CartItemEntityIndexDto addItemEntityToCart(
-      CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
-    ItemEntity itemEntity =
-        itemServiceInterface.findItemEntityById(cartItemEntityCreateRequestDto.getItemEntityId());
+      @NotNull CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
+    ItemEntity itemEntity;
+    if (cartItemEntityCreateRequestDto.getItemEntityId() == null) {
+      itemEntity =
+          itemServiceInterface.findItemEntityUsingVariationEntityIdSet(
+              cartItemEntityCreateRequestDto.getProductId(),
+              cartItemEntityCreateRequestDto.getVariationEntityIdSet());
+    } else {
+      itemEntity =
+          itemServiceInterface.findItemEntityById(cartItemEntityCreateRequestDto.getItemEntityId());
+    }
+
     UserEntity userEntity =
         userServiceInterface.findUserById(cartItemEntityCreateRequestDto.getUserId());
 
@@ -75,7 +85,7 @@ public class CartServiceImpl implements CartServiceInterface {
 
   @Override
   public CartItemEntityIndexDto updateCartItemQuantity(
-      CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
+      @NotNull CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
     Optional<CartItemEntity> cartItemEntity =
         cartItemEntityRepository.findById(cartItemEntityUpdateQuantityDto.getId());
 
