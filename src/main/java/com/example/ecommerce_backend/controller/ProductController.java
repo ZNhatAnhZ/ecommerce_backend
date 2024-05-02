@@ -2,6 +2,7 @@ package com.example.ecommerce_backend.controller;
 
 import com.example.ecommerce_backend.dto.productentity.*;
 import com.example.ecommerce_backend.mapper.productentity.ProductEntityDetailDtoMapper;
+import com.example.ecommerce_backend.mapper.productentity.ProductEntityIndexDtoMapper;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductServiceInterface productServiceInterface;
+
   private final ProductEntityDetailDtoMapper productEntityDetailDtoMapper;
+
+  private final ProductEntityIndexDtoMapper productEntityIndexDtoMapper;
 
   @PostMapping
   public ResponseEntity<ProductEntityAfterCreatedDto> create(
@@ -30,9 +34,8 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<Page<ProductEntityIndexDto>> index(
       @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-    Page<ProductEntityIndexDto> productEntityIndexDtoPage =
-        productServiceInterface.getAllProducts(pageable);
-    return ResponseEntity.ok(productEntityIndexDtoPage);
+    return ResponseEntity.ok(
+        productServiceInterface.getAllProducts(pageable).map(productEntityIndexDtoMapper::toDto));
   }
 
   @GetMapping("/{id}")
@@ -45,9 +48,10 @@ public class ProductController {
   public ResponseEntity<Page<ProductEntityIndexDto>> findByName(
       @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
       @RequestParam String name) {
-    Page<ProductEntityIndexDto> productEntityIndexDtoPage =
-        productServiceInterface.searchProductByName(name, pageable);
-    return ResponseEntity.ok(productEntityIndexDtoPage);
+    return ResponseEntity.ok(
+        productServiceInterface
+            .searchProductByName(name, pageable)
+            .map(productEntityIndexDtoMapper::toDto));
   }
 
   @DeleteMapping("/{id}")
@@ -60,6 +64,8 @@ public class ProductController {
   public ResponseEntity<ProductEntityIndexDto> update(
       @PathVariable("id") int id, @RequestBody ProductEntityUpdateDto productEntityUpdateDto) {
     productEntityUpdateDto.setId(id);
-    return ResponseEntity.ok(productServiceInterface.updateProduct(productEntityUpdateDto));
+    return ResponseEntity.ok(
+        productEntityIndexDtoMapper.toDto(
+            productServiceInterface.updateProduct(productEntityUpdateDto)));
   }
 }

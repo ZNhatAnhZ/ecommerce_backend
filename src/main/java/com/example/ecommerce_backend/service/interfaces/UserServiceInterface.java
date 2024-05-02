@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.service.interfaces;
 
 import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityIndexDto;
 import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.model.UserEntity;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,7 @@ public interface UserServiceInterface {
 
   UserEntity findUserById(int id);
 
-  Page<UserEntityIndexDto> findByCondition(Pageable pageable);
+  Page<UserEntity> findByCondition(Pageable pageable);
 
   UserEntity updateUser(UserEntityUpdateDto userEntityUpdateDto);
 }

@@ -12,6 +12,10 @@ public interface VariationEntityFlatIndexDtoMapper {
   VariationEntity toEntity(VariationEntityFlatIndexDto variationEntityFlatIndexDto);
 
   @Mapping(source = "parentVariationEntity.id", target = "parentVariationEntityId")
+  @Mapping(
+      expression =
+          "java(variationEntity.getChildVariationEntityList().stream().map(VariationEntity::getId).toList())",
+      target = "childrenVariationEntityIdList")
   VariationEntityFlatIndexDto toDto(VariationEntity variationEntity);
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

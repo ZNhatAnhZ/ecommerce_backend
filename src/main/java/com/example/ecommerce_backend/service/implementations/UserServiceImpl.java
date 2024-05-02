@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.service.implementations;
 
 import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityIndexDto;
 import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
@@ -77,8 +76,8 @@ public class UserServiceImpl implements UserServiceInterface {
   }
 
   @Override
-  public Page<UserEntityIndexDto> findByCondition(Pageable pageable) {
-    return userEntityRepository.findAll(pageable).map(userEntityIndexDtoMapper::toDto);
+  public Page<UserEntity> findByCondition(Pageable pageable) {
+    return userEntityRepository.findAll(pageable);
   }
 
   @Override

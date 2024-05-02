@@ -2,6 +2,7 @@ package com.example.ecommerce_backend.dto.variationentity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,5 @@ public class VariationEntityFlatIndexDto implements Serializable {
   private String name;
   private String value;
   private Integer parentVariationEntityId;
+  private List<Integer> childrenVariationEntityIdList;
 }

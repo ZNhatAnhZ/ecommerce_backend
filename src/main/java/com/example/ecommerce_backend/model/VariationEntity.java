@@ -40,6 +40,7 @@ public class VariationEntity {
       mappedBy = "parentVariationEntity",
       cascade = {CascadeType.ALL},
       fetch = FetchType.EAGER)
+  @OrderBy("id ASC")
   private List<VariationEntity> childVariationEntityList;
 
   public void addChildVariationEntity(VariationEntity variationEntity) {

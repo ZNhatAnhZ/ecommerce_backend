@@ -61,10 +61,8 @@ public class ProductServiceImpl implements ProductServiceInterface {
   private final ItemServiceInterface itemServiceInterface;
 
   @Override
-  public Page<ProductEntityIndexDto> getAllProducts(Pageable pageable) {
-    Page<ProductEntity> productEntityPage = productEntityRepository.findAll(pageable);
-
-    return productEntityPage.map(productEntityIndexDtoMapper::toDto);
+  public Page<ProductEntity> getAllProducts(Pageable pageable) {
+    return productEntityRepository.findAll(pageable);
   }
 
   @Override
@@ -79,11 +77,8 @@ public class ProductServiceImpl implements ProductServiceInterface {
   }
 
   @Override
-  public Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable) {
-    Page<ProductEntity> productEntityPage =
-        productEntityRepository.findAllByNameContainsIgnoreCase(name, pageable);
-
-    return productEntityPage.map(productEntityIndexDtoMapper::toDto);
+  public Page<ProductEntity> searchProductByName(String name, Pageable pageable) {
+    return productEntityRepository.findAllByNameContainsIgnoreCase(name, pageable);
   }
 
   @Override
@@ -128,7 +123,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
   }
 
   @Override
-  public ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto) {
+  public ProductEntity updateProduct(ProductEntityUpdateDto productEntityUpdateDto) {
     Optional<ProductEntity> productEntity =
         productEntityRepository.findById(productEntityUpdateDto.getId());
     if (productEntity.isPresent()) {
@@ -158,7 +153,7 @@ public class ProductServiceImpl implements ProductServiceInterface {
       updatedProductEntity.setDiscountEntity(discountEntity);
       updatedProductEntity.setVariationEntitySet(variationEntitySet);
 
-      return productEntityIndexDtoMapper.toDto(productEntityRepository.save(updatedProductEntity));
+      return productEntityRepository.save(updatedProductEntity);
     } else {
       throw new ResourceNotFoundException(
           "Could not find product with id " + productEntityUpdateDto.getId());

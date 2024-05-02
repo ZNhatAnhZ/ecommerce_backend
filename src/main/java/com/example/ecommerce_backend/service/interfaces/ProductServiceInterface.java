@@ -9,13 +9,13 @@ public interface ProductServiceInterface {
 
   void deleteProduct(int id);
 
-  Page<ProductEntityIndexDto> getAllProducts(Pageable pageable);
+  Page<ProductEntity> getAllProducts(Pageable pageable);
 
-  Page<ProductEntityIndexDto> searchProductByName(String name, Pageable pageable);
+  Page<ProductEntity> searchProductByName(String name, Pageable pageable);
 
   ProductEntity getProductById(Integer id);
 
   ProductEntityAfterCreatedDto createProduct(ProductEntityCreateDto productEntityCreateDto);
 
-  ProductEntityIndexDto updateProduct(ProductEntityUpdateDto productEntityUpdateDto);
+  ProductEntity updateProduct(ProductEntityUpdateDto productEntityUpdateDto);
 }

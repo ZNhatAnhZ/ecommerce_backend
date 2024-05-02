@@ -40,6 +40,8 @@ public class ProductEntity {
 
   @OneToMany(
       mappedBy = "productEntity",
-      cascade = {CascadeType.ALL})
+      cascade = {CascadeType.ALL},
+      fetch = FetchType.EAGER)
+  @OrderBy("id ASC")
   private Set<VariationEntity> variationEntitySet;
 }
