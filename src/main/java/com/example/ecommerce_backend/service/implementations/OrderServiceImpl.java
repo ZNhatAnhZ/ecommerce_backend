@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
   private final UserServiceInterface userServiceInterface;
 
   @Override
-  public OrderResponseDto createOrder(@NotNull OrderEntityCreateDto orderEntityCreateDto) {
+  public OrderEntity createOrder(@NotNull OrderEntityCreateDto orderEntityCreateDto) {
     AtomicReference<Double> grandTotal = new AtomicReference<>((double) 0);
     AtomicReference<Double> discountPrice = new AtomicReference<>((double) 0);
     OrderEntity savedOrderEntity;
@@ -68,12 +68,11 @@ public class OrderServiceImpl implements OrderServiceInterface {
     OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
     savedOrderEntity.setStatus(orderResponseDto.getStatus());
     savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
-    orderEntityRepository.save(savedOrderEntity);
-    return orderResponseDto;
+    return orderEntityRepository.save(savedOrderEntity);
   }
 
   @Override
-  public OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto) {
+  public OrderEntity payOrder(UserPayOrderDto userPayOrderDto) {
     OrderResponseDto orderResponseDto = sendCaptureOrderRequestToPaypal(userPayOrderDto);
 
     Optional<OrderEntity> orderEntity =
@@ -85,9 +84,8 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     orderEntity.get().setStatus(orderResponseDto.getStatus());
     orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-    orderEntityRepository.save(orderEntity.get());
 
-    return orderResponseDto;
+    return orderEntityRepository.save(orderEntity.get());
   }
 
   @NotNull

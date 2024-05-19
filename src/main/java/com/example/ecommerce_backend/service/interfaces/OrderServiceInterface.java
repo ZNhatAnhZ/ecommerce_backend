@@ -2,11 +2,11 @@ package com.example.ecommerce_backend.service.interfaces;
 
 import com.example.ecommerce_backend.dto.orderentity.OrderEntityCreateDto;
 import com.example.ecommerce_backend.dto.orderentity.UserPayOrderDto;
-import com.example.ecommerce_backend.dto.paypaldto.OrderResponseDto;
+import com.example.ecommerce_backend.model.OrderEntity;
 
 public interface OrderServiceInterface {
 
-  OrderResponseDto createOrder(OrderEntityCreateDto orderEntityCreateDto);
+  OrderEntity createOrder(OrderEntityCreateDto orderEntityCreateDto);
 
-  OrderResponseDto payOrder(UserPayOrderDto userPayOrderDto);
+  OrderEntity payOrder(UserPayOrderDto userPayOrderDto);
 }

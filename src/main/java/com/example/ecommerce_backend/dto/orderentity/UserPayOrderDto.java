@@ -16,6 +16,8 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserPayOrderDto implements Serializable {
 
+  private String email;
+
   private String userId;
 
   private String orderId;

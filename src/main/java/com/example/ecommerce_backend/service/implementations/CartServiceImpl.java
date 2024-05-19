@@ -5,7 +5,6 @@ import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuan
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
 import com.example.ecommerce_backend.exception.InvalidStateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.cartitementiy.CartItemEntityIndexMapper;
 import com.example.ecommerce_backend.model.CartItemEntity;
 import com.example.ecommerce_backend.model.ItemEntity;
 import com.example.ecommerce_backend.model.UserEntity;
@@ -42,8 +41,7 @@ public class CartServiceImpl implements CartServiceInterface {
   private final ProductEntityRepository productEntityRepository;
 
   public Page<CartItemEntity> getAllItemEntitiesFromCart(int cartId, Pageable pageable) {
-    return cartItemEntityRepository
-        .findByUser_Id(cartId, pageable);
+    return cartItemEntityRepository.findByUser_Id(cartId, pageable);
   }
 
   public Page<CartItemEntity> addItemEntityToCart(
@@ -79,7 +77,8 @@ public class CartServiceImpl implements CartServiceInterface {
             .build();
 
     cartItemEntityRepository.save(newCartItemEntity);
-    return cartItemEntityRepository.findByUser_Id(userEntity.getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
+    return cartItemEntityRepository.findByUser_Id(
+        userEntity.getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
   }
 
   @Override
@@ -99,8 +98,8 @@ public class CartServiceImpl implements CartServiceInterface {
 
     cartItemEntity.get().setQuantity(cartItemEntityUpdateQuantityDto.getQuantity());
     cartItemEntityRepository.save(cartItemEntity.get());
-    return cartItemEntityRepository.findByUser_Id(cartItemEntity.get().getUser().getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
-
+    return cartItemEntityRepository.findByUser_Id(
+        cartItemEntity.get().getUser().getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
   }
 
   @Override

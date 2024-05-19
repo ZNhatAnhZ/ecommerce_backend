@@ -28,7 +28,10 @@ public class CartController {
   public ResponseEntity<Page<CartItemEntityIndexDto>> getAllItemEntitiesFromCart(
       @PathVariable("id") int id,
       @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-    return ResponseEntity.ok(cartServiceInterface.getAllItemEntitiesFromCart(id, pageable).map(cartItemEntityIndexMapper::toDto));
+    return ResponseEntity.ok(
+        cartServiceInterface
+            .getAllItemEntitiesFromCart(id, pageable)
+            .map(cartItemEntityIndexMapper::toDto));
   }
 
   @PostMapping("/{id}")
@@ -36,7 +39,10 @@ public class CartController {
       @PathVariable int id,
       @RequestBody CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
     cartItemEntityCreateRequestDto.setUserId(id);
-    return ResponseEntity.ok(cartServiceInterface.addItemEntityToCart(cartItemEntityCreateRequestDto).map(cartItemEntityIndexMapper::toDto));
+    return ResponseEntity.ok(
+        cartServiceInterface
+            .addItemEntityToCart(cartItemEntityCreateRequestDto)
+            .map(cartItemEntityIndexMapper::toDto));
   }
 
   @PutMapping("/{cartId}/cartItems/{cartItemId}")
@@ -45,7 +51,10 @@ public class CartController {
       @PathVariable("cartItemId") int cartItemId,
       @RequestBody CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
     cartItemEntityUpdateQuantityDto.setId(cartItemId);
-    return ResponseEntity.ok(cartServiceInterface.updateCartItemQuantity(cartItemEntityUpdateQuantityDto).map(cartItemEntityIndexMapper::toDto));
+    return ResponseEntity.ok(
+        cartServiceInterface
+            .updateCartItemQuantity(cartItemEntityUpdateQuantityDto)
+            .map(cartItemEntityIndexMapper::toDto));
   }
 
   @DeleteMapping("/{cartId}/cartItems/{cartItemId}")
