@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.controller;
 import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityCreateRequestDto;
 import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityIndexDto;
 import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuantityDto;
+import com.example.ecommerce_backend.mapper.cartitementiy.CartItemEntityIndexMapper;
 import com.example.ecommerce_backend.service.interfaces.CartServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,32 +22,30 @@ public class CartController {
 
   private final CartServiceInterface cartServiceInterface;
 
+  private final CartItemEntityIndexMapper cartItemEntityIndexMapper;
+
   @GetMapping("/{id}")
   public ResponseEntity<Page<CartItemEntityIndexDto>> getAllItemEntitiesFromCart(
       @PathVariable("id") int id,
       @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-    Page<CartItemEntityIndexDto> cartItemEntityIndexDtoList =
-        cartServiceInterface.getAllItemEntitiesFromCart(id, pageable);
-    return ResponseEntity.ok(cartItemEntityIndexDtoList);
+    return ResponseEntity.ok(cartServiceInterface.getAllItemEntitiesFromCart(id, pageable).map(cartItemEntityIndexMapper::toDto));
   }
 
   @PostMapping("/{id}")
-  public ResponseEntity<CartItemEntityIndexDto> addItemEntityToCart(
+  public ResponseEntity<Page<CartItemEntityIndexDto>> addItemEntityToCart(
       @PathVariable int id,
       @RequestBody CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
     cartItemEntityCreateRequestDto.setUserId(id);
-    return ResponseEntity.ok(
-        cartServiceInterface.addItemEntityToCart(cartItemEntityCreateRequestDto));
+    return ResponseEntity.ok(cartServiceInterface.addItemEntityToCart(cartItemEntityCreateRequestDto).map(cartItemEntityIndexMapper::toDto));
   }
 
   @PutMapping("/{cartId}/cartItems/{cartItemId}")
-  public ResponseEntity<CartItemEntityIndexDto> updateCartItemQuantity(
+  public ResponseEntity<Page<CartItemEntityIndexDto>> updateCartItemQuantity(
       @PathVariable("cartId") int cartId,
       @PathVariable("cartItemId") int cartItemId,
       @RequestBody CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
     cartItemEntityUpdateQuantityDto.setId(cartItemId);
-    return ResponseEntity.ok(
-        cartServiceInterface.updateCartItemQuantity(cartItemEntityUpdateQuantityDto));
+    return ResponseEntity.ok(cartServiceInterface.updateCartItemQuantity(cartItemEntityUpdateQuantityDto).map(cartItemEntityIndexMapper::toDto));
   }
 
   @DeleteMapping("/{cartId}/cartItems/{cartItemId}")

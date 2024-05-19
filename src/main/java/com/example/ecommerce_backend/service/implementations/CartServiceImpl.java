@@ -1,7 +1,6 @@
 package com.example.ecommerce_backend.service.implementations;
 
 import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityCreateRequestDto;
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityIndexDto;
 import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuantityDto;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
 import com.example.ecommerce_backend.exception.InvalidStateException;
@@ -21,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,21 +35,18 @@ public class CartServiceImpl implements CartServiceInterface {
 
   private final CartItemEntityRepository cartItemEntityRepository;
 
-  private final CartItemEntityIndexMapper cartItemEntityIndexMapper;
-
   private final ItemServiceInterface itemServiceInterface;
 
   private final UserServiceInterface userServiceInterface;
 
   private final ProductEntityRepository productEntityRepository;
 
-  public Page<CartItemEntityIndexDto> getAllItemEntitiesFromCart(int cartId, Pageable pageable) {
+  public Page<CartItemEntity> getAllItemEntitiesFromCart(int cartId, Pageable pageable) {
     return cartItemEntityRepository
-        .findByUser_Id(cartId, pageable)
-        .map(cartItemEntityIndexMapper::toDto);
+        .findByUser_Id(cartId, pageable);
   }
 
-  public CartItemEntityIndexDto addItemEntityToCart(
+  public Page<CartItemEntity> addItemEntityToCart(
       @NotNull CartItemEntityCreateRequestDto cartItemEntityCreateRequestDto) {
     ItemEntity itemEntity;
     if (cartItemEntityCreateRequestDto.getItemEntityId() == null) {
@@ -80,11 +78,12 @@ public class CartServiceImpl implements CartServiceInterface {
             .quantity(cartItemEntityCreateRequestDto.getQuantity())
             .build();
 
-    return cartItemEntityIndexMapper.toDto(cartItemEntityRepository.save(newCartItemEntity));
+    cartItemEntityRepository.save(newCartItemEntity);
+    return cartItemEntityRepository.findByUser_Id(userEntity.getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
   }
 
   @Override
-  public CartItemEntityIndexDto updateCartItemQuantity(
+  public Page<CartItemEntity> updateCartItemQuantity(
       @NotNull CartItemEntityUpdateQuantityDto cartItemEntityUpdateQuantityDto) {
     Optional<CartItemEntity> cartItemEntity =
         cartItemEntityRepository.findById(cartItemEntityUpdateQuantityDto.getId());
@@ -99,7 +98,9 @@ public class CartServiceImpl implements CartServiceInterface {
     }
 
     cartItemEntity.get().setQuantity(cartItemEntityUpdateQuantityDto.getQuantity());
-    return cartItemEntityIndexMapper.toDto(cartItemEntityRepository.save(cartItemEntity.get()));
+    cartItemEntityRepository.save(cartItemEntity.get());
+    return cartItemEntityRepository.findByUser_Id(cartItemEntity.get().getUser().getId(), PageRequest.of(0, 10, Sort.Direction.DESC, "id"));
+
   }
 
   @Override
