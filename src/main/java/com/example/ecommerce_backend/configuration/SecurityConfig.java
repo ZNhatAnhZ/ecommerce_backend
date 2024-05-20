@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.configuration;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,13 +23,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@ConditionalOnProperty(value = "auth.disable", havingValue = "false", matchIfMissing = true)
 @EnableWebSecurity()
 @RequiredArgsConstructor
 public class SecurityConfig {
 
   private final CustomUserDetailsService customUserDetailsService;
-
-//  private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
   private final WebConfig webConfig;
 
@@ -96,8 +96,7 @@ public class SecurityConfig {
             .requestMatchers("v3/api-docs/**").permitAll()
             .anyRequest().authenticated());
     // @formatter:on
-
-    //		http.addFilterAt(jwtAuthorizationFilter, BasicAuthenticationFilter.class);
+    http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
 
     return http.build();
   }
