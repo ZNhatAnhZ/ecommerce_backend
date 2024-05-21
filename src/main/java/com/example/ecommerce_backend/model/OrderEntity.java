@@ -51,6 +51,6 @@ public class OrderEntity {
   @JoinColumn(name = "discount_id", referencedColumnName = "id")
   private DiscountEntity discountEntity;
 
-  @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "orderEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<OrderItemEntity> orderItemEntityList;
 }

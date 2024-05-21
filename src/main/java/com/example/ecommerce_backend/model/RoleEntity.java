@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "permission", schema = "ecommerce")
+@Table(name = "role", schema = "ecommerce")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionEntity {
+public class RoleEntity {
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id

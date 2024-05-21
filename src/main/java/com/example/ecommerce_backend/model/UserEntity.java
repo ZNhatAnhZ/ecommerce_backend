@@ -25,10 +25,10 @@ public class UserEntity {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-      name = "user_permission",
+      name = "user_role",
       joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "permission_id"))
-  private Set<PermissionEntity> permissionEntityList;
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<RoleEntity> permissionEntityList;
 
   @Column(name = "username")
   private String username;

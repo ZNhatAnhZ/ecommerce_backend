@@ -96,7 +96,6 @@ public class SecurityConfig {
             .requestMatchers("v3/api-docs/**").permitAll()
             .anyRequest().authenticated());
     // @formatter:on
-    http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
 
     return http.build();
   }

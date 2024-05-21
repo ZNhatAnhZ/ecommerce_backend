@@ -1,6 +1,7 @@
 package com.example.ecommerce_backend.repository;
 
 import com.example.ecommerce_backend.model.DiscountEntity;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -14,5 +15,6 @@ public interface DiscountEntityRepository extends JpaRepository<DiscountEntity, 
       attributePaths = {"productEntityList.supplierEntity"},
       type = EntityGraph.EntityGraphType.FETCH)
   @Override
-  Page<DiscountEntity> findAll(Pageable pageable);
+  @NotNull
+  Page<DiscountEntity> findAll(@NotNull Pageable pageable);
 }

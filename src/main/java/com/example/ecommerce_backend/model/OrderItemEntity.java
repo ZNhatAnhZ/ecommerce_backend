@@ -30,7 +30,7 @@ public class OrderItemEntity {
   @Column(name = "updated_at")
   private Timestamp updatedAt;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "order_id", referencedColumnName = "id")
   private OrderEntity orderEntity;
 
