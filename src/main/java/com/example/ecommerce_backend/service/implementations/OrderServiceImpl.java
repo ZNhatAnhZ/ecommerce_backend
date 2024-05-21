@@ -7,6 +7,7 @@ import com.example.ecommerce_backend.dto.orderentity.*;
 import com.example.ecommerce_backend.dto.paypaldto.*;
 import com.example.ecommerce_backend.exception.InvalidOrderException;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
+import com.example.ecommerce_backend.exception.InvalidStateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.model.ItemEntity;
 import com.example.ecommerce_backend.model.OrderEntity;
@@ -152,9 +153,11 @@ public class OrderServiceImpl implements OrderServiceInterface {
                 throw new InvalidOrderException("ItemEntityId or ProductId and VariationEntityIdSet must be provided");
               }
 
-              if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
+              if (itemEntity.isDisabled()) {
+                throw new InvalidStateException("The requested item is disabled");
+              } else if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
                 throw new InvalidQuantityException(
-                    "The requested item stock is smaller than the requested quantity");
+                        "The requested item stock is smaller than the requested quantity");
               }
 
               if (orderItemCreateDto.getCartItemId() != null) {
