@@ -2,6 +2,8 @@ package com.example.ecommerce_backend.dto.orderentity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,11 @@ public class OrderItemEntityCreateDto implements Serializable {
 
   private int quantity;
 
-  private int itemEntityId;
+  private Integer itemEntityId;
 
   private String itemEntitySku;
+
+  private Set<Integer> variationEntityIdSet;
+
+  private Integer productId;
 }

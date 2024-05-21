@@ -143,8 +143,14 @@ public class OrderServiceImpl implements OrderServiceInterface {
     return orderItemEntityCreateDtoList.stream()
         .map(
             (orderItemCreateDto -> {
-              ItemEntity itemEntity =
-                  itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
+              ItemEntity itemEntity;
+              if (orderItemCreateDto.getItemEntityId() != null) {
+                itemEntity = itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
+              } else if (orderItemCreateDto.getProductId() != null && orderItemCreateDto.getVariationEntityIdSet() != null) {
+                itemEntity = itemServiceInterface.findItemEntityUsingVariationEntityIdSet(orderItemCreateDto.getProductId(), orderItemCreateDto.getVariationEntityIdSet());
+              } else {
+                throw new InvalidOrderException("ItemEntityId or ProductId and VariationEntityIdSet must be provided");
+              }
 
               if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
                 throw new InvalidQuantityException(
