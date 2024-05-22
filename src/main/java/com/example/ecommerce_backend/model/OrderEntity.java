@@ -1,5 +1,6 @@
 package com.example.ecommerce_backend.model;
 
+import com.example.ecommerce_backend.constant.OrderStatus;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -26,7 +27,8 @@ public class OrderEntity {
   private String grandTotal;
 
   @Column(name = "status")
-  private String status;
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
 
   @Column(name = "shipping")
   private String shipping;

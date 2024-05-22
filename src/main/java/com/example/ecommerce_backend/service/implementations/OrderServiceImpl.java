@@ -1,7 +1,10 @@
 package com.example.ecommerce_backend.service.implementations;
 
+import static com.example.ecommerce_backend.constant.OrderStatus.*;
+
 import com.example.ecommerce_backend.component.interfaces.PaypalClientInterface;
 import com.example.ecommerce_backend.constant.OrderCreateType;
+import com.example.ecommerce_backend.constant.OrderPaypalStatus;
 import com.example.ecommerce_backend.constant.PaypalOrderIntent;
 import com.example.ecommerce_backend.dto.orderentity.*;
 import com.example.ecommerce_backend.dto.paypaldto.*;
@@ -67,7 +70,14 @@ public class OrderServiceImpl implements OrderServiceInterface {
 
     OrderDto orderRequest = buildOrderDto(savedOrderEntity, discountPrice);
     OrderResponseDto orderResponseDto = sendCreateOrderRequestToPaypal(orderRequest);
-    savedOrderEntity.setStatus(orderResponseDto.getStatus());
+
+    if (orderResponseDto.getStatus() == OrderPaypalStatus.CREATED) {
+      savedOrderEntity.setStatus(CREATED);
+    } else {
+      log.error("Order creation failed with paypal id: {}", orderResponseDto.getId());
+      savedOrderEntity.setStatus(ERRORED);
+    }
+
     savedOrderEntity.setPaypalOrderId(orderResponseDto.getId());
     return orderEntityRepository.save(savedOrderEntity);
   }
@@ -83,7 +93,13 @@ public class OrderServiceImpl implements OrderServiceInterface {
           "Can not find order with paypal id: " + orderResponseDto.getId());
     }
 
-    orderEntity.get().setStatus(orderResponseDto.getStatus());
+    if (orderResponseDto.getStatus() == OrderPaypalStatus.COMPLETED) {
+      orderEntity.get().setStatus(PAID);
+    } else {
+      log.error("Order creation failed with paypal id: {}", orderResponseDto.getId());
+      orderEntity.get().setStatus(ERRORED);
+    }
+
     orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
     return orderEntityRepository.save(orderEntity.get());
@@ -97,7 +113,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
     OrderEntity newOrderEntity =
         OrderEntity.builder()
             .email(orderEntityCreateDto.getEmail())
-            .status("CREATED")
+            .status(CREATED)
             .createdAt(new Timestamp(System.currentTimeMillis()))
             .build();
 
@@ -120,7 +136,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
         OrderEntity.builder()
             .userEntity(userEntity)
             .email(userEntity.getEmail())
-            .status("CREATED")
+            .status(CREATED)
             .createdAt(new Timestamp(System.currentTimeMillis()))
             .build();
 
@@ -146,18 +162,25 @@ public class OrderServiceImpl implements OrderServiceInterface {
             (orderItemCreateDto -> {
               ItemEntity itemEntity;
               if (orderItemCreateDto.getItemEntityId() != null) {
-                itemEntity = itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
-              } else if (orderItemCreateDto.getProductId() != null && orderItemCreateDto.getVariationEntityIdSet() != null) {
-                itemEntity = itemServiceInterface.findItemEntityUsingVariationEntityIdSet(orderItemCreateDto.getProductId(), orderItemCreateDto.getVariationEntityIdSet());
+                itemEntity =
+                    itemServiceInterface.findItemEntityById(orderItemCreateDto.getItemEntityId());
+              } else if (orderItemCreateDto.getProductId() != null
+                  && orderItemCreateDto.getVariationEntityIdSet() != null) {
+                itemEntity =
+                    itemServiceInterface.findItemEntityUsingVariationEntityIdSet(
+                        orderItemCreateDto.getProductId(),
+                        orderItemCreateDto.getVariationEntityIdSet());
               } else {
-                throw new InvalidOrderException("ItemEntityId or ProductId and VariationEntityIdSet must be provided");
+                throw new InvalidOrderException(
+                    "ItemEntityId or ProductId and VariationEntityIdSet must be provided");
               }
 
               if (itemEntity.isDisabled()) {
                 throw new InvalidStateException("The requested item is disabled");
-              } else if (orderItemCreateDto.getQuantity() > Integer.parseInt(itemEntity.getStock())) {
+              } else if (orderItemCreateDto.getQuantity()
+                  > Integer.parseInt(itemEntity.getStock())) {
                 throw new InvalidQuantityException(
-                        "The requested item stock is smaller than the requested quantity");
+                    "The requested item stock is smaller than the requested quantity");
               }
 
               if (orderItemCreateDto.getCartItemId() != null) {
