@@ -80,21 +80,37 @@ public class SecurityConfig {
     http.csrf(AbstractHttpConfigurer::disable);
 
     // @formatter:off
-    http.authorizeHttpRequests(authorize ->
-        authorize.requestMatchers(HttpMethod.POST, "/api/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/orders/*/confirm").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/orders/with_email").permitAll()
-            .requestMatchers(HttpMethod.POST, "/api/orders/with_user").permitAll()
-            .requestMatchers("/error/**").permitAll()
-            .requestMatchers("/swagger-ui/**").permitAll()
-            .requestMatchers("/swagger-ui.html").permitAll()
-            .requestMatchers("/v3/api-docs").permitAll()
-            .requestMatchers("/v3/api-docs.yaml").permitAll()
-            .requestMatchers("v3/api-docs/**").permitAll()
-            .anyRequest().authenticated());
+    http.authorizeHttpRequests(
+        authorize ->
+            authorize
+                .requestMatchers(HttpMethod.POST, "/api/login")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/users")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/products/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/categories/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders/*/confirm")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders/with_email")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders/with_user")
+                .permitAll()
+                .requestMatchers("/error/**")
+                .permitAll()
+                .requestMatchers("/swagger-ui/**")
+                .permitAll()
+                .requestMatchers("/swagger-ui.html")
+                .permitAll()
+                .requestMatchers("/v3/api-docs")
+                .permitAll()
+                .requestMatchers("/v3/api-docs.yaml")
+                .permitAll()
+                .requestMatchers("v3/api-docs/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated());
     // @formatter:on
 
     return http.build();

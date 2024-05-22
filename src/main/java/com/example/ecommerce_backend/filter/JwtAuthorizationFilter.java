@@ -22,7 +22,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 // @Component
 @RequiredArgsConstructor
 @Slf4j
-@Deprecated(forRemoval=true)
+@Deprecated(forRemoval = true)
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
   private final JwtUtil jwtUtil;
