@@ -5,6 +5,7 @@ import static com.example.ecommerce_backend.constant.OrderStatus.*;
 import com.example.ecommerce_backend.component.interfaces.PaypalClientInterface;
 import com.example.ecommerce_backend.constant.OrderCreateType;
 import com.example.ecommerce_backend.constant.OrderPaypalStatus;
+import com.example.ecommerce_backend.constant.OrderStatus;
 import com.example.ecommerce_backend.constant.PaypalOrderIntent;
 import com.example.ecommerce_backend.dto.orderentity.*;
 import com.example.ecommerce_backend.dto.paypaldto.*;
@@ -26,17 +27,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Getter
-@Setter
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
@@ -51,6 +50,50 @@ public class OrderServiceImpl implements OrderServiceInterface {
   private final CartServiceInterface cartServiceInterface;
 
   private final UserServiceInterface userServiceInterface;
+
+  @Override
+  public List<OrderEntity> confirmOrders(List<OrderEntityConfirmDto> orderEntityConfirmDtoList) {
+    if (orderEntityConfirmDtoList.stream()
+        .anyMatch(
+            orderEntityConfirmDto ->
+                orderEntityConfirmDto.getStatus() != TRACKING
+                    && orderEntityConfirmDto.getStatus() != CANCELLED)) {
+      throw new InvalidStateException("Invalid order status, admin must tracking or cancel orders");
+    }
+
+    List<OrderEntity> orderEntityList =
+        orderEntityConfirmDtoList.stream()
+            .map(
+                orderEntityConfirmDto -> {
+                  OrderEntity orderEntity =
+                      orderEntityRepository
+                          .findById(orderEntityConfirmDto.getOrderId())
+                          .orElseThrow(
+                              () ->
+                                  new ResourceNotFoundException(
+                                      String.format(
+                                          "Order id: %d not found",
+                                          orderEntityConfirmDto.getOrderId())));
+
+                  if (orderEntity.getStatus() == PAID) {
+                    orderEntity.setStatus(orderEntityConfirmDto.getStatus());
+                  } else {
+                    throw new InvalidStateException(
+                        String.format(
+                            "Order status is not PAID, actual status: %s",
+                            orderEntity.getStatus().name()));
+                  }
+                  return orderEntity;
+                })
+            .toList();
+
+    return orderEntityRepository.saveAll(orderEntityList);
+  }
+
+  @Override
+  public Page<OrderEntity> findAllByStatus(OrderStatus orderStatus, Pageable pageable) {
+    return orderEntityRepository.findAllByStatus(orderStatus, pageable);
+  }
 
   @Override
   public OrderEntity createOrder(@NotNull OrderEntityCreateDto orderEntityCreateDto) {

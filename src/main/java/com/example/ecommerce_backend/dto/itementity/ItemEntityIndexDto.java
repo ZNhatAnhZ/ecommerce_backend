@@ -1,7 +1,9 @@
 package com.example.ecommerce_backend.dto.itementity;
 
 import com.example.ecommerce_backend.dto.productentity.ProductEntityIndexDto;
+import com.example.ecommerce_backend.dto.variationentity.VariationEntityForItemEntityDto;
 import java.io.Serializable;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +13,8 @@ public class ItemEntityIndexDto implements Serializable {
 
   private int id;
 
+  private String sku;
+
   private String price;
 
   private String stock;
@@ -18,4 +22,6 @@ public class ItemEntityIndexDto implements Serializable {
   private boolean isDisabled;
 
   private ProductEntityIndexDto productEntity;
+
+  private Set<VariationEntityForItemEntityDto> variationEntityList;
 }
