@@ -5,8 +5,6 @@ import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
 import com.example.ecommerce_backend.mapper.userentity.UserEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.userentity.UserEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.userentity.UserEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.EmailServiceInterface;
@@ -14,7 +12,6 @@ import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
 import java.util.Optional;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Getter
-@Setter
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -33,13 +28,8 @@ public class UserServiceImpl implements UserServiceInterface {
 
   private final UserEntityCreateDtoMapper userEntityCreateDtoMapper;
 
-  private final UserEntityIndexDtoMapper userEntityIndexDtoMapper;
-
-  private final UserEntityUpdateDtoMapper userEntityUpdateDtoMapper;
-
   private final PasswordEncoder passwordEncoder;
 
-  @Qualifier("emailServiceImpl")
   private final EmailServiceInterface emailServiceInterface;
 
   @Override

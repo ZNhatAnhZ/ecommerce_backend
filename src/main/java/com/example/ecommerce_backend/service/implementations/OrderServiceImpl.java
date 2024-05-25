@@ -18,10 +18,7 @@ import com.example.ecommerce_backend.model.OrderEntity;
 import com.example.ecommerce_backend.model.OrderItemEntity;
 import com.example.ecommerce_backend.model.UserEntity;
 import com.example.ecommerce_backend.repository.OrderEntityRepository;
-import com.example.ecommerce_backend.service.interfaces.CartServiceInterface;
-import com.example.ecommerce_backend.service.interfaces.ItemServiceInterface;
-import com.example.ecommerce_backend.service.interfaces.OrderServiceInterface;
-import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
+import com.example.ecommerce_backend.service.interfaces.*;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +47,8 @@ public class OrderServiceImpl implements OrderServiceInterface {
   private final CartServiceInterface cartServiceInterface;
 
   private final UserServiceInterface userServiceInterface;
+
+  private final EmailServiceInterface emailServiceInterface;
 
   @Override
   public List<OrderEntity> confirmOrders(List<OrderEntityConfirmDto> orderEntityConfirmDtoList) {
@@ -87,7 +86,14 @@ public class OrderServiceImpl implements OrderServiceInterface {
                 })
             .toList();
 
-    return orderEntityRepository.saveAll(orderEntityList);
+    List<OrderEntity> savedOrderEntityList =
+        orderEntityRepository.findAllByIdIn(
+            orderEntityRepository.saveAll(orderEntityList).stream()
+                .map(OrderEntity::getId)
+                .toList());
+    emailServiceInterface.sendApprovedOrderEmail(savedOrderEntityList);
+
+    return savedOrderEntityList;
   }
 
   @Override
@@ -144,8 +150,10 @@ public class OrderServiceImpl implements OrderServiceInterface {
     }
 
     orderEntity.get().setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+    orderEntityRepository.save(orderEntity.get());
+    emailServiceInterface.sendReceiptEmail(orderEntity.get());
 
-    return orderEntityRepository.save(orderEntity.get());
+    return orderEntity.get();
   }
 
   @NotNull

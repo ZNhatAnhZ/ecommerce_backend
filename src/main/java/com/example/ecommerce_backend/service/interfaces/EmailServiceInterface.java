@@ -1,13 +1,18 @@
 package com.example.ecommerce_backend.service.interfaces;
 
+import com.example.ecommerce_backend.model.OrderEntity;
 import com.example.ecommerce_backend.model.UserEntity;
-import jakarta.mail.MessagingException;
+
+import java.util.List;
 
 public interface EmailServiceInterface {
 
   void sendEmail(String to, String subject, String body);
 
-  void sendEmailFromTemplate(String to, String subject, String body) throws MessagingException;
+  void sendWelcomeEmail(UserEntity userEntity);
 
-  public void sendWelcomeEmail(UserEntity userEntity);
+  void sendReceiptEmail(OrderEntity orderEntity);
+
+  void sendApprovedOrderEmail(List<OrderEntity> orderEntityList);
+
 }
