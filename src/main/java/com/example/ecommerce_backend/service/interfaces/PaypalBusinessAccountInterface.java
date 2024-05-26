@@ -14,7 +14,7 @@ public interface PaypalBusinessAccountInterface {
 
   Page<PaypalBusinessAccountEntity> getAllPaypalBusinessAccounts(Pageable pageable);
 
-  PaypalBusinessAccountEntity getOldestPaypalBusinessAccount();
+  PaypalBusinessAccountEntity getOldestEnabledPaypalBusinessAccount();
 
   PaypalBusinessAccountEntity updatePaypalBusinessAccount(
       @NotNull PaypalBusinessAccountUpdateDto paypalBusinessAccountUpdateDto);

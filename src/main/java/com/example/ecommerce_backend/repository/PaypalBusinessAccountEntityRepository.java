@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PaypalBusinessAccountEntityRepository
     extends JpaRepository<PaypalBusinessAccountEntity, Integer> {
-  Optional<PaypalBusinessAccountEntity> findFirstByOrderByIdAsc();
+
+  Optional<PaypalBusinessAccountEntity> findFirstByIsEnabledOrderById(Boolean isEnable);
 
   boolean existsByEmail(String email);
 

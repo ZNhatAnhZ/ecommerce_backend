@@ -43,7 +43,7 @@ public class PaypalBusinessAccountServiceImpl implements PaypalBusinessAccountIn
             .email(paypalBusinessAccountCreateDto.getEmail())
             .clientId(paypalBusinessAccountCreateDto.getClientId())
             .clientSecret(paypalBusinessAccountCreateDto.getClientSecret())
-            .isEnable(paypalBusinessAccountCreateDto.getIsEnable())
+            .isEnabled(paypalBusinessAccountCreateDto.getIsEnabled())
             .build();
     return paypalBusinessAccountEntityRepository.save(paypalBusinessAccountEntity);
   }
@@ -54,9 +54,9 @@ public class PaypalBusinessAccountServiceImpl implements PaypalBusinessAccountIn
   }
 
   @Override
-  public PaypalBusinessAccountEntity getOldestPaypalBusinessAccount() {
+  public PaypalBusinessAccountEntity getOldestEnabledPaypalBusinessAccount() {
     Optional<PaypalBusinessAccountEntity> paypalBusinessAccountEntity =
-        paypalBusinessAccountEntityRepository.findFirstByOrderByIdAsc();
+        paypalBusinessAccountEntityRepository.findFirstByIsEnabledOrderById(true);
 
     if (paypalBusinessAccountEntity.isEmpty()) {
       throw new UnavailablePaymentException("No Paypal business account available");
@@ -79,8 +79,8 @@ public class PaypalBusinessAccountServiceImpl implements PaypalBusinessAccountIn
         .ifPresent(existingPaypalBusinessAccountEntity::setClientId);
     Optional.ofNullable(paypalBusinessAccountUpdateDto.getClientSecret())
         .ifPresent(existingPaypalBusinessAccountEntity::setClientSecret);
-    Optional.ofNullable(paypalBusinessAccountUpdateDto.getIsEnable())
-        .ifPresent(existingPaypalBusinessAccountEntity::setIsEnable);
+    Optional.ofNullable(paypalBusinessAccountUpdateDto.getIsEnabled())
+        .ifPresent(existingPaypalBusinessAccountEntity::setIsEnabled);
 
     return paypalBusinessAccountEntityRepository.save(existingPaypalBusinessAccountEntity);
   }

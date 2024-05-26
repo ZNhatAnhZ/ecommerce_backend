@@ -25,5 +25,6 @@ public class PaypalBusinessAccountCreateDto implements Serializable {
   @NotNull(message = "Client secret is required")
   private String clientSecret;
 
-  private Boolean isEnable = true;
+  private Boolean isEnabled = true;
+
 }

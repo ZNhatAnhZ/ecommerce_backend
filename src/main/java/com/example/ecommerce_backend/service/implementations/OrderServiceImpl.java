@@ -323,9 +323,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
             .bodyToMono(OrderResponseDto.class)
             .block();
 
-    if (orderResponseDto == null
-        || orderResponseDto.getId() == null
-        || orderResponseDto.getStatus() == null) {
+    if (orderResponseDto == null) {
       throw new InvalidOrderException("Order create response from paypal API is invalid");
     }
 
@@ -342,9 +340,7 @@ public class OrderServiceImpl implements OrderServiceInterface {
             .bodyToMono(OrderResponseDto.class)
             .block();
 
-    if (orderResponseDto == null
-        || orderResponseDto.getId() == null
-        || orderResponseDto.getStatus() == null) {
+    if (orderResponseDto == null) {
       throw new InvalidOrderException("Order capture response from paypal API is invalid");
     }
 

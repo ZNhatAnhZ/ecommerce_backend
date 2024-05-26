@@ -18,5 +18,5 @@ public class PaypalBusinessAccountUpdateDto implements Serializable {
   private String email;
   private String clientId;
   private String clientSecret;
-  private Boolean isEnable;
+  private Boolean isEnabled;
 }

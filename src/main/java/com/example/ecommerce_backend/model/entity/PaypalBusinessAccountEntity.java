@@ -27,5 +27,5 @@ public class PaypalBusinessAccountEntity {
   private String clientSecret;
 
   @Column(name = "is_enabled")
-  private Boolean isEnable;
+  private Boolean isEnabled;
 }
