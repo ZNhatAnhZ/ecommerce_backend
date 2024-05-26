@@ -1,11 +1,11 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.userentity.UserEntityCreateDtoMapper;
-import com.example.ecommerce_backend.model.UserEntity;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.UserEntity;
+import com.example.ecommerce_backend.model.mapper.userentity.UserEntityCreateDtoMapper;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.EmailServiceInterface;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;

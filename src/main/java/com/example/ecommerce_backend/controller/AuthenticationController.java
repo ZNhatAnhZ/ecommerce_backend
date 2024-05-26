@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityLoggedInDto;
-import com.example.ecommerce_backend.mapper.userentity.UserEntityLoggedInDtoMapper;
-import com.example.ecommerce_backend.model.CustomUserDetails;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityLoggedInDto;
+import com.example.ecommerce_backend.model.entity.CustomUserDetails;
+import com.example.ecommerce_backend.model.mapper.userentity.UserEntityLoggedInDtoMapper;
 import com.example.ecommerce_backend.util.JwtUtil;
 import java.util.HashMap;
 import java.util.Map;

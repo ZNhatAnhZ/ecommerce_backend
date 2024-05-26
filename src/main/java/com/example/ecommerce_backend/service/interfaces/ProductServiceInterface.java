@@ -1,7 +1,9 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.productentity.*;
-import com.example.ecommerce_backend.model.ProductEntity;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityAfterCreatedDto;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

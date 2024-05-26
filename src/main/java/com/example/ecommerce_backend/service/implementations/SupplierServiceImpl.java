@@ -1,12 +1,12 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.supplierentity.SupplierEntityCreateDto;
-import com.example.ecommerce_backend.dto.supplierentity.SupplierEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.supplierentity.SupplierEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.supplierentity.SupplierEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.model.SupplierEntity;
+import com.example.ecommerce_backend.model.dto.supplierentity.SupplierEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.supplierentity.SupplierEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.SupplierEntity;
+import com.example.ecommerce_backend.model.mapper.supplierentity.SupplierEntityCreateDtoMapper;
+import com.example.ecommerce_backend.model.mapper.supplierentity.SupplierEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.repository.SupplierEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.SupplierServiceInterface;
 import java.util.List;

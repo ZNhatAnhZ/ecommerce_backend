@@ -2,7 +2,7 @@ package com.example.ecommerce_backend.filter;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.example.ecommerce_backend.exception.InvalidCredentialException;
-import com.example.ecommerce_backend.model.CustomUserDetails;
+import com.example.ecommerce_backend.model.entity.CustomUserDetails;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
 import com.example.ecommerce_backend.util.JwtUtil;
 import jakarta.servlet.FilterChain;

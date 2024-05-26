@@ -1,8 +1,7 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.model.OrderEntity;
-import com.example.ecommerce_backend.model.UserEntity;
-
+import com.example.ecommerce_backend.model.entity.OrderEntity;
+import com.example.ecommerce_backend.model.entity.UserEntity;
 import java.util.List;
 
 public interface EmailServiceInterface {
@@ -14,5 +13,4 @@ public interface EmailServiceInterface {
   void sendReceiptEmail(OrderEntity orderEntity);
 
   void sendApprovedOrderEmail(List<OrderEntity> orderEntityList);
-
 }

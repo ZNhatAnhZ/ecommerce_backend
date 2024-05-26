@@ -1,13 +1,13 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.itementity.ItemEntityIndexDto;
-import com.example.ecommerce_backend.dto.itementity.ItemEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.itementity.ItemEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.itementity.ItemEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.model.ItemEntity;
-import com.example.ecommerce_backend.model.ProductEntity;
-import com.example.ecommerce_backend.model.VariationEntity;
+import com.example.ecommerce_backend.model.dto.itementity.ItemEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.itementity.ItemEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.ItemEntity;
+import com.example.ecommerce_backend.model.entity.ProductEntity;
+import com.example.ecommerce_backend.model.entity.VariationEntity;
+import com.example.ecommerce_backend.model.mapper.itementity.ItemEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.mapper.itementity.ItemEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.repository.ItemEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.ItemServiceInterface;
 import java.util.*;

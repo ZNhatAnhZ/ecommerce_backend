@@ -1,13 +1,13 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityCreateDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityUpdateInfoDto;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityUpdateInfoDtoMapper;
-import com.example.ecommerce_backend.model.VariationEntity;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityUpdateInfoDto;
+import com.example.ecommerce_backend.model.entity.VariationEntity;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityCreateDtoMapper;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityUpdateInfoDtoMapper;
 import com.example.ecommerce_backend.repository.VariationEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.VariationServiceInterface;
 import java.util.HashSet;

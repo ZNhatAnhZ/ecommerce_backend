@@ -1,14 +1,14 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityCreateDto;
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityUpdateDto;
 import com.example.ecommerce_backend.exception.ResourceDuplicateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityCreateDtoMapper;
-import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.discountentity.DiscountEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.model.DiscountEntity;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.DiscountEntity;
+import com.example.ecommerce_backend.model.mapper.discountentity.DiscountEntityCreateDtoMapper;
+import com.example.ecommerce_backend.model.mapper.discountentity.DiscountEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.mapper.discountentity.DiscountEntityUpdateDtoMapper;
 import com.example.ecommerce_backend.repository.DiscountEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.DiscountServiceInterface;
 import java.util.List;

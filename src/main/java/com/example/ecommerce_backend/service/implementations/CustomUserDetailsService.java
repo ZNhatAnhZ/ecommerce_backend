@@ -1,7 +1,7 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.model.CustomUserDetails;
-import com.example.ecommerce_backend.model.UserEntity;
+import com.example.ecommerce_backend.model.entity.CustomUserDetails;
+import com.example.ecommerce_backend.model.entity.UserEntity;
 import com.example.ecommerce_backend.repository.UserEntityRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

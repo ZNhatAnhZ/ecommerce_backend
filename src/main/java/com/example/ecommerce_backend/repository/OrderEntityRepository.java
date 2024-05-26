@@ -1,7 +1,7 @@
 package com.example.ecommerce_backend.repository;
 
-import com.example.ecommerce_backend.constant.OrderStatus;
-import com.example.ecommerce_backend.model.OrderEntity;
+import com.example.ecommerce_backend.model.entity.OrderEntity;
+import com.example.ecommerce_backend.util.constant.OrderStatus;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;

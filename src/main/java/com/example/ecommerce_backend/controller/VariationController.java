@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityFlatIndexDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityUpdateInfoDto;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityFlatIndexDtoMapper;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityFlatIndexDto;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityUpdateInfoDto;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityFlatIndexDtoMapper;
 import com.example.ecommerce_backend.service.interfaces.VariationServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

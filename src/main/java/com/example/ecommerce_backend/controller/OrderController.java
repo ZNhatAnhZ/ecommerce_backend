@@ -1,10 +1,10 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.constant.OrderStatus;
-import com.example.ecommerce_backend.dto.orderentity.*;
-import com.example.ecommerce_backend.mapper.orderentity.OrderEntityIndexExtendedMapper;
-import com.example.ecommerce_backend.mapper.orderentity.OrderEntityIndexMapper;
+import com.example.ecommerce_backend.model.dto.orderentity.*;
+import com.example.ecommerce_backend.model.mapper.orderentity.OrderEntityIndexExtendedMapper;
+import com.example.ecommerce_backend.model.mapper.orderentity.OrderEntityIndexMapper;
 import com.example.ecommerce_backend.service.implementations.OrderServiceImpl;
+import com.example.ecommerce_backend.util.constant.OrderStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

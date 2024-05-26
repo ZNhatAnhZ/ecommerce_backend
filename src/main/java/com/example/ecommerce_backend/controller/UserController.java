@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityIndexDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
-import com.example.ecommerce_backend.mapper.userentity.UserEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityUpdateDto;
+import com.example.ecommerce_backend.model.mapper.userentity.UserEntityIndexDtoMapper;
 import com.example.ecommerce_backend.service.interfaces.UserServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

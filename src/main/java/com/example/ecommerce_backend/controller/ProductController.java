@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.productentity.*;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityDetailDtoMapper;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.dto.productentity.*;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityDetailDtoMapper;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityIndexDtoMapper;
 import com.example.ecommerce_backend.service.interfaces.ProductServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

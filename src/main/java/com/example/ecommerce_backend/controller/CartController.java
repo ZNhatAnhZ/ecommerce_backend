@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityCreateRequestDto;
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityIndexDto;
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuantityDto;
-import com.example.ecommerce_backend.mapper.cartitementiy.CartItemEntityIndexMapper;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityCreateRequestDto;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityUpdateQuantityDto;
+import com.example.ecommerce_backend.model.mapper.cartitementiy.CartItemEntityIndexMapper;
 import com.example.ecommerce_backend.service.interfaces.CartServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

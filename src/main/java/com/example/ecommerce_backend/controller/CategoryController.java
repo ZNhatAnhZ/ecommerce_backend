@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.productcategoryentity.CategoryEntityCreateDto;
-import com.example.ecommerce_backend.dto.productcategoryentity.CategoryEntityUpdateDto;
-import com.example.ecommerce_backend.model.ProductCategoryEntity;
+import com.example.ecommerce_backend.model.dto.productcategoryentity.CategoryEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.productcategoryentity.CategoryEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.ProductCategoryEntity;
 import com.example.ecommerce_backend.service.interfaces.CategoryServiceInterface;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

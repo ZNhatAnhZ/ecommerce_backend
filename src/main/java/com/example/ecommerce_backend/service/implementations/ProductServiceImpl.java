@@ -1,15 +1,17 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.itementity.ItemEntityAfterCreatedDto;
-import com.example.ecommerce_backend.dto.productentity.*;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.mapper.itementity.ItemEntityAfterCreatedDtoMapper;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityAfterCreatedDtoMapper;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityDetailDtoMapper;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityIndexDtoMapper;
-import com.example.ecommerce_backend.mapper.productentity.ProductEntityUpdateDtoMapper;
-import com.example.ecommerce_backend.mapper.variationentity.VariationEntityCreateDtoMapper;
-import com.example.ecommerce_backend.model.*;
+import com.example.ecommerce_backend.model.dto.itementity.ItemEntityAfterCreatedDto;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityAfterCreatedDto;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.productentity.ProductEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.*;
+import com.example.ecommerce_backend.model.mapper.itementity.ItemEntityAfterCreatedDtoMapper;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityAfterCreatedDtoMapper;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityDetailDtoMapper;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityIndexDtoMapper;
+import com.example.ecommerce_backend.model.mapper.productentity.ProductEntityUpdateDtoMapper;
+import com.example.ecommerce_backend.model.mapper.variationentity.VariationEntityCreateDtoMapper;
 import com.example.ecommerce_backend.repository.ProductEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.*;
 import java.util.*;

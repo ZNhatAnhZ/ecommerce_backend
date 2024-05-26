@@ -1,13 +1,13 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityCreateRequestDto;
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuantityDto;
 import com.example.ecommerce_backend.exception.InvalidQuantityException;
 import com.example.ecommerce_backend.exception.InvalidStateException;
 import com.example.ecommerce_backend.exception.ResourceNotFoundException;
-import com.example.ecommerce_backend.model.CartItemEntity;
-import com.example.ecommerce_backend.model.ItemEntity;
-import com.example.ecommerce_backend.model.UserEntity;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityCreateRequestDto;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityUpdateQuantityDto;
+import com.example.ecommerce_backend.model.entity.CartItemEntity;
+import com.example.ecommerce_backend.model.entity.ItemEntity;
+import com.example.ecommerce_backend.model.entity.UserEntity;
 import com.example.ecommerce_backend.repository.CartItemEntityRepository;
 import com.example.ecommerce_backend.repository.ProductEntityRepository;
 import com.example.ecommerce_backend.service.interfaces.CartServiceInterface;

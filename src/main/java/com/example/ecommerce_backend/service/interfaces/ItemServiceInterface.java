@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.itementity.ItemEntityIndexDto;
-import com.example.ecommerce_backend.dto.itementity.ItemEntityUpdateDto;
-import com.example.ecommerce_backend.model.ItemEntity;
-import com.example.ecommerce_backend.model.ProductEntity;
+import com.example.ecommerce_backend.model.dto.itementity.ItemEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.itementity.ItemEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.ItemEntity;
+import com.example.ecommerce_backend.model.entity.ProductEntity;
 import java.util.List;
 import java.util.Set;
 

@@ -1,6 +1,6 @@
 package com.example.ecommerce_backend.repository;
 
-import com.example.ecommerce_backend.model.ItemEntity;
+import com.example.ecommerce_backend.model.entity.ItemEntity;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityCreateDto;
-import com.example.ecommerce_backend.dto.variationentity.VariationEntityUpdateInfoDto;
-import com.example.ecommerce_backend.model.VariationEntity;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.variationentity.VariationEntityUpdateInfoDto;
+import com.example.ecommerce_backend.model.entity.VariationEntity;
 import java.util.List;
 import java.util.Set;
 import org.springframework.data.domain.Page;

@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.productcategoryentity.CategoryEntityCreateDto;
-import com.example.ecommerce_backend.dto.productcategoryentity.CategoryEntityUpdateDto;
-import com.example.ecommerce_backend.model.ProductCategoryEntity;
+import com.example.ecommerce_backend.model.dto.productcategoryentity.CategoryEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.productcategoryentity.CategoryEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.ProductCategoryEntity;
 import java.util.List;
 
 public interface CategoryServiceInterface {

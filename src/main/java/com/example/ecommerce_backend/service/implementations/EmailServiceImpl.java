@@ -1,11 +1,11 @@
 package com.example.ecommerce_backend.service.implementations;
 
-import static com.example.ecommerce_backend.constant.OrderStatus.TRACKING;
+import static com.example.ecommerce_backend.util.constant.OrderStatus.TRACKING;
 
 import com.example.ecommerce_backend.exception.EmailSendingException;
-import com.example.ecommerce_backend.model.OrderEntity;
-import com.example.ecommerce_backend.model.OrderItemEntity;
-import com.example.ecommerce_backend.model.UserEntity;
+import com.example.ecommerce_backend.model.entity.OrderEntity;
+import com.example.ecommerce_backend.model.entity.OrderItemEntity;
+import com.example.ecommerce_backend.model.entity.UserEntity;
 import com.example.ecommerce_backend.service.interfaces.EmailServiceInterface;
 import com.google.common.io.Files;
 import jakarta.mail.MessagingException;
@@ -39,7 +39,6 @@ public class EmailServiceImpl implements EmailServiceInterface {
   private String hostSender;
 
   @Override
-
   public void sendEmail(String to, String subject, String body) {
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(to);

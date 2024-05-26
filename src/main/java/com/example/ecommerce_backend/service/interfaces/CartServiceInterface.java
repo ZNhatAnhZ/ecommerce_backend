@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityCreateRequestDto;
-import com.example.ecommerce_backend.dto.cartitementity.CartItemEntityUpdateQuantityDto;
-import com.example.ecommerce_backend.model.CartItemEntity;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityCreateRequestDto;
+import com.example.ecommerce_backend.model.dto.cartitementity.CartItemEntityUpdateQuantityDto;
+import com.example.ecommerce_backend.model.entity.CartItemEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

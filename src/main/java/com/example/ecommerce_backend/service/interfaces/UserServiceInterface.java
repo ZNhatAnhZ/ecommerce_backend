@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.userentity.UserEntityCreateDto;
-import com.example.ecommerce_backend.dto.userentity.UserEntityUpdateDto;
-import com.example.ecommerce_backend.model.UserEntity;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.userentity.UserEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

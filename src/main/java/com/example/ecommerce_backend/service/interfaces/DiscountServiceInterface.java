@@ -1,9 +1,9 @@
 package com.example.ecommerce_backend.service.interfaces;
 
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityCreateDto;
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityIndexDto;
-import com.example.ecommerce_backend.dto.discountentity.DiscountEntityUpdateDto;
-import com.example.ecommerce_backend.model.DiscountEntity;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityIndexDto;
+import com.example.ecommerce_backend.model.dto.discountentity.DiscountEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.DiscountEntity;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

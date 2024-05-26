@@ -1,8 +1,8 @@
 package com.example.ecommerce_backend.controller;
 
-import com.example.ecommerce_backend.dto.supplierentity.SupplierEntityCreateDto;
-import com.example.ecommerce_backend.dto.supplierentity.SupplierEntityUpdateDto;
-import com.example.ecommerce_backend.model.SupplierEntity;
+import com.example.ecommerce_backend.model.dto.supplierentity.SupplierEntityCreateDto;
+import com.example.ecommerce_backend.model.dto.supplierentity.SupplierEntityUpdateDto;
+import com.example.ecommerce_backend.model.entity.SupplierEntity;
 import com.example.ecommerce_backend.service.interfaces.SupplierServiceInterface;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
