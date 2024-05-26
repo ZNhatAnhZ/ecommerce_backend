@@ -3,6 +3,7 @@ package com.example.ecommerce_backend.configuration;
 import com.example.ecommerce_backend.service.implementations.CustomUserDetailsService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +24,15 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-@ConditionalOnProperty(value = "auth.disable", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(value = "auth-disable", havingValue = "false", matchIfMissing = true)
 @EnableWebSecurity()
 @RequiredArgsConstructor
 public class SecurityConfig {
 
   private final CustomUserDetailsService customUserDetailsService;
 
-  private final WebConfig webConfig;
+  @Value("${cors-allowed-origins}")
+  private final String corsAllowedOrigins;
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig)
@@ -56,7 +58,7 @@ public class SecurityConfig {
   @Bean
   CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of(webConfig.getCorsAllowedOrigins()));
+    configuration.setAllowedOrigins(List.of(corsAllowedOrigins));
     configuration.setAllowedMethods(List.of("*"));
     configuration.setAllowedHeaders(List.of("*"));
 

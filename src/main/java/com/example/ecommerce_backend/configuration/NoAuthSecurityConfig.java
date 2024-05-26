@@ -21,7 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
-@ConditionalOnProperty(value = "auth.disable", havingValue = "true")
+@ConditionalOnProperty(value = "auth-disable", havingValue = "true")
 @EnableWebSecurity()
 @RequiredArgsConstructor
 public class NoAuthSecurityConfig {
